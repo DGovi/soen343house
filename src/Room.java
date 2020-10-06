@@ -20,15 +20,7 @@ public class Room {
         }
     }
 
-    Room() {}
-
-    Room(String name, int windows, int lights, ArrayList<String> doors) {
-        this.name = name;
-        this.windows = windows;
-        this.lights = lights;
-        this.doors= doors;
-    }
-
+    // Used for testing
     void printRoom() {
         System.out.println("name: " + this.name);
         System.out.println("windows: " + this.windows);
@@ -38,10 +30,16 @@ public class Room {
             System.out.print(s + " ");
         }
         System.out.println();
-
     }
 
-    static ArrayList<Room> roomFromJSON(String srcJSONPath) throws org.json.JSONException {
+    Room(String name, int windows, int lights, ArrayList<String> doors) {
+        this.name = name;
+        this.windows = windows;
+        this.lights = lights;
+        this.doors= doors;
+    }
+
+    public static ArrayList<Room> roomFromJSON(String srcJSONPath) throws org.json.JSONException {
         InputStream is = Room.class.getResourceAsStream(srcJSONPath);
 
         if (is == null) {
@@ -76,23 +74,3 @@ public class Room {
         return rooms;
     }
 }
-
-
-/*
-{
-   "Garage":{
-      "windows":0,
-      "lights":1,
-      "doorsTo":[
-         "Kitchen"
-      ]
-   },
-   "Kitchen":{
-      "windows":2,
-      "lights":2,
-      "doorsTo":[
-         "Garage"
-      ]
-   }
-}
- */
