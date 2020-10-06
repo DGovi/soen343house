@@ -1,0 +1,4 @@
+#gitignore to remove output files and other setting files
+
+out
+.idea
