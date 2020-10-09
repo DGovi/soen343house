@@ -13,12 +13,12 @@ public class Room {
     protected ArrayList<String> doors;
 
     // Tester
-    public static void main(String[] args) throws org.json.JSONException {
-        ArrayList<Room> array = roomFromJSON("houseinput.json");
-        for (Room r : array) {
-            r.printRoom();
-        }
-    }
+//    public static void main(String[] args) throws org.json.JSONException {
+//        ArrayList<Room> array = roomFromJSON("houseinput.json");
+//        for (Room r : array) {
+//            r.printRoom();
+//        }
+//    }
 
     // Used for testing
     void printRoom() {
