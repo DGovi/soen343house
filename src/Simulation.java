@@ -25,6 +25,7 @@ public class Simulation {
 		sim.addUser(new User(UserType.STRANGER, 0, null));
 		sim.addUser(new User(UserType.STRANGER, 1, null));
 		sim.addUser(new User(UserType.STRANGER, 2, null));
+		sim.addUser(sim.findUserFromID(1));
 		sim.addUser(new User(UserType.STRANGER, 2, null));
 
 		System.out.println(sim.findUserFromID(1));
@@ -43,6 +44,11 @@ public class Simulation {
 	public void addUser(User user) {
 		// user is null
 		if (user == null) return;
+		
+		if (this.users.contains(user)) {
+			System.err.println("Cannot add user.  That exact user exists already.");
+			return;
+		}
 		
 		// a user with that id already exists
 		if (this.findUserFromID(user.getID()) != null) {
