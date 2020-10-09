@@ -14,7 +14,7 @@ public class Room {
 
     // Tester
     public static void main(String[] args) throws org.json.JSONException {
-        var array = roomFromJSON("houseinput.json");
+        ArrayList<Room> array = roomFromJSON("houseinput.json");
         for (Room r : array) {
             r.printRoom();
         }
@@ -57,7 +57,7 @@ public class Room {
         while(keys.hasNext()) {
             String key = keys.next();
             if (object.get(key) instanceof JSONObject) {
-                var array = object.getJSONObject(key).getJSONArray("doorsTo");
+                JSONArray array = object.getJSONObject(key).getJSONArray("doorsTo");
                 ArrayList<String> list = new ArrayList<String>();
                 for (int i = 0; i < array.length(); i++) {
                     list.add(array.get(i).toString());
