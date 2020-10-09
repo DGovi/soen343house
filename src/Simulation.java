@@ -1,6 +1,5 @@
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 
 import soen343house.UserType;
@@ -26,13 +25,22 @@ public class Simulation {
 		sim.addUser(new User(UserType.STRANGER, 0, null));
 		sim.addUser(new User(UserType.STRANGER, 1, null));
 		sim.addUser(new User(UserType.STRANGER, 2, null));
-		System.out.println(sim.findUserFromID(100));
+
+		System.out.println(sim.findUserFromID(1));
+		sim.removeUser(sim.findUserFromID(1));
+		sim.removeUser(sim.findUserFromID(1000000));
+		sim.addUser(null);
+		
+		sim.setLoggedInUser(sim.findUserFromID(0));
+		System.out.println(sim);
+		sim.logout();
+		sim.logout();
+		System.out.println(sim);
 	}
 	
 	// adds user to users ArrayList
 	public void addUser(User user) {
 		if (user == null) return;
-		
 		users.add(user);
 	}
 	
@@ -55,6 +63,11 @@ public class Simulation {
 	// logouts the current logged in user
 	public void logout() {
 		if (this.loggedInUser != null) this.loggedInUser = null;
+	}
+	
+	// DEBUG METHOD to print all users in users ArrayList
+	public void printUsers() {
+		this.users.stream().forEach(user -> System.out.println(user));
 	}
 
 	public Date getDate() {
@@ -89,5 +102,12 @@ public class Simulation {
 		this.loggedInUser = loggedInUser;
 	}
 
+	@Override
+	public String toString() {
+		return "Simulation [date=" + date + ", time=" + time + ", temperature=" + temperature + ", loggedInUser="
+				+ loggedInUser + "]";
+	}
+    
+	
 	
 }
