@@ -1,22 +1,55 @@
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+
+import soen343house.UserType;
 
 public class Simulation {
 	private Date date;
 	private Time time;
 	private float temperature;
 	private User loggedInUser;
+	private ArrayList<User> users;
 	
 	public Simulation(Date date, Time time, float temperature, User loggedInUser) {
 		this.date = date;
 		this.time = time;
 		this.temperature = temperature;
 		this.loggedInUser = loggedInUser;
+		this.users = new ArrayList<User>();
 	}
 	
 	// Test main method
 	public static void main(String args[]) {
-		System.out.println("memes");
+		Simulation sim = new Simulation(new Date(), new Time(0), 100, null);
+		sim.addUser(new User(UserType.STRANGER, 0, null));
+		sim.addUser(new User(UserType.STRANGER, 1, null));
+		sim.addUser(new User(UserType.STRANGER, 2, null));
+		System.out.println(sim.findUserFromID(100));
+	}
+	
+	// adds user to users ArrayList
+	public void addUser(User user) {
+		if (user == null) return;
+		
+		users.add(user);
+	}
+	
+	// remove user from users ArrayList
+	public void removeUser(User user) {
+		if (user == null) return;
+		users.remove(user);
+	}
+	
+	// finds and returns the user with the given ID
+	public User findUserFromID(int id) {
+		try {
+			User foundUser = this.users.stream().filter(user -> user.getID() == id).findFirst().get();
+			return foundUser;
+		} catch (Exception e){
+			return null;
+		}
 	}
 	
 	// logouts the current logged in user

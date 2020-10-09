@@ -34,6 +34,11 @@ public class User {
 	public void setLocation(Room location) {
 		this.location = location;
 	}
+
+	@Override
+	public String toString() {
+		return "User [type=" + type + ", ID=" + ID + ", location=" + location + "]";
+	}
 	
 	
 	
