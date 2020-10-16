@@ -28,12 +28,15 @@ public class DashboardController {
     	
 	    gc = render.getGraphicsContext2D();
 	    
+        gc.setFill(Color.WHITE);
+        gc.fillRect(0, 0, 800, 800);
+        
 	    gc.setFont(Font.font(12));
 	    gc.setFill(Color.BLACK);
 	    gc.setStroke(Color.BLACK);
 	    
-	    int startX = 100;
-	    int startY = 5;
+	    int startX = 15;
+	    int startY = 15;
 	    
 		Stack<Room> stack = new Stack<Room>();
 		Set<String> traversed = new HashSet<String>();
@@ -53,7 +56,7 @@ public class DashboardController {
 		
 		while(!stack.empty()) {
 			Room top = stack.pop();
-			int xParent = -1;
+			int xParent = 0;
 			
 			ArrayList<String> doorsTop = top.getDoors();
 			
@@ -65,7 +68,7 @@ public class DashboardController {
 				stack.add(doors.get(door));
 				traversed.add(door);
 				
-				int x = coordinates.get(top).getKey().intValue() + Math.max(xParent, 0);
+				int x = coordinates.get(top).getKey().intValue() + xParent;
 				int y = coordinates.get(top).getValue().intValue() + ROOM_SIZE  * top.getDoors().size();
 				int size = room.getDoors().size() * ROOM_SIZE;
 				int countWindows = room.getWindows();
@@ -79,14 +82,14 @@ public class DashboardController {
 				
 				coordinates.put(room, new javafx.util.Pair<Integer, Integer>(Integer.valueOf(x), Integer.valueOf(y)));
 				
-				xParent = x;
+				xParent = size;
 			}
 		}
     }
 	
 	public void drawWindows(int x, int y, int size, int countWindows) {
     	for(int i = 0; i < countWindows; i++) {
-			gc.setStroke(Color.ALICEBLUE);
+			gc.setStroke(Color.LIGHTBLUE);
 			gc.setLineWidth(3);
 			int gap = 15;
 			int offset = (size - windowLength * countWindows - gap * (countWindows - 1))/2;
