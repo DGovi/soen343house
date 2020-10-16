@@ -24,13 +24,13 @@ public class DashboardController {
     
     public void renderLayout() throws JSONException {
 	    
-    	House.House h = new House.House("houseinput.json");
-    	
+	    House.House h = new House.House("houseinput.json");
+
 	    gc = render.getGraphicsContext2D();
 	    
-        gc.setFill(Color.WHITE);
-        gc.fillRect(0, 0, 800, 800);
-        
+	    gc.setFill(Color.WHITE);
+	    gc.fillRect(0, 0, 800, 800);
+
 	    gc.setFont(Font.font(12));
 	    gc.setFill(Color.BLACK);
 	    gc.setStroke(Color.BLACK);

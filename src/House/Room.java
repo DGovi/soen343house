@@ -75,7 +75,7 @@ public class Room {
 		this.lights = lights;
 	}
 
-	public static ArrayList<Room> roomFromJSON(String srcJSONPath) throws org.json.JSONException {
+    public static ArrayList<Room> roomFromJSON(String srcJSONPath) throws org.json.JSONException {
         InputStream is = Room.class.getResourceAsStream(srcJSONPath);
 
         if (is == null) {

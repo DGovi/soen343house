@@ -9,15 +9,13 @@ import javafx.stage.Stage;
 public class DashboardDriver extends Application {
 
     Stage window;
-    
-    
     public static void main(String args[]) {launch(args);}
 
     //launch(args) calls this method to launch the dashboard
     @Override
     public void start(Stage window) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("Dashboard.fxml"));
-    	window.setTitle("Smart Home Simulator");
+        window.setTitle("Smart Home Simulator");
         window.setScene(new Scene(root, 800, 600));
         window.show();
     }
