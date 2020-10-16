@@ -25,7 +25,6 @@
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation:" />
                   <ToggleButton mnemonicParsing="false" prefHeight="27.0" prefWidth="141.0" text="ON/OFF" />
-                  <ToggleButton mnemonicParsing="false" text="ON/OFF" />
                   <ToggleButton onAction="#renderLayout" text="Load JSON" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Username (or login)" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Permisisons:" />
