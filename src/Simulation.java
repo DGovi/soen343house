@@ -44,90 +44,90 @@ public class Simulation{
 //		System.out.println(sim);
 //
 //	}
-//
-//	// adds user to users ArrayList
-//	public void addUser(User user) {
-//		// user is null
-//		if (user == null) return;
-//
-//		if (this.users.contains(user)) {
-//			System.err.println("Cannot add user.  That exact user exists already.");
-//			return;
-//		}
-//
-//		// a user with that id already exists
-//		if (this.findUserFromID(user.getID()) != null) {
-//			System.err.println("Cannot add user.  A user with that ID exists already.");
-//			return;
-//		}
-//
-//		users.add(user);
-//	}
-//
-//	// remove user from users ArrayList
-//	public void removeUser(User user) {
-//		if (user == null) return;
-//		users.remove(user);
-//	}
-//
-//	// finds and returns the user with the given ID
-//	public User findUserFromID(int id) {
-//		try {
-//			User foundUser = this.users.stream().filter(user -> user.getID() == id).findFirst().get();
-//			return foundUser;
-//		} catch (Exception e){
-//			return null;
-//		}
-//	}
-//
-//	// logouts the current logged in user
-//	public void logout() {
-//		if (this.loggedInUser != null) this.loggedInUser = null;
-//	}
-//
-//	// DEBUG METHOD to print all users in users ArrayList
-//	public void printUsers() {
-//		this.users.stream().forEach(user -> System.out.println(user));
-//	}
-//
-//	public Date getDate() {
-//		return date;
-//	}
-//
-//	public void setDate(Date date) {
-//		this.date = date;
-//	}
-//
-//	public Time getTime() {
-//		return time;
-//	}
-//
-//	public void setTime(Time time) {
-//		this.time = time;
-//	}
-//
-//	public float getTemperature() {
-//		return temperature;
-//	}
-//
-//	public void setTemperature(float temperature) {
-//		this.temperature = temperature;
-//	}
-//
-//	public User getLoggedInUser() {
-//		return loggedInUser;
-//	}
-//
-//	public void setLoggedInUser(User loggedInUser) {
-//		this.loggedInUser = loggedInUser;
-//	}
-//
-//	@Override
-//	public String toString() {
-//		return "Simulation [date=" + date + ", time=" + time + ", temperature=" + temperature + ", loggedInUser="
-//				+ loggedInUser + "]";
-//	}
-//
-//
-//
+
+	// adds user to users ArrayList
+	public void addUser(User user) {
+		// user is null
+		if (user == null) return;
+
+		if (this.users.contains(user)) {
+			System.err.println("Cannot add user.  That exact user exists already.");
+			return;
+		}
+
+		// a user with that id already exists
+		if (this.findUserFromID(user.getID()) != null) {
+			System.err.println("Cannot add user.  A user with that ID exists already.");
+			return;
+		}
+
+		users.add(user);
+	}
+
+	// remove user from users ArrayList
+	public void removeUser(User user) {
+		if (user == null) return;
+		users.remove(user);
+	}
+
+	// finds and returns the user with the given ID
+	public User findUserFromID(int id) {
+		try {
+			User foundUser = this.users.stream().filter(user -> user.getID() == id).findFirst().get();
+			return foundUser;
+		} catch (Exception e){
+			return null;
+		}
+	}
+
+	// logouts the current logged in user
+	public void logout() {
+		if (this.loggedInUser != null) this.loggedInUser = null;
+	}
+
+	// DEBUG METHOD to print all users in users ArrayList
+	public void printUsers() {
+		this.users.stream().forEach(user -> System.out.println(user));
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public Time getTime() {
+		return time;
+	}
+
+	public void setTime(Time time) {
+		this.time = time;
+	}
+
+	public float getTemperature() {
+		return temperature;
+	}
+
+	public void setTemperature(float temperature) {
+		this.temperature = temperature;
+	}
+
+	public User getLoggedInUser() {
+		return loggedInUser;
+	}
+
+	public void setLoggedInUser(User loggedInUser) {
+		this.loggedInUser = loggedInUser;
+	}
+
+	@Override
+	public String toString() {
+		return "Simulation [date=" + date + ", time=" + time + ", temperature=" + temperature + ", loggedInUser="
+				+ loggedInUser + "]";
+	}
+
+
+
 }
