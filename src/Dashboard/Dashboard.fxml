@@ -14,16 +14,22 @@
          <children>
             <VBox layoutY="2.0" prefHeight="398.0" prefWidth="132.0">
                <children>
-                  <ToggleButton mnemonicParsing="false" text="ON/OFF" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation:" />
+                  <ToggleButton mnemonicParsing="false" prefHeight="27.0" prefWidth="141.0" text="ON/OFF" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Username (or login)" />
-                  <ImageView fitHeight="99.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Permisisons:" />
+                  <TextArea prefHeight="55.0" prefWidth="132.0" text="-permission 1&#10;-permission 2" />
+                  <ImageView fitHeight="64.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../iOS-OS-X-Style-Pure-CSS-Loading-Spinner.jpg" />
                      </image>
                   </ImageView>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Location" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Temperature" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Location:" />
+                  <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="133.0" text="Change Location" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Temperature:" />
+                  <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="136.0" text="Change Temp" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date:" />
+                  <DatePicker promptText="Edit date" />
                </children>
             </VBox>
          </children></AnchorPane>
@@ -45,14 +51,14 @@
                                                    <children>
                                                       <VBox prefHeight="263.0" prefWidth="275.0">
                                                          <children>
-                                                            <DatePicker promptText="Edit date" />
                                                             <Text strokeType="OUTSIDE" strokeWidth="0.0" />
                                                             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Modules installed" />
                                                             <TextArea prefHeight="50.0" prefWidth="275.0" text="module 1&#10;module 2" />
                                                             <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="281.0" text="Add Modules" />
                                                             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="authorized users" />
                                                             <TextArea prefHeight="73.0" prefWidth="275.0" text="user 1&#10;user 2" />
-                                                            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="284.0" text="add users" />
+                                                            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="284.0" text="add/delete users" />
+                                                            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="293.0" text="Edit User" />
                                                             <Text strokeType="OUTSIDE" strokeWidth="0.0" />
                                                          </children>
                                                       </VBox>
@@ -66,17 +72,45 @@
                                                       <VBox prefHeight="263.0" prefWidth="275.0">
                                                          <children>
                                                             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Opened Doors" />
-                                                            <CheckBox mnemonicParsing="false" text="door 1" />
-                                                            <CheckBox mnemonicParsing="false" text="door 2" />
-                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Opened windows" />
-                                                            <CheckBox mnemonicParsing="false" text="window 1" />
-                                                            <CheckBox mnemonicParsing="false" text="window 2" />
-                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="locked area" />
-                                                            <CheckBox mnemonicParsing="false" text="area 1" />
-                                                            <CheckBox mnemonicParsing="false" text="area 2" />
-                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="light on " />
-                                                            <CheckBox mnemonicParsing="false" text="lights 1" />
-                                                            <CheckBox mnemonicParsing="false" text="lights2" />
+                                                            <HBox prefHeight="16.0" prefWidth="275.0">
+                                                               <children>
+                                                                  <CheckBox mnemonicParsing="false" text="door 1" />
+                                                                  <CheckBox mnemonicParsing="false" text="block" />
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox prefHeight="10.0" prefWidth="275.0">
+                                                               <children>
+                                                                  <CheckBox mnemonicParsing="false" text="door 2" />
+                                                                  <CheckBox mnemonicParsing="false" text="block" />
+                                                               </children>
+                                                            </HBox>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Open Windows" />
+                                                            <HBox prefHeight="10.0" prefWidth="275.0">
+                                                               <children>
+                                                                  <CheckBox mnemonicParsing="false" text="window1" />
+                                                                  <CheckBox mnemonicParsing="false" text="block" />
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox prefHeight="10.0" prefWidth="275.0">
+                                                               <children>
+                                                                  <CheckBox mnemonicParsing="false" text="window2" />
+                                                                  <CheckBox mnemonicParsing="false" text="block" />
+                                                               </children>
+                                                            </HBox>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="locked doors" />
+                                                            <HBox prefHeight="10.0" prefWidth="275.0">
+                                                               <children>
+                                                                  <CheckBox mnemonicParsing="false" text="lock 1" />
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox prefHeight="10.0" prefWidth="275.0">
+                                                               <children>
+                                                                  <CheckBox mnemonicParsing="false" text="lock2" />
+                                                               </children>
+                                                            </HBox>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lights" />
+                                                            <CheckBox mnemonicParsing="false" text="Light 1" />
+                                                            <CheckBox mnemonicParsing="false" text="Light2" />
                                                          </children>
                                                       </VBox>
                                                    </children>
@@ -108,6 +142,7 @@
                                        </image>
                                     </ImageView>
                                     <Text layoutX="49.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="House Layout" />
+                                    <Button layoutX="26.0" layoutY="213.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="122.0" text="Load House File" />
                                  </children></AnchorPane>
                           </items>
                         </SplitPane>
