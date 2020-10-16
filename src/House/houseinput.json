@@ -1,41 +1,42 @@
 {
-  "Garage":{
-    "windows":1,
-    "lights":1,
-    "doorsTo":[
-      "Kitchen",
+  "Garage": {
+    "windows": 1,
+    "lights": 1,
+    "doorsTo": [
+      "Kitchen"
     ]
   },
-  "Kitchen":{
-    "windows":2,
-    "lights":3,
-    "doorsTo":[
+  "Kitchen": {
+    "windows": 2,
+    "lights": 3,
+    "doorsTo": [
       "Garage",
       "Living Room",
-      "Forklift Arena"
+      "Bedroom"
     ]
   },
-  "Living Room":{
-    "windows":2,
-    "lights":3,
-    "doorsTo":[
+  "Living Room": {
+    "windows": 2,
+    "lights": 3,
+    "doorsTo": [
       "Kitchen",
-      "Forklift Arena",
+      "Bedroom"
     ]
   },
-  "Forklift Arena":{
-    "windows":3,
-    "lights":8,
-    "doorsTo":[
+  "Bedroom": {
+    "windows": 3,
+    "lights": 8,
+    "doorsTo": [
       "Living Room",
       "Kitchen",
       "Closet"
     ]
   },
-  "Closet":{
-    "windows":1,
-    "lights":1,
-    "doorsTo":["Forklift Arena"]
+  "Closet": {
+    "windows": 1,
+    "lights": 1,
+    "doorsTo": [
+      "Bedroom"
+    ]
   }
-
 }
