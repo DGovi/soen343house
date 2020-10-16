@@ -47,15 +47,54 @@
                                                          <children>
                                                             <DatePicker promptText="Edit date" />
                                                             <Text strokeType="OUTSIDE" strokeWidth="0.0" />
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Modules installed" />
+                                                            <TextArea prefHeight="50.0" prefWidth="275.0" text="module 1&#10;module 2" />
+                                                            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="281.0" text="Add Modules" />
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="authorized users" />
+                                                            <TextArea prefHeight="73.0" prefWidth="275.0" text="user 1&#10;user 2" />
+                                                            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="284.0" text="add users" />
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" />
                                                          </children>
                                                       </VBox>
                                                    </children>
                                                 </VBox>
                                              </content></Tab>
-                                        <Tab text="SHC" />
-                                          <Tab text="SHP" />
-                                          <Tab text="SHH" />
-                                          <Tab text="SHC" />
+                                        <Tab text="SHC">
+                                             <content>
+                                                <VBox prefHeight="200.0" prefWidth="100.0">
+                                                   <children>
+                                                      <VBox prefHeight="263.0" prefWidth="275.0">
+                                                         <children>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Opened Doors" />
+                                                            <CheckBox mnemonicParsing="false" text="door 1" />
+                                                            <CheckBox mnemonicParsing="false" text="door 2" />
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Opened windows" />
+                                                            <CheckBox mnemonicParsing="false" text="window 1" />
+                                                            <CheckBox mnemonicParsing="false" text="window 2" />
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="locked area" />
+                                                            <CheckBox mnemonicParsing="false" text="area 1" />
+                                                            <CheckBox mnemonicParsing="false" text="area 2" />
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="light on " />
+                                                            <CheckBox mnemonicParsing="false" text="lights 1" />
+                                                            <CheckBox mnemonicParsing="false" text="lights2" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </VBox>
+                                             </content></Tab>
+                                          <Tab text="SHP">
+                                             <content>
+                                                <HBox prefHeight="81.0" prefWidth="275.0">
+                                                   <children>
+                                                      <CheckBox mnemonicParsing="false" text="Away mode" />
+                                                      <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="186.0" text="settings" />
+                                                   </children>
+                                                </HBox>
+                                             </content></Tab>
+                                          <Tab text="SHH">
+                                             <content>
+                                                <Button mnemonicParsing="false" text="Configure Zones" />
+                                             </content></Tab>
                                           <Tab text="Other modules" />
                                       </tabs>
                                     </TabPane>
