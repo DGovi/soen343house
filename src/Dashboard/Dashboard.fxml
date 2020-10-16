@@ -47,7 +47,7 @@
          <children>
             <SplitPane dividerPositions="0.7626262626262627" layoutX="-1.0" layoutY="2.0" orientation="VERTICAL" prefHeight="598.0" prefWidth="620.0">
               <items>
-                <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="618.0">
+                <AnchorPane minHeight="0" minWidth="0" prefHeight="100.0" prefWidth="618.0">
                      <children>
                         <SplitPane prefHeight="442.0" prefWidth="276.0">
                           <items>
@@ -59,7 +59,7 @@
                                              <content>
                                                 <VBox prefHeight="200.0" prefWidth="100.0">
                                                    <children>
-                                                      <VBox minHeight="-Infinity" prefHeight="406.0" prefWidth="275.0">
+                                                      <VBox prefHeight="406.0" prefWidth="275.0">
                                                          <children>
                                                             <Text strokeType="OUTSIDE" strokeWidth="0.0" />
                                                             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Modules installed" />

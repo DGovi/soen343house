@@ -1,23 +1,10 @@
 package Dashboard;
 // for Dashboard
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.ArcType;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.util.*;
-import java.util.*;
-
-import House.Room;
-
-
 
 public class DashboardDriver extends Application {
 
