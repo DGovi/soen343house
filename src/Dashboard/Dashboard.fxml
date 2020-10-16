@@ -148,11 +148,11 @@
                         </SplitPane>
                       <AnchorPane layoutX="276.0" layoutY="6.0" minHeight="0.0" minWidth="0.0" prefHeight="440.0" prefWidth="327.0">
                            <children>
-                              <!-- <ImageView fitHeight="167.0" fitWidth="173.0" layoutY="39.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="451" fitWidth="329" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                                                        <Image url="@../iOS-OS-X-Style-Pure-CSS-Loading-Spinner.jpg" />
-                                                                     </image>
-                                                                  </ImageView> -->
+                                 	<Image url="@../iOS-OS-X-Style-Pure-CSS-Loading-Spinner.jpg" />
+                                 </image>
+                              </ImageView>
                               <Text layoutX="49.0" layoutY="431.0" strokeType="OUTSIDE" strokeWidth="0.0" text="House Layout" />
                            <Canvas fx:id="render" height="451.0" width="329.0" />
                            </children>
