@@ -7,13 +7,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="dependencies/java-json.jar"/>
-	<classpathentry kind="lib" path="dependencies/javafx.base.jar"/>
-	<classpathentry kind="lib" path="dependencies/javafx.controls.jar"/>
-	<classpathentry kind="lib" path="dependencies/javafx.fxml.jar"/>
-	<classpathentry kind="lib" path="dependencies/javafx.graphics.jar"/>
-	<classpathentry kind="lib" path="dependencies/javafx.media.jar"/>
-	<classpathentry kind="lib" path="dependencies/javafx.swing.jar"/>
-	<classpathentry kind="lib" path="dependencies/javafx.web.jar"/>
-	<classpathentry kind="lib" path="dependencies/javafx-swt.jar"/>
+	<classpathentry kind="lib" path="dependencies/jfxrt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
