@@ -1,3 +1,5 @@
+package House;
+
 import java.util.*;
 import java.io.InputStream;
 
@@ -38,6 +40,40 @@ public class Room {
         this.lights = lights;
         this.doors= doors;
     }
+    
+    
+
+    public ArrayList<String> getDoors() {
+		return doors;
+	}
+
+	public void setDoors(ArrayList<String> doors) {
+		this.doors = doors;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getWindows() {
+		return windows;
+	}
+
+	public void setWindows(int windows) {
+		this.windows = windows;
+	}
+
+	public int getLights() {
+		return lights;
+	}
+
+	public void setLights(int lights) {
+		this.lights = lights;
+	}
 
     public static ArrayList<Room> roomFromJSON(String srcJSONPath) throws org.json.JSONException {
         InputStream is = Room.class.getResourceAsStream(srcJSONPath);

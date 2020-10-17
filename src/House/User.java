@@ -1,3 +1,4 @@
+package House;
 import soen343house.UserType;
 
 public class User {
