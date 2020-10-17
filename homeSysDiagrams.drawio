@@ -31,7 +31,7 @@
         <mxCell id="fkSMhrdSkVYTth2vi6ym-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;endArrow=block;endFill=0;" parent="1" source="fkSMhrdSkVYTth2vi6ym-1" target="CPHN7FILl5JGV7DydlDY-4" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="fkSMhrdSkVYTth2vi6ym-1" value="Smart Home Dashboard" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="fkSMhrdSkVYTth2vi6ym-1" value="Smart Home View" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="30" y="540" width="120" height="50" as="geometry" />
         </mxCell>
         <mxCell id="fkSMhrdSkVYTth2vi6ym-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;endArrow=blockThin;endFill=0;" parent="1" source="fkSMhrdSkVYTth2vi6ym-2" edge="1">
@@ -170,7 +170,7 @@
         <mxCell id="WAo9bf8TWP8gmRhbdrpz-18" value="+ User(type: UserType, ID: int, location: Room)&#xa;+ getType&#xa;+ setType(type: UserType)&#xa;+ getID&#xa;+ setId(ID: int)&#xa;+ getLocation&#xa;+ setLocation(location: Room)&#xa;+ toString" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="Hh1ZqOh16C1T5onKGEZO-3" vertex="1">
           <mxGeometry y="100" width="260" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="WAo9bf8TWP8gmRhbdrpz-10" value="House" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="k98FI3-CN0EbQ0Xw41iG-1" vertex="1">
+        <mxCell id="WAo9bf8TWP8gmRhbdrpz-10" value="Model" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="k98FI3-CN0EbQ0Xw41iG-1" vertex="1">
           <mxGeometry x="15" y="40" width="160" height="90" as="geometry" />
         </mxCell>
         <mxCell id="91w05wusWFK-HkxT76u1-0" value="# rooms: Room" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="WAo9bf8TWP8gmRhbdrpz-10" vertex="1">

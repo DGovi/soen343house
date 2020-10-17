@@ -1,4 +1,4 @@
-package House;
+package Model;
 
 import java.util.*;
 import java.io.InputStream;

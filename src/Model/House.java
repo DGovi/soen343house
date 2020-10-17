@@ -1,4 +1,4 @@
-package House;
+package Model;
 
 import org.json.JSONException;
 

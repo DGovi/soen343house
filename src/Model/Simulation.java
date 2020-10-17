@@ -1,13 +1,10 @@
-package House;
+package Model;
+
+import org.json.JSONException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 
-// for Dashboard
-import javafx.application.Application;
-import javafx.stage.Stage;
-
-import soen343house.UserType;
 
 public class Simulation{
 	private Date date;
@@ -15,13 +12,16 @@ public class Simulation{
 	private float temperature;
 	private User loggedInUser;
 	private ArrayList<User> users;
-	
-	public Simulation(Date date, Time time, float temperature, User loggedInUser) {
+	private House house;
+
+	public Simulation(Date date, Time time, float temperature, String houseInput) throws JSONException {
+		this.house = new House(houseInput);
 		this.date = date;
 		this.time = time;
 		this.temperature = temperature;
-		this.loggedInUser = loggedInUser;
+		this.loggedInUser = new User(UserType.PARENT, house.rooms.get(0), "Admin", "123456");
 		this.users = new ArrayList<User>();
+		addUser(this.loggedInUser);
 	}
 	
 	// Test main method
@@ -122,6 +122,10 @@ public class Simulation{
 	public void setLoggedInUser(User loggedInUser) {
 		this.loggedInUser = loggedInUser;
 	}
+
+	public ArrayList<User> getUsers() { return users; }
+
+	public House getHouse() { return house; }
 
 	@Override
 	public String toString() {
