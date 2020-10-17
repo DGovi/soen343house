@@ -20,39 +20,41 @@ import javafx.scene.text.Font;
 
 public class DashboardController {
 	private Simulation sim;
+	private int windowLength = 30;
+	private int ROOM_SIZE = 50;
 
 
 	@FXML private Label currentUser;
+	@FXML private Label currentUserLocation;
+	@FXML private ComboBox<String> currentUserLocationOptions;
 	@FXML private TextField loginName;
 	@FXML private PasswordField loginPassword;
-	@FXML private ComboBox<String> loginLocation;
 	@FXML private TextField createUserName;
 	@FXML private PasswordField createUserPassword;
 	@FXML private ComboBox<String> createUserType;
+	@FXML private ComboBox<String> createUserLocation;
 	@FXML private ComboBox<String> editUserChoice;
 	@FXML private PasswordField editUserCurrentPassword;
 	@FXML private PasswordField editUserNewPassword;
 	@FXML private ComboBox<String> editUserType;
+	@FXML private ComboBox<String> editUserLocation;
 	@FXML private ComboBox<String> deleteUserChoice;
 	@FXML private TextArea console;
     @FXML private Canvas render;
     GraphicsContext gc;
 
-	@FXML private void login() {
-		if (loginLocation.getValue() == null) {
-			printToConsole("ERROR: Need an initial location for the user.");
-			return;
-		}
-		Room toPlaceIn = null;
-		for (Room r : sim.getHouse().getRooms()) {
-			if (r.getName().equals(loginLocation.getValue())) {
-				toPlaceIn = r;
+    @FXML private void editCurrentUserLocation() {
+    	if (currentUserLocationOptions.getValue() == null) return;
+    	for (Room r : sim.getHouse().getRooms()) {
+    		if (r.getName().equals(currentUserLocationOptions.getValue())) {
+    			sim.getLoggedInUser().setLocation(r);
+    			printToConsole("Successfully changed logged in users location.");
 			}
 		}
-		if (toPlaceIn == null) {
-			printToConsole("ERROR: Somehow did not find the provided room. This error should not occur.");
-			return;
-		}
+    	updateDashboard();
+	}
+
+	@FXML private void login() {
 		for (User u : sim.getUsers()) {
 			if (u.getName().equals(loginName.getText())) {
 				if (u.getPassword().equals(loginPassword.getText())) {
@@ -60,7 +62,6 @@ public class DashboardController {
 						printToConsole("ERROR: Already logged into this user.");
 						return;
 					}
-					u.setLocation(toPlaceIn);
 					sim.setLoggedInUser(u);
 					updateDashboard();
 					printToConsole("Successfully switched users.");
@@ -85,8 +86,11 @@ public class DashboardController {
 			printToConsole("ERROR: Type field must not be empty.");
 			return;
 		}
-		else if (createUserPassword.getText() == null) {
-			printToConsole("ERROR: Password cannot be null.");
+		else if (createUserPassword.getText().length() == 0) {
+			printToConsole("ERROR: Password cannot be of length 0.");
+		}
+		else if (createUserLocation.getValue() == null) {
+			printToConsole("ERROR: Must pick an initial position");
 		}
 		else if (createUserType.getValue() == "Parent") { type = UserType.PARENT; }
 		else if (createUserType.getValue() == "Child") { type = UserType.CHILD; }
@@ -98,9 +102,15 @@ public class DashboardController {
 		}
 
 		// Add user to simulation
+		Room startingRoom = null;
+		for (Room r : sim.getHouse().getRooms()) {
+			if (r.getName().equals(createUserLocation.getValue())) {
+				startingRoom = r;
+			}
+		}
 		sim.addUser(new User(
 				type,
-				sim.getHouse().getRooms().get(0),
+				startingRoom,
 				createUserName.getText(),
 				createUserPassword.getText()
 		));
@@ -119,6 +129,7 @@ public class DashboardController {
 
 		// Reset field content
 		createUserName.setText("");
+		createUserPassword.setText("");
 	}
 
 	@FXML private void editUser() {
@@ -132,7 +143,11 @@ public class DashboardController {
 			printToConsole("ERROR: Need to enter the chosen user's password to make changes.");
 			return;
 		}
-		else if (editUserType.getValue() == null && editUserNewPassword.getText().length() == 0) {
+		else if (
+				editUserType.getValue() == null &&
+				editUserNewPassword.getText().length() == 0 &&
+				editUserLocation.getValue() == null
+		) {
 			printToConsole("ERROR: Need to give changes to make.");
 			return;
 		}
@@ -151,11 +166,11 @@ public class DashboardController {
 			return;
 		}
 		if (!toChange.getPassword().equals(editUserCurrentPassword.getText())) {
-			printToConsole("ERROR: Entered password is not correct for chosen user.");
+			printToConsole("ERROR: Entered password is incorrect for chosen user.");
 			return;
 		}
 		if (editUserCurrentPassword.getText().equals(editUserNewPassword.getText())) {
-			printToConsole("ERROR: Current and new password are the same.");
+			printToConsole("ERROR: Entered current and new password are the same.");
 			return;
 		}
 
@@ -165,14 +180,25 @@ public class DashboardController {
 		else if (editUserType.getValue() == "Guest") { type = UserType.GUEST; }
 		else if (editUserType.getValue() == "Stranger") { type = UserType.STRANGER; }
 
-		if (type == null) {
-			toChange.setPassword(editUserNewPassword.getText());
-			printToConsole("Set new password for chosen user.");
-			return;
+		if (type != null) {
+			toChange.setType(type);
+			printToConsole("Successfully changed user type.");
 		}
-		toChange.setPassword(editUserNewPassword.getText());
-		toChange.setType(type);
-		printToConsole("Set new password and changed type for chosen user.");
+		if (editUserNewPassword.getText().length() != 0) {
+			toChange.setPassword(editUserNewPassword.getText());
+			printToConsole("Successfully changed user password.");
+		}
+		if (editUserLocation.getValue() != null) {
+			for (Room r : sim.getHouse().getRooms()) {
+				if (r.getName().equals(editUserLocation.getValue())) {
+					sim.getLoggedInUser().setLocation(r);
+					printToConsole("Successfully changed user location.");
+					break;
+				}
+			}
+		}
+		updateDashboard();
+
 
 		editUserCurrentPassword.setText("");
 		editUserNewPassword.setText("");
@@ -206,7 +232,6 @@ public class DashboardController {
 
 		printToConsole("ERROR: Somehow could not find user in dropdown list...");
 		printToConsole("CHECK ANY USER UPDATING ACTIONS FOR MISSING DROPDOWN UPDATES.");
-		return;
 	}
 
 	private void printToConsole(String output) {
@@ -217,6 +242,7 @@ public class DashboardController {
 	private void updateDashboard() {
 		// reset name of logged in user
 		currentUser.setText(sim.getLoggedInUser().getName());
+		currentUserLocation.setText("Current Location: " + sim.getLoggedInUser().getLocation().getName());
 
 		// reset list of users
 		editUserChoice.getItems().clear();
@@ -245,7 +271,9 @@ public class DashboardController {
 
 		// Set dropdown options for locations
 		for (Room r : sim.getHouse().getRooms()) {
-			loginLocation.getItems().add(r.getName());
+			createUserLocation.getItems().add(r.getName());
+			editUserLocation.getItems().add(r.getName());
+			currentUserLocationOptions.getItems().add(r.getName());
 		}
 
 		// Set dropdown options for dropdowns with users
@@ -253,9 +281,6 @@ public class DashboardController {
 		renderLayout();
 
 	}
-    
-    private int windowLength = 30;
-    private int ROOM_SIZE = 50;
     
     @FXML public void renderLayout() throws JSONException {
 	    
