@@ -72,7 +72,7 @@
                                         <ComboBox fx:id="createUserType"/>
                                         <Label text="Location:"/>
                                         <ComboBox fx:id="createUserLocation"/>
-                                        <Button onAction="#addUser" mnemonicParsing="false" prefHeight="27.0"
+                                        <Button onAction="#createUser" mnemonicParsing="false" prefHeight="27.0"
                                                 prefWidth="284.0" text="Add User"/>
                                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="EDITING USER"/>
                                         <Label text="User:"/>

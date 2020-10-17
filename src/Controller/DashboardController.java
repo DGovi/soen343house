@@ -45,6 +45,12 @@ public class DashboardController {
 
     @FXML private void editCurrentUserLocation() {
     	if (currentUserLocationOptions.getValue() == null) return;
+    	if (currentUserLocationOptions.getValue().equals("Outside")) {
+    		sim.getLoggedInUser().setLocation(null);
+    		printToConsole("Moved user outside.");
+    		updateDashboard();
+    		return;
+		}
     	for (Room r : sim.getHouse().getRooms()) {
     		if (r.getName().equals(currentUserLocationOptions.getValue())) {
     			sim.getLoggedInUser().setLocation(r);
@@ -55,16 +61,26 @@ public class DashboardController {
 	}
 
 	@FXML private void login() {
+    	// Sequence:
+		// -Check for users with same name
+		// -If same name, check if same password
+		// -If same password, login, reset fields
+		// -If not same password, keep looking
+
 		for (User u : sim.getUsers()) {
 			if (u.getName().equals(loginName.getText())) {
 				if (u.getPassword().equals(loginPassword.getText())) {
 					if (u == sim.getLoggedInUser()) {
 						printToConsole("ERROR: Already logged into this user.");
+						loginName.setText("");
+						loginPassword.setText("");
 						return;
 					}
 					sim.setLoggedInUser(u);
 					updateDashboard();
 					printToConsole("Successfully switched users.");
+					loginName.setText("");
+					loginPassword.setText("");
 					return;
 				}
 				else {
@@ -73,10 +89,12 @@ public class DashboardController {
 				}
 			}
 		}
-		printToConsole("ERROR: Did not find any user with the entered name:" + loginName.getText() + ".");
+		printToConsole("ERROR: Did not find any user with the entered name (" + loginName.getText() + ") and password.");
+		loginName.setText("");
+		loginPassword.setText("");
 	}
 
-	@FXML private void addUser() {
+	@FXML private void createUser() {
 		UserType type = null;
 		if (createUserName.getText().length() == 0) {
 			printToConsole("ERROR: Name field must not be empty.");
@@ -180,15 +198,22 @@ public class DashboardController {
 		else if (editUserType.getValue() == "Guest") { type = UserType.GUEST; }
 		else if (editUserType.getValue() == "Stranger") { type = UserType.STRANGER; }
 
+		// Change user type if that had input
 		if (type != null) {
 			toChange.setType(type);
 			printToConsole("Successfully changed user type.");
 		}
+		// Change password if that had input
 		if (editUserNewPassword.getText().length() != 0) {
 			toChange.setPassword(editUserNewPassword.getText());
 			printToConsole("Successfully changed user password.");
 		}
-		if (editUserLocation.getValue() != null) {
+
+		// Change location if that had input
+		if (editUserLocation.getValue().equals("Outside")) {
+			sim.getLoggedInUser().setLocation(null);
+		}
+		else if (editUserLocation.getValue() != null) {
 			for (Room r : sim.getHouse().getRooms()) {
 				if (r.getName().equals(editUserLocation.getValue())) {
 					sim.getLoggedInUser().setLocation(r);
@@ -197,11 +222,13 @@ public class DashboardController {
 				}
 			}
 		}
-		updateDashboard();
 
-
+		// Reset text input fields
 		editUserCurrentPassword.setText("");
 		editUserNewPassword.setText("");
+
+		// Update dashboard at the end of all changes
+		updateDashboard();
 	}
 
 	@FXML private void deleteUser() {
@@ -242,7 +269,12 @@ public class DashboardController {
 	private void updateDashboard() {
 		// reset name of logged in user
 		currentUser.setText(sim.getLoggedInUser().getName());
-		currentUserLocation.setText("Current Location: " + sim.getLoggedInUser().getLocation().getName());
+		if (sim.getLoggedInUser().getLocation() == null) {
+			currentUserLocation.setText("Current Location: Outside");
+		}
+		else {
+			currentUserLocation.setText("Current Location: " + sim.getLoggedInUser().getLocation().getName());
+		}
 
 		// reset list of users
 		editUserChoice.getItems().clear();
@@ -275,6 +307,9 @@ public class DashboardController {
 			editUserLocation.getItems().add(r.getName());
 			currentUserLocationOptions.getItems().add(r.getName());
 		}
+		createUserLocation.getItems().add("Outside");
+		editUserLocation.getItems().add("Outside");
+		currentUserLocationOptions.getItems().add("Outside");
 
 		// Set dropdown options for dropdowns with users
 		updateDashboard();
