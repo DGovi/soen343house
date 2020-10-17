@@ -7,9 +7,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<SplitPane dividerPositions="0.22742474916387959" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-           minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1"
-           xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.DashboardController">
+<SplitPane fx:controller="Controller.DashboardController" dividerPositions="0.22742474916387959" maxHeight="-Infinity"
+           maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0"
+           xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
       <children>
@@ -17,9 +17,8 @@
           <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation:"/>
             <ToggleButton mnemonicParsing="false" prefHeight="27.0" prefWidth="141.0" text="ON/OFF"/>
-            <ToggleButton onAction="#renderLayout" text="Load JSON"/>
             <Label fx:id="currentUser" text="Username (or login)"/>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Permisisons:"/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Permissions:"/>
             <TextArea prefHeight="55.0" prefWidth="132.0" text="-permission 1&#10;-permission 2"/>
             <ImageView fitHeight="64.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
               <image>
@@ -186,7 +185,7 @@
             </AnchorPane>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="288.0" prefWidth="600.0">
               <children>
-                <Text layoutX="168.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="output console"/>
+                <Text layoutX="168.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Console"/>
                 <TextArea fx:id="console" layoutX="14.0" layoutY="23.0" prefHeight="64.0" prefWidth="430.0"/>
               </children>
             </AnchorPane>

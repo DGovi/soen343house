@@ -194,7 +194,7 @@ public class DashboardController {
 	}
 
 	private void printToConsole(String output) {
-		console.setText(console.getText().concat(output + "\n"));
+		console.appendText(output + "\n");
 	}
 
 	// Use whenever there is a change to users (logged in, names, or number of users)
@@ -221,7 +221,6 @@ public class DashboardController {
 				25,
 				"houseinput.json"
 		);
-		printToConsole(String.valueOf(sim == null));
 		currentUser.setText(sim.getLoggedInUser().getName());
 
 		// Set dropdown options for user type dropdowns
@@ -230,6 +229,7 @@ public class DashboardController {
 
 		// Set dropdown options for dropdowns with users
 		updateDashboard();
+		renderLayout();
 
 	}
     
