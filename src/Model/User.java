@@ -1,15 +1,20 @@
-package House;
-import soen343house.UserType;
+package Model;
 
 public class User {
+	static private int counter = 0;
+
 	private UserType type;
 	private int ID;
 	private Room location;
+	private String name;
+	private String password;
 
-	public User(UserType type, int ID, Room location) {
+	public User(UserType type, Room location, String name, String password) {
 		this.type = type;
-		this.ID = ID;
+		this.ID = counter++;
 		this.location = location;
+		this.name = name;
+		this.password = password;
 	}
 
 	public UserType getType() {
@@ -24,10 +29,6 @@ public class User {
 		return ID;
 	}
 
-	public void setID(int iD) {
-		ID = iD;
-	}
-
 	public Room getLocation() {
 		return location;
 	}
@@ -35,6 +36,12 @@ public class User {
 	public void setLocation(Room location) {
 		this.location = location;
 	}
+
+	public String getName() { return this.name; }
+
+	public String getPassword() { return this.password; }
+
+	public void setPassword(String password) { this.password = password; }
 
 	@Override
 	public String toString() {

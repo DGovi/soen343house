@@ -1,4 +1,4 @@
-package Dashboard;
+package View;
 // for Dashboard
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +16,7 @@ public class DashboardDriver extends Application {
     public void start(Stage window) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("Dashboard.fxml"));
         window.setTitle("Smart Home Simulator");
-        window.setScene(new Scene(root, 800, 600));
+        window.setScene(new Scene(root, 1600, 900));
         window.show();
     }
     
