@@ -60,6 +60,8 @@
                                         <TextField fx:id="loginName"/>
                                         <Label text="Password:"/>
                                         <PasswordField fx:id="loginPassword"/>
+                                        <Label text="Location:"/>
+                                        <ComboBox fx:id="loginLocation"/>
                                         <Button onAction="#login" mnemonicParsing="false" prefHeight="27.0" prefWidth="281.0"
                                                 text="Login"/>
                                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="CREATING USER"/>

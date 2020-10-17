@@ -25,6 +25,7 @@ public class DashboardController {
 	@FXML private Label currentUser;
 	@FXML private TextField loginName;
 	@FXML private PasswordField loginPassword;
+	@FXML private ComboBox<String> loginLocation;
 	@FXML private TextField createUserName;
 	@FXML private PasswordField createUserPassword;
 	@FXML private ComboBox<String> createUserType;
@@ -38,6 +39,20 @@ public class DashboardController {
     GraphicsContext gc;
 
 	@FXML private void login() {
+		if (loginLocation.getValue() == null) {
+			printToConsole("ERROR: Need an initial location for the user.");
+			return;
+		}
+		Room toPlaceIn = null;
+		for (Room r : sim.getHouse().getRooms()) {
+			if (r.getName().equals(loginLocation.getValue())) {
+				toPlaceIn = r;
+			}
+		}
+		if (toPlaceIn == null) {
+			printToConsole("ERROR: Somehow did not find the provided room. This error should not occur.");
+			return;
+		}
 		for (User u : sim.getUsers()) {
 			if (u.getName().equals(loginName.getText())) {
 				if (u.getPassword().equals(loginPassword.getText())) {
@@ -45,6 +60,7 @@ public class DashboardController {
 						printToConsole("ERROR: Already logged into this user.");
 						return;
 					}
+					u.setLocation(toPlaceIn);
 					sim.setLoggedInUser(u);
 					updateDashboard();
 					printToConsole("Successfully switched users.");
@@ -226,6 +242,11 @@ public class DashboardController {
 		// Set dropdown options for user type dropdowns
 		createUserType.getItems().setAll("Parent", "Child", "Guest", "Stranger");
 		editUserType.getItems().setAll("Parent", "Child", "Guest", "Stranger");
+
+		// Set dropdown options for locations
+		for (Room r : sim.getHouse().getRooms()) {
+			loginLocation.getItems().add(r.getName());
+		}
 
 		// Set dropdown options for dropdowns with users
 		updateDashboard();
