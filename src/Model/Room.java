@@ -10,7 +10,7 @@ import org.json.JSONTokener;
 public class Room {
 
     protected String name;
-    protected int windows;
+    protected ArrayList<Window> windows;
     protected int lights;
     protected ArrayList<String> doors;
 
@@ -34,7 +34,7 @@ public class Room {
         System.out.println();
     }
 
-    Room(String name, int windows, int lights, ArrayList<String> doors) {
+    Room(String name, ArrayList<Window> windows, int lights, ArrayList<String> doors) {
         this.name = name;
         this.windows = windows;
         this.lights = lights;
@@ -59,12 +59,8 @@ public class Room {
 		this.name = name;
 	}
 
-	public int getWindows() {
+	public ArrayList<Window> getWindows() {
 		return windows;
-	}
-
-	public void setWindows(int windows) {
-		this.windows = windows;
 	}
 
 	public int getLights() {
@@ -98,9 +94,13 @@ public class Room {
                 for (int i = 0; i < array.length(); i++) {
                     list.add(array.get(i).toString());
                 }
+                ArrayList<Window> windows = new ArrayList<Window>();
+                for (int i = 0; i < object.getJSONObject(key).getInt("windows"); i++) {
+                    windows.add(new Window());
+                }
                 rooms.add(new Room(
                         key,
-                        object.getJSONObject(key).getInt("windows"),
+                        windows,
                         object.getJSONObject(key).getInt("lights"),
                         list
                         )

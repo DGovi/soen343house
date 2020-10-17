@@ -10,14 +10,8 @@ public class Window {
     }
 
     public Window(ArbitraryObject obs) {
-        if (obs == null) {
-            obstruction = null;
-            obstructed = false;
-        }
-        else {
-            obstruction = obs;
-            obstructed = true;
-        }
+        obstruction = obs;
+        obstructed = (obs != null);
     }
 
     public Boolean getObstructed() { return obstructed; }
@@ -27,7 +21,7 @@ public class Window {
     }
 
     public void setObstructed(Boolean obs, String s) {
-        if (obs == true) {
+        if (obs) {
             obstruction = new ArbitraryObject(s);
             obstructed = true;
         }

@@ -285,7 +285,7 @@ public class DashboardController {
 				int x = coordinates.get(top).getKey().intValue() + xParent;
 				int y = coordinates.get(top).getValue().intValue() + ROOM_SIZE  * top.getDoors().size();
 				int size = room.getDoors().size() * ROOM_SIZE;
-				int countWindows = room.getWindows();
+				int countWindows = room.getWindows().size();
 				
 				this.drawRoom(room, x, y, door != doorsTop.get(doorsTop.size()-1) && doorsTop.size() > 1);
 				
