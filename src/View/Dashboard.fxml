@@ -28,7 +28,8 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Location:"/>
             <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="133.0" text="Change Location"/>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Temperature:"/>
-            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="136.0" text="Change Temp"/>
+            <Label fx:id="temperatureLabel" text="420"/>
+            <Button onAction="#changeTemperature" mnemonicParsing="false" prefHeight="27.0" prefWidth="136.0" text="Change Temp"/>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date:"/>
             <DatePicker promptText="Edit date"/>
           </children>

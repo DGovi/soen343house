@@ -8,6 +8,7 @@ import java.util.Stack;
 import java.util.Date;
 import java.time.LocalTime;
 
+import View.InputWindow;
 import org.json.JSONException;
 
 import Model.*;
@@ -36,6 +37,10 @@ public class DashboardController {
 	@FXML private TextArea console;
     @FXML private Canvas render;
     GraphicsContext gc;
+
+    @FXML private void changeTemperature() {
+		InputWindow.display("Change Temperature", "New Temperature");
+	}
 
 	@FXML private void login() {
 		for (User u : sim.getUsers()) {
