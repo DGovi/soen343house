@@ -33,7 +33,11 @@ public class InputWindow {
         });
 
         VBox layout = new VBox(10);
-        layout.getChildren().addAll(label, closeButton, submitButton, inputField);
+        layout.setPadding(new Insets(10, 10, 10, 10));
+        HBox buttonsBox = new HBox(10);
+        buttonsBox.setAlignment(Pos.CENTER);
+        buttonsBox.getChildren().addAll(closeButton, submitButton);
+        layout.getChildren().addAll(label,inputField, buttonsBox);
         layout.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(layout);
