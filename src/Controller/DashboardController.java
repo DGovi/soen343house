@@ -39,7 +39,8 @@ public class DashboardController {
     GraphicsContext gc;
 
     @FXML private void changeTemperature() {
-		InputWindow.display("Change Temperature", "New Temperature");
+		String newTemperature = InputWindow.display("Change Temperature", "New Temperature");
+		printToConsole("Setting simulation temperature to " + newTemperature + "!");
 	}
 
 	@FXML private void login() {
