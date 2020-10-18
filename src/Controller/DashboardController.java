@@ -22,7 +22,7 @@ import javafx.scene.text.Font;
 public class DashboardController {
 	private Simulation sim;
 
-
+	@FXML private Label temperatureLabel;
 	@FXML private Label currentUser;
 	@FXML private TextField loginName;
 	@FXML private PasswordField loginPassword;
@@ -41,11 +41,12 @@ public class DashboardController {
     @FXML private void changeTemperature() {
 		String newTemperature = InputWindow.display("Change Temperature", "New Temperature");
 		try {
-			int newTemperatureInt = Integer.parseInt(newTemperature);
+			float newTemperatureInt = Float.parseFloat(newTemperature);
 			sim.setTemperature(newTemperatureInt);
+			updateDashboard();
 			printToConsole("Setting simulation temperature to " + newTemperature + "!");
 		} catch (Exception e) {
-			printToConsole("ERROR: Inputted temperature is not an integer.");
+			printToConsole("ERROR: Inputted temperature is not a valid float.");
 			return;
 		}
 	}
@@ -212,6 +213,9 @@ public class DashboardController {
 
 	// Use whenever there is a change to users (logged in, names, or number of users)
 	private void updateDashboard() {
+    	// reset simulation temperature
+		temperatureLabel.setText(Float.toString(sim.getTemperature()));
+
 		// reset name of logged in user
 		currentUser.setText(sim.getLoggedInUser().getName());
 
