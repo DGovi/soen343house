@@ -40,7 +40,14 @@ public class DashboardController {
 
     @FXML private void changeTemperature() {
 		String newTemperature = InputWindow.display("Change Temperature", "New Temperature");
-		printToConsole("Setting simulation temperature to " + newTemperature + "!");
+		try {
+			int newTemperatureInt = Integer.parseInt(newTemperature);
+			sim.setTemperature(newTemperatureInt);
+			printToConsole("Setting simulation temperature to " + newTemperature + "!");
+		} catch (Exception e) {
+			printToConsole("ERROR: Inputted temperature is not an integer.");
+			return;
+		}
 	}
 
 	@FXML private void login() {
