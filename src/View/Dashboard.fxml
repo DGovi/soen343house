@@ -25,8 +25,8 @@
                 <Image url="@../Model/iOS-OS-X-Style-Pure-CSS-Loading-Spinner.jpg"/>
               </image>
             </ImageView>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Location:"/>
-            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="133.0" text="Change Location"/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Current Location:"/>
+            <ComboBox onAction="#editCurrentUserLocation" fx:id="currentUserLocationOptions"/>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Temperature:"/>
             <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="136.0" text="Change Temp"/>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date:"/>
@@ -69,7 +69,9 @@
                                         <PasswordField fx:id="createUserPassword"/>
                                         <Label text="Type:"/>
                                         <ComboBox fx:id="createUserType"/>
-                                        <Button onAction="#addUser" mnemonicParsing="false" prefHeight="27.0"
+                                        <Label text="Location:"/>
+                                        <ComboBox fx:id="createUserLocation"/>
+                                        <Button onAction="#createUser" mnemonicParsing="false" prefHeight="27.0"
                                                 prefWidth="284.0" text="Add User"/>
                                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="EDITING USER"/>
                                         <Label text="User:"/>
@@ -80,6 +82,8 @@
                                         <PasswordField fx:id="editUserNewPassword"/>
                                         <Label text="Type:"/>
                                         <ComboBox fx:id="editUserType"/>
+                                        <Label text="Location:"/>
+                                        <ComboBox fx:id="editUserLocation"/>
                                         <Button onAction="#editUser" mnemonicParsing="false" prefHeight="27.0"
                                                 prefWidth="293.0" text="Edit User"/>
                                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="DELETING USER"/>
