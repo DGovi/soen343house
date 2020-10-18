@@ -1,5 +1,8 @@
 package Controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,6 +11,7 @@ import java.util.Stack;
 import java.util.Date;
 import java.time.LocalTime;
 
+import javafx.event.ActionEvent;
 import org.json.JSONException;
 
 import Model.*;
@@ -35,6 +39,10 @@ public class DashboardController {
 	@FXML private ComboBox<String> deleteUserChoice;
 	@FXML private TextArea console;
     @FXML private Canvas render;
+
+    @FXML private DatePicker datePicker;
+    @FXML private Label dateLabel;
+    @FXML private Label timeLabel;
     GraphicsContext gc;
 
 	@FXML private void login() {
@@ -339,5 +347,24 @@ public class DashboardController {
 		gc.setStroke(Color.BLACK);
 		gc.fillText(room.getName(), x + 5, y + 17);
     }
-    
+
+    //shows entered date in label box
+	public void displayDate(javafx.event.ActionEvent actionEvent) {
+		LocalDate chosenDate = datePicker.getValue();
+		if(chosenDate == null){
+			dateLabel.setText("The Date is: ");
+		}
+		else {
+			dateLabel.setText("The Date is: " + chosenDate.toString());
+			updateDashboard();
+		}
+	}
+
+	//shows the time
+	public void updateTime(ActionEvent actionEvent) {
+		DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss a");
+		Date date = new Date();
+		String time=dateFormat.format(date);
+		timeLabel.setText("Time is: " + time);
+	}
 }
