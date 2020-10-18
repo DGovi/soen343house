@@ -21,24 +21,29 @@ import javafx.scene.text.Font;
 
 public class DashboardController {
 	private Simulation sim;
+	private int windowLength = 30;
+	private int ROOM_SIZE = 50;
 
 	@FXML private Label temperatureLabel;
 	@FXML private Label currentUser;
+	@FXML private ComboBox<String> currentUserLocationOptions;
 	@FXML private TextField loginName;
 	@FXML private PasswordField loginPassword;
 	@FXML private TextField createUserName;
 	@FXML private PasswordField createUserPassword;
 	@FXML private ComboBox<String> createUserType;
+	@FXML private ComboBox<String> createUserLocation;
 	@FXML private ComboBox<String> editUserChoice;
 	@FXML private PasswordField editUserCurrentPassword;
 	@FXML private PasswordField editUserNewPassword;
 	@FXML private ComboBox<String> editUserType;
+	@FXML private ComboBox<String> editUserLocation;
 	@FXML private ComboBox<String> deleteUserChoice;
 	@FXML private TextArea console;
     @FXML private Canvas render;
     GraphicsContext gc;
-
-    @FXML private void changeTemperature() {
+  
+  @FXML private void changeTemperature() {
 		String newTemperature = InputWindow.display("Change Temperature", "New Temperature");
 		try {
 			float newTemperatureInt = Float.parseFloat(newTemperature);
@@ -47,164 +52,49 @@ public class DashboardController {
 			printToConsole("Setting simulation temperature to " + newTemperature + "!");
 		} catch (Exception e) {
 			printToConsole("ERROR: Inputted temperature is not a valid float.");
-			return;
 		}
+	}
+
+  @FXML private void editCurrentUserLocation() {
+    	printToConsole(sim.setLoggedInUserLocation(currentUserLocationOptions.getValue()));
+    	updateDashboard();
 	}
 
 	@FXML private void login() {
-		for (User u : sim.getUsers()) {
-			if (u.getName().equals(loginName.getText())) {
-				if (u.getPassword().equals(loginPassword.getText())) {
-					if (u == sim.getLoggedInUser()) {
-						printToConsole("ERROR: Already logged into this user.");
-						return;
-					}
-					sim.setLoggedInUser(u);
-					updateDashboard();
-					printToConsole("Successfully switched users.");
-					return;
-				}
-				else {
-					printToConsole("ERROR: Found a user with the same name, but different password.");
-					printToConsole("Continuing search...");
-				}
-			}
-		}
-		printToConsole("ERROR: Did not find any user with the entered name:" + loginName.getText() + ".");
+		printToConsole(sim.login(loginName.getText(), loginPassword.getText()));
+		updateDashboard();
 	}
 
-	@FXML private void addUser() {
-		UserType type = null;
-		if (createUserName.getText().length() == 0) {
-			printToConsole("ERROR: Name field must not be empty.");
-			return;
-		}
-		else if (createUserType.getValue() == null) {
-			printToConsole("ERROR: Type field must not be empty.");
-			return;
-		}
-		else if (createUserPassword.getText() == null) {
-			printToConsole("ERROR: Password cannot be null.");
-		}
-		else if (createUserType.getValue() == "Parent") { type = UserType.PARENT; }
-		else if (createUserType.getValue() == "Child") { type = UserType.CHILD; }
-		else if (createUserType.getValue() == "Guest") { type = UserType.GUEST; }
-		else if (createUserType.getValue() == "Stranger") { type = UserType.STRANGER; }
-		else {
-			printToConsole("ERROR: Unhandled add user case. You did something weird.");
-			return;
-		}
-
-		// Add user to simulation
-		sim.addUser(new User(
-				type,
-				sim.getHouse().getRooms().get(0),
-				createUserName.getText(),
-				createUserPassword.getText()
-		));
+	@FXML private void createUser() {
+		printToConsole(
+				sim.addUser(
+						createUserName.getText(),
+						createUserPassword.getText(),
+						createUserType.getValue(),
+						createUserLocation.getValue()
+				)
+		);
 
 		// Update other dropdownlist
 		updateDashboard();
-
-		// Print action to console
-		printToConsole(
-				"Successfully added " +
-						createUserName.getText() +
-						" as a " +
-						(createUserType.getValue()).toLowerCase() +
-						" user."
-		);
-
-		// Reset field content
-		createUserName.setText("");
 	}
 
 	@FXML private void editUser() {
-		String choice = editUserChoice.getValue();
-
-		if (choice == null) {
-			printToConsole("ERROR: Did not choose a user to edit.");
-			return;
-		}
-		else if (editUserCurrentPassword.getText().length() == 0) {
-			printToConsole("ERROR: Need to enter the chosen user's password to make changes.");
-			return;
-		}
-		else if (editUserType.getValue() == null && editUserNewPassword.getText().length() == 0) {
-			printToConsole("ERROR: Need to give changes to make.");
-			return;
-		}
-
-		User toChange = null;
-		choice = choice.substring(choice.indexOf("(")+1,choice.indexOf(")"));
-		for (User u : sim.getUsers()) {
-			if (u.getID() == Integer.parseInt(choice)) {
-				toChange = u;
-				break;
-			}
-		}
-
-		if (toChange == null) {
-			printToConsole("ERROR: Somehow did not find user chosen from dropdown list... Try again.");
-			return;
-		}
-		if (!toChange.getPassword().equals(editUserCurrentPassword.getText())) {
-			printToConsole("ERROR: Entered password is not correct for chosen user.");
-			return;
-		}
-		if (editUserCurrentPassword.getText().equals(editUserNewPassword.getText())) {
-			printToConsole("ERROR: Current and new password are the same.");
-			return;
-		}
-
-		UserType type = null;
-		if (editUserType.getValue() == "Parent") { type = UserType.PARENT; }
-		else if (editUserType.getValue() == "Child") { type = UserType.CHILD; }
-		else if (editUserType.getValue() == "Guest") { type = UserType.GUEST; }
-		else if (editUserType.getValue() == "Stranger") { type = UserType.STRANGER; }
-
-		if (type == null) {
-			toChange.setPassword(editUserNewPassword.getText());
-			printToConsole("Set new password for chosen user.");
-			return;
-		}
-		toChange.setPassword(editUserNewPassword.getText());
-		toChange.setType(type);
-		printToConsole("Set new password and changed type for chosen user.");
-
-		editUserCurrentPassword.setText("");
-		editUserNewPassword.setText("");
+		printToConsole(
+				sim.editUser(
+						editUserChoice.getValue(),
+						editUserCurrentPassword.getText(),
+						editUserNewPassword.getText(),
+						editUserType.getValue(),
+						editUserLocation.getValue()
+				)
+		);
+		updateDashboard();
 	}
 
 	@FXML private void deleteUser() {
-		String choice = deleteUserChoice.getValue();
-		if (choice == null) {
-			printToConsole("ERROR: Please choose a user to delete");
-			return;
-		}
-		if (sim.getLoggedInUser().getType() != UserType.PARENT) {
-			printToConsole("ERROR: Need admin/parental privileges to delete a user.");
-			return;
-		}
-
-		// extract id of choice
-		choice = choice.substring(choice.indexOf("(")+1,choice.indexOf(")"));
-		for (User u : sim.getUsers()) {
-			if (u.getID() == Integer.parseInt(choice)) {
-				if (u.getID() == sim.getLoggedInUser().getID()) {
-					printToConsole("ERROR: Cannot delete logged in user.");
-					return;
-				}
-				sim.removeUser(u);
-				updateDashboard();
-				printToConsole("Successfully removed user.");
-				return;
-			}
-		}
-
-		printToConsole("ERROR: Somehow could not find user in dropdown list...");
-		printToConsole("CHECK ANY USER UPDATING ACTIONS FOR MISSING DROPDOWN UPDATES.");
-		return;
+		printToConsole(sim.removeUser(deleteUserChoice.getValue()));
+		updateDashboard();
 	}
 
 	private void printToConsole(String output) {
@@ -213,11 +103,17 @@ public class DashboardController {
 
 	// Use whenever there is a change to users (logged in, names, or number of users)
 	private void updateDashboard() {
-    	// reset simulation temperature
+    // reset simulation temperature
 		temperatureLabel.setText(Float.toString(sim.getTemperature()));
-
-		// reset name of logged in user
+    
+		// reset info of logged in user
 		currentUser.setText(sim.getLoggedInUser().getName());
+		if (sim.getLoggedInUser().getLocation() == null) {
+			currentUserLocationOptions.valueProperty().set("Outside");
+		}
+		else {
+			currentUserLocationOptions.valueProperty().set(sim.getLoggedInUser().getLocation().getName());
+		}
 
 		// reset list of users
 		editUserChoice.getItems().clear();
@@ -226,6 +122,16 @@ public class DashboardController {
 			editUserChoice.getItems().add(u.getName() + " (" + u.getID() + ")");
 			deleteUserChoice.getItems().add(u.getName() + " (" + u.getID() + ")");
 		}
+
+		// Reset field content
+		loginName.setText("");
+		loginPassword.setText("");
+		createUserName.setText("");
+		createUserPassword.setText("");
+		createUserType.valueProperty().set(null);
+		createUserLocation.valueProperty().set(null);
+		editUserCurrentPassword.setText("");
+		editUserNewPassword.setText("");
 	}
 
 	// Basically the constructor --> Sets variables
@@ -244,14 +150,21 @@ public class DashboardController {
 		createUserType.getItems().setAll("Parent", "Child", "Guest", "Stranger");
 		editUserType.getItems().setAll("Parent", "Child", "Guest", "Stranger");
 
+		// Set dropdown options for locations
+		for (Room r : sim.getHouse().getRooms()) {
+			createUserLocation.getItems().add(r.getName());
+			editUserLocation.getItems().add(r.getName());
+			currentUserLocationOptions.getItems().add(r.getName());
+		}
+		createUserLocation.getItems().add("Outside");
+		editUserLocation.getItems().add("Outside");
+		currentUserLocationOptions.getItems().add("Outside");
+
 		// Set dropdown options for dropdowns with users
 		updateDashboard();
 		renderLayout();
 
 	}
-    
-    private int windowLength = 30;
-    private int ROOM_SIZE = 50;
     
     @FXML public void renderLayout() throws JSONException {
 	    
@@ -356,5 +269,11 @@ public class DashboardController {
 		gc.setStroke(Color.BLACK);
 		gc.fillText(room.getName(), x + 5, y + 17);
     }
+	
+	@FXML public void endSim() {
+		
+		System.exit(0);
+	}
+	
     
 }

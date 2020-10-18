@@ -16,7 +16,7 @@
         <VBox layoutY="2.0" prefHeight="398.0" prefWidth="132.0">
           <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation:"/>
-            <ToggleButton mnemonicParsing="false" prefHeight="27.0" prefWidth="141.0" text="ON/OFF"/>
+            <ToggleButton onAction="#endSim" mnemonicParsing="false" prefHeight="27.0" prefWidth="141.0" text="ON/OFF"/>
             <Label fx:id="currentUser" text="Username (or login)"/>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Permissions:"/>
             <TextArea prefHeight="55.0" prefWidth="132.0" text="-permission 1&#10;-permission 2"/>
@@ -25,8 +25,8 @@
                 <Image url="@../Model/iOS-OS-X-Style-Pure-CSS-Loading-Spinner.jpg"/>
               </image>
             </ImageView>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Location:"/>
-            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="133.0" text="Change Location"/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Current Location:"/>
+            <ComboBox onAction="#editCurrentUserLocation" fx:id="currentUserLocationOptions"/>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Temperature:"/>
             <Label fx:id="temperatureLabel" />
             <Button onAction="#changeTemperature" mnemonicParsing="false" prefHeight="27.0" prefWidth="136.0" text="Change Temp"/>
@@ -70,7 +70,9 @@
                                         <PasswordField fx:id="createUserPassword"/>
                                         <Label text="Type:"/>
                                         <ComboBox fx:id="createUserType"/>
-                                        <Button onAction="#addUser" mnemonicParsing="false" prefHeight="27.0"
+                                        <Label text="Location:"/>
+                                        <ComboBox fx:id="createUserLocation"/>
+                                        <Button onAction="#createUser" mnemonicParsing="false" prefHeight="27.0"
                                                 prefWidth="284.0" text="Add User"/>
                                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="EDITING USER"/>
                                         <Label text="User:"/>
@@ -81,6 +83,8 @@
                                         <PasswordField fx:id="editUserNewPassword"/>
                                         <Label text="Type:"/>
                                         <ComboBox fx:id="editUserType"/>
+                                        <Label text="Location:"/>
+                                        <ComboBox fx:id="editUserLocation"/>
                                         <Button onAction="#editUser" mnemonicParsing="false" prefHeight="27.0"
                                                 prefWidth="293.0" text="Edit User"/>
                                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="DELETING USER"/>
