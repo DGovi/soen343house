@@ -18,7 +18,6 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation:"/>
             <ToggleButton mnemonicParsing="false" prefHeight="27.0" prefWidth="141.0" text="ON/OFF"/>
             <Label fx:id="currentUser" text="Username (or login)"/>
-            <Label fx:id="currentUserLocation" text="Current Location: "/>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Permissions:"/>
             <TextArea prefHeight="55.0" prefWidth="132.0" text="-permission 1&#10;-permission 2"/>
             <ImageView fitHeight="64.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
@@ -26,7 +25,7 @@
                 <Image url="@../Model/iOS-OS-X-Style-Pure-CSS-Loading-Spinner.jpg"/>
               </image>
             </ImageView>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Location:"/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Current Location:"/>
             <ComboBox onAction="#editCurrentUserLocation" fx:id="currentUserLocationOptions"/>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Temperature:"/>
             <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="136.0" text="Change Temp"/>

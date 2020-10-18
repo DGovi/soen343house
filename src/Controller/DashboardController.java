@@ -25,7 +25,6 @@ public class DashboardController {
 
 
 	@FXML private Label currentUser;
-	@FXML private Label currentUserLocation;
 	@FXML private ComboBox<String> currentUserLocationOptions;
 	@FXML private TextField loginName;
 	@FXML private PasswordField loginPassword;
@@ -94,11 +93,9 @@ public class DashboardController {
 		// reset info of logged in user
 		currentUser.setText(sim.getLoggedInUser().getName());
 		if (sim.getLoggedInUser().getLocation() == null) {
-			currentUserLocation.setText("Current Location: Outside");
 			currentUserLocationOptions.valueProperty().set("Outside");
 		}
 		else {
-			currentUserLocation.setText("Current Location: " + sim.getLoggedInUser().getLocation().getName());
 			currentUserLocationOptions.valueProperty().set(sim.getLoggedInUser().getLocation().getName());
 		}
 
