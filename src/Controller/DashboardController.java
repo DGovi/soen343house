@@ -91,13 +91,15 @@ public class DashboardController {
 
 	// Use whenever there is a change to users (logged in, names, or number of users)
 	private void updateDashboard() {
-		// reset name of logged in user
+		// reset info of logged in user
 		currentUser.setText(sim.getLoggedInUser().getName());
 		if (sim.getLoggedInUser().getLocation() == null) {
 			currentUserLocation.setText("Current Location: Outside");
+			currentUserLocationOptions.valueProperty().set("Outside");
 		}
 		else {
 			currentUserLocation.setText("Current Location: " + sim.getLoggedInUser().getLocation().getName());
+			currentUserLocationOptions.valueProperty().set(sim.getLoggedInUser().getLocation().getName());
 		}
 
 		// reset list of users
@@ -109,7 +111,6 @@ public class DashboardController {
 		}
 
 		// Reset field content
-		currentUserLocationOptions.valueProperty().set(sim.getLoggedInUser().getLocation().getName());
 		loginName.setText("");
 		loginPassword.setText("");
 		createUserName.setText("");
