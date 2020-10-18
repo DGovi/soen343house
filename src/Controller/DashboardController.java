@@ -44,221 +44,45 @@ public class DashboardController {
     GraphicsContext gc;
 
     @FXML private void editCurrentUserLocation() {
-    	if (currentUserLocationOptions.getValue() == null) return;
-    	if (currentUserLocationOptions.getValue().equals("Outside")) {
-    		sim.getLoggedInUser().setLocation(null);
-    		printToConsole("Moved user outside.");
-    		updateDashboard();
-    		return;
-		}
-    	for (Room r : sim.getHouse().getRooms()) {
-    		if (r.getName().equals(currentUserLocationOptions.getValue())) {
-    			sim.getLoggedInUser().setLocation(r);
-    			printToConsole("Successfully changed logged in users location.");
-			}
-		}
+    	printToConsole(sim.setLoggedInUserLocation(currentUserLocationOptions.getValue()));
     	updateDashboard();
 	}
 
 	@FXML private void login() {
-    	// Sequence:
-		// -Check for users with same name
-		// -If same name, check if same password
-		// -If same password, login, reset fields
-		// -If not same password, keep looking
-
-		for (User u : sim.getUsers()) {
-			if (u.getName().equals(loginName.getText())) {
-				if (u.getPassword().equals(loginPassword.getText())) {
-					if (u == sim.getLoggedInUser()) {
-						printToConsole("ERROR: Already logged into this user.");
-						loginName.setText("");
-						loginPassword.setText("");
-						return;
-					}
-					sim.setLoggedInUser(u);
-					updateDashboard();
-					printToConsole("Successfully switched users.");
-					loginName.setText("");
-					loginPassword.setText("");
-					return;
-				}
-				else {
-					printToConsole("ERROR: Found a user with the same name, but different password.");
-					printToConsole("Continuing search...");
-				}
-			}
-		}
-		printToConsole("ERROR: Did not find any user with the entered name (" + loginName.getText() + ") and password.");
-		loginName.setText("");
-		loginPassword.setText("");
+		printToConsole(sim.login(loginName.getText(), loginPassword.getText()));
+		updateDashboard();
 	}
 
 	@FXML private void createUser() {
-		UserType type = null;
-		if (createUserName.getText().length() == 0) {
-			printToConsole("ERROR: Name field must not be empty.");
-			return;
-		}
-		else if (createUserType.getValue() == null) {
-			printToConsole("ERROR: Type field must not be empty.");
-			return;
-		}
-		else if (createUserPassword.getText().length() == 0) {
-			printToConsole("ERROR: Password cannot be of length 0.");
-		}
-		else if (createUserLocation.getValue() == null) {
-			printToConsole("ERROR: Must pick an initial position");
-		}
-		else if (createUserType.getValue() == "Parent") { type = UserType.PARENT; }
-		else if (createUserType.getValue() == "Child") { type = UserType.CHILD; }
-		else if (createUserType.getValue() == "Guest") { type = UserType.GUEST; }
-		else if (createUserType.getValue() == "Stranger") { type = UserType.STRANGER; }
-		else {
-			printToConsole("ERROR: Unhandled add user case. You did something weird.");
-			return;
-		}
-
-		// Add user to simulation
-		Room startingRoom = null;
-		for (Room r : sim.getHouse().getRooms()) {
-			if (r.getName().equals(createUserLocation.getValue())) {
-				startingRoom = r;
-			}
-		}
-		sim.addUser(new User(
-				type,
-				startingRoom,
-				createUserName.getText(),
-				createUserPassword.getText()
-		));
+		printToConsole(
+				sim.addUser(
+						createUserName.getText(),
+						createUserPassword.getText(),
+						createUserType.getValue(),
+						createUserLocation.getValue()
+				)
+		);
 
 		// Update other dropdownlist
 		updateDashboard();
-
-		// Print action to console
-		printToConsole(
-				"Successfully added " +
-						createUserName.getText() +
-						" as a " +
-						(createUserType.getValue()).toLowerCase() +
-						" user."
-		);
-
-		// Reset field content
-		createUserName.setText("");
-		createUserPassword.setText("");
 	}
 
 	@FXML private void editUser() {
-		String choice = editUserChoice.getValue();
-
-		if (choice == null) {
-			printToConsole("ERROR: Did not choose a user to edit.");
-			return;
-		}
-		else if (editUserCurrentPassword.getText().length() == 0) {
-			printToConsole("ERROR: Need to enter the chosen user's password to make changes.");
-			return;
-		}
-		else if (
-				editUserType.getValue() == null &&
-				editUserNewPassword.getText().length() == 0 &&
-				editUserLocation.getValue() == null
-		) {
-			printToConsole("ERROR: Need to give changes to make.");
-			return;
-		}
-
-		User toChange = null;
-		choice = choice.substring(choice.indexOf("(")+1,choice.indexOf(")"));
-		for (User u : sim.getUsers()) {
-			if (u.getID() == Integer.parseInt(choice)) {
-				toChange = u;
-				break;
-			}
-		}
-
-		if (toChange == null) {
-			printToConsole("ERROR: Somehow did not find user chosen from dropdown list... Try again.");
-			return;
-		}
-		if (!toChange.getPassword().equals(editUserCurrentPassword.getText())) {
-			printToConsole("ERROR: Entered password is incorrect for chosen user.");
-			return;
-		}
-		if (editUserCurrentPassword.getText().equals(editUserNewPassword.getText())) {
-			printToConsole("ERROR: Entered current and new password are the same.");
-			return;
-		}
-
-		UserType type = null;
-		if (editUserType.getValue() == "Parent") { type = UserType.PARENT; }
-		else if (editUserType.getValue() == "Child") { type = UserType.CHILD; }
-		else if (editUserType.getValue() == "Guest") { type = UserType.GUEST; }
-		else if (editUserType.getValue() == "Stranger") { type = UserType.STRANGER; }
-
-		// Change user type if that had input
-		if (type != null) {
-			toChange.setType(type);
-			printToConsole("Successfully changed user type.");
-		}
-		// Change password if that had input
-		if (editUserNewPassword.getText().length() != 0) {
-			toChange.setPassword(editUserNewPassword.getText());
-			printToConsole("Successfully changed user password.");
-		}
-
-		// Change location if that had input
-		if (editUserLocation.getValue().equals("Outside")) {
-			sim.getLoggedInUser().setLocation(null);
-		}
-		else if (editUserLocation.getValue() != null) {
-			for (Room r : sim.getHouse().getRooms()) {
-				if (r.getName().equals(editUserLocation.getValue())) {
-					sim.getLoggedInUser().setLocation(r);
-					printToConsole("Successfully changed user location.");
-					break;
-				}
-			}
-		}
-
-		// Reset text input fields
-		editUserCurrentPassword.setText("");
-		editUserNewPassword.setText("");
-
-		// Update dashboard at the end of all changes
+		printToConsole(
+				sim.editUser(
+						editUserChoice.getValue(),
+						editUserCurrentPassword.getText(),
+						editUserNewPassword.getText(),
+						editUserType.getValue(),
+						editUserLocation.getValue()
+				)
+		);
 		updateDashboard();
 	}
 
 	@FXML private void deleteUser() {
-		String choice = deleteUserChoice.getValue();
-		if (choice == null) {
-			printToConsole("ERROR: Please choose a user to delete");
-			return;
-		}
-		if (sim.getLoggedInUser().getType() != UserType.PARENT) {
-			printToConsole("ERROR: Need admin/parental privileges to delete a user.");
-			return;
-		}
-
-		// extract id of choice
-		choice = choice.substring(choice.indexOf("(")+1,choice.indexOf(")"));
-		for (User u : sim.getUsers()) {
-			if (u.getID() == Integer.parseInt(choice)) {
-				if (u.getID() == sim.getLoggedInUser().getID()) {
-					printToConsole("ERROR: Cannot delete logged in user.");
-					return;
-				}
-				sim.removeUser(u);
-				updateDashboard();
-				printToConsole("Successfully removed user.");
-				return;
-			}
-		}
-
-		printToConsole("ERROR: Somehow could not find user in dropdown list...");
-		printToConsole("CHECK ANY USER UPDATING ACTIONS FOR MISSING DROPDOWN UPDATES.");
+		printToConsole(sim.removeUser(deleteUserChoice.getValue()));
+		updateDashboard();
 	}
 
 	private void printToConsole(String output) {
@@ -283,6 +107,14 @@ public class DashboardController {
 			editUserChoice.getItems().add(u.getName() + " (" + u.getID() + ")");
 			deleteUserChoice.getItems().add(u.getName() + " (" + u.getID() + ")");
 		}
+
+		// Reset field content
+		loginName.setText("");
+		loginPassword.setText("");
+		createUserName.setText("");
+		createUserPassword.setText("");
+		editUserCurrentPassword.setText("");
+		editUserNewPassword.setText("");
 	}
 
 	// Basically the constructor --> Sets variables
