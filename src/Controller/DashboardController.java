@@ -339,5 +339,11 @@ public class DashboardController {
 		gc.setStroke(Color.BLACK);
 		gc.fillText(room.getName(), x + 5, y + 17);
     }
+	
+	@FXML public void endSim() {
+		
+		System.exit(0);
+	}
+	
     
 }

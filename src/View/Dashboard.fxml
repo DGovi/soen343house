@@ -16,7 +16,7 @@
         <VBox layoutY="2.0" prefHeight="398.0" prefWidth="132.0">
           <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation:"/>
-            <ToggleButton mnemonicParsing="false" prefHeight="27.0" prefWidth="141.0" text="ON/OFF"/>
+            <ToggleButton onAction="#endSim" mnemonicParsing="false" prefHeight="27.0" prefWidth="141.0" text="ON/OFF"/>
             <Label fx:id="currentUser" text="Username (or login)"/>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Permissions:"/>
             <TextArea prefHeight="55.0" prefWidth="132.0" text="-permission 1&#10;-permission 2"/>
