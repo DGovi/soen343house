@@ -109,10 +109,13 @@ public class DashboardController {
 		}
 
 		// Reset field content
+		currentUserLocationOptions.valueProperty().set(sim.getLoggedInUser().getLocation().getName());
 		loginName.setText("");
 		loginPassword.setText("");
 		createUserName.setText("");
 		createUserPassword.setText("");
+		createUserType.valueProperty().set(null);
+		createUserLocation.valueProperty().set(null);
 		editUserCurrentPassword.setText("");
 		editUserNewPassword.setText("");
 	}
