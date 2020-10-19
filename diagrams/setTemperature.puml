@@ -1,0 +1,8 @@
+@startuml
+actor Simulation_User
+
+Simulation_User -> DashboardDriver: Trigger UI event
+DashboardDriver -> DashboardController: changeTemperature()
+DashboardController -> Simulation: setTemperature(temperature)
+DashboardDriver <-- Simulation: new_temperature
+@enduml
