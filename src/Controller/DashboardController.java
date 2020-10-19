@@ -8,6 +8,7 @@ import java.util.Stack;
 import java.util.Date;
 import java.time.LocalTime;
 
+import View.CountriesWindow;
 import View.InputWindow;
 import org.json.JSONException;
 
@@ -42,8 +43,8 @@ public class DashboardController {
 	@FXML private TextArea console;
     @FXML private Canvas render;
     GraphicsContext gc;
-  
-  @FXML private void changeTemperature() {
+
+    @FXML private void changeTemperature() {
 		String newTemperature = InputWindow.display("Change Temperature", "New Temperature");
 		try {
 			float newTemperatureInt = Float.parseFloat(newTemperature);
@@ -54,6 +55,11 @@ public class DashboardController {
 			printToConsole("ERROR: Inputted temperature is not a valid float.");
 		}
 	}
+
+	@FXML private void changeHouseLocation() {
+		System.out.print(CountriesWindow.display("Choose Country", "Choose Country"));
+	}
+
 
   @FXML private void editCurrentUserLocation() {
     	printToConsole(sim.setLoggedInUserLocation(currentUserLocationOptions.getValue()));

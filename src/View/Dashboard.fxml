@@ -32,6 +32,7 @@
             <Button onAction="#changeTemperature" mnemonicParsing="false" prefHeight="27.0" prefWidth="136.0" text="Change Temp"/>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date:"/>
             <DatePicker promptText="Edit date"/>
+            <Button onAction="#changeHouseLocation" mnemonicParsing="false" prefHeight="27.0" prefWidth="136.0" text="Change House Location"/>
           </children>
         </VBox>
       </children>
