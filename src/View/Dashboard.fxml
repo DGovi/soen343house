@@ -33,7 +33,7 @@
             <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="136.0" text="Change Temp" />
                   <HBox prefHeight="18.0" prefWidth="132.0">
                      <children>
-                        <Label fx:id="dateLabel" prefHeight="17.0" prefWidth="133.0" text="Date is:" />
+                        <Label fx:id="dateLabel" prefHeight="17.0" prefWidth="251.0" text="Date is:" />
                      </children>
                   </HBox>
             <DatePicker fx:id="datePicker" onAction="#displayDate" prefHeight="27.0" prefWidth="240.0" promptText="Edit date" />
