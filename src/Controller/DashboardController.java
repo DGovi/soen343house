@@ -1,5 +1,7 @@
 package Controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,6 +11,7 @@ import java.util.Date;
 import java.time.LocalTime;
 
 import View.InputWindow;
+import javafx.stage.FileChooser;
 import org.json.JSONException;
 
 import Model.*;
@@ -23,6 +26,7 @@ public class DashboardController {
 	private Simulation sim;
 	private int windowLength = 30;
 	private int ROOM_SIZE = 50;
+	final FileChooser fileChooser = new FileChooser();
 
 	@FXML private Label temperatureLabel;
 	@FXML private Label currentUser;
@@ -41,9 +45,10 @@ public class DashboardController {
 	@FXML private ComboBox<String> deleteUserChoice;
 	@FXML private TextArea console;
     @FXML private Canvas render;
+	@FXML private ToggleButton filePicker;
     GraphicsContext gc;
-  
-  @FXML private void changeTemperature() {
+
+	@FXML private void changeTemperature() {
 		String newTemperature = InputWindow.display("Change Temperature", "New Temperature");
 		try {
 			float newTemperatureInt = Float.parseFloat(newTemperature);
@@ -97,6 +102,25 @@ public class DashboardController {
 		updateDashboard();
 	}
 
+	@FXML private void loadHouseLayout() {
+		javafx.stage.Window stage = filePicker.getScene().getWindow();
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Open House layout File");
+
+		File file = fileChooser.showOpenDialog(stage);
+		if (file == null) {
+			printToConsole("ERROR LOADING FILE");
+			return;
+		}
+
+		try {
+			System.out.println(file.toPath());
+			afterLoadInitialize(file);
+		} catch (JSONException | IOException e) {
+			printToConsole("ERROR LOADING FILE");
+		}
+	}
+
 	private void printToConsole(String output) {
 		console.appendText(output + "\n");
 	}
@@ -137,12 +161,15 @@ public class DashboardController {
 	// Basically the constructor --> Sets variables
 	public void initialize() throws JSONException {
 
+	}
+
+	public void afterLoadInitialize(File file) throws JSONException, IOException {
 		// Set simulation
 		sim = new Simulation(
 				new Date(),
 				java.sql.Time.valueOf(LocalTime.now()),
 				25,
-				"houseinput.json"
+				file
 		);
 		currentUser.setText(sim.getLoggedInUser().getName());
 
@@ -162,13 +189,12 @@ public class DashboardController {
 
 		// Set dropdown options for dropdowns with users
 		updateDashboard();
-		renderLayout();
-
+		renderLayout(file);
 	}
     
-    @FXML public void renderLayout() throws JSONException {
+    @FXML public void renderLayout(File layoutFile) throws JSONException, IOException {
 	    
-	    Model.House h = new Model.House("houseinput.json");
+	    Model.House h = new Model.House(layoutFile);
 
 	    gc = render.getGraphicsContext2D();
 	    

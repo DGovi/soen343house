@@ -1,5 +1,9 @@
 package Model;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.*;
 import java.io.InputStream;
 
@@ -40,8 +44,6 @@ public class Room {
         this.lights = lights;
         this.doors= doors;
     }
-    
-    
 
     public ArrayList<String> getDoors() {
 		return doors;
@@ -71,14 +73,10 @@ public class Room {
 		this.lights = lights;
 	}
 
-    public static ArrayList<Room> roomFromJSON(String srcJSONPath) throws org.json.JSONException {
-        InputStream is = Room.class.getResourceAsStream(srcJSONPath);
+    public static ArrayList<Room> roomFromJSON(File srcJSONPath) throws org.json.JSONException, IOException {
+        String marshalled = Files.readString(srcJSONPath.toPath(), StandardCharsets.US_ASCII);
 
-        if (is == null) {
-            throw new NullPointerException("Can't open JSON file: " + srcJSONPath);
-        }
-
-        JSONTokener tokener = new JSONTokener(is);
+        JSONTokener tokener = new JSONTokener(marshalled);
         JSONObject object = new JSONObject(tokener);
 
         Iterator<String> keys = object.keys();

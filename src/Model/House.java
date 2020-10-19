@@ -2,6 +2,8 @@ package Model;
 
 import org.json.JSONException;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class House {
@@ -11,7 +13,7 @@ public class House {
 		return rooms;
 	}
 
-	public House(String srcJSON) throws JSONException {
+	public House(File srcJSON) throws JSONException, IOException {
         rooms = Room.roomFromJSON(srcJSON);
     }
 }

@@ -1,6 +1,9 @@
 package Model;
 
 import org.json.JSONException;
+
+import java.io.File;
+import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,7 +17,7 @@ public class Simulation{
 	private ArrayList<User> users;
 	private House house;
 
-	public Simulation(Date date, Time time, float temperature, String houseInput) throws JSONException {
+	public Simulation(Date date, Time time, float temperature, File houseInput) throws JSONException, IOException {
 		this.house = new House(houseInput);
 		this.date = date;
 		this.time = time;
