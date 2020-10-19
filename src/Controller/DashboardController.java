@@ -189,12 +189,10 @@ public class DashboardController {
 
 		// Set dropdown options for dropdowns with users
 		updateDashboard();
-		renderLayout(file);
+		renderLayout(sim.getHouse());
 	}
     
-    @FXML public void renderLayout(File layoutFile) throws JSONException, IOException {
-	    
-	    Model.House h = new Model.House(layoutFile);
+    @FXML public void renderLayout(Model.House h) throws JSONException, IOException {
 
 	    gc = render.getGraphicsContext2D();
 	    
