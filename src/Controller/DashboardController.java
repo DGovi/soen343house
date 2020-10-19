@@ -181,7 +181,7 @@ public class DashboardController {
 	}
 
 	/**
-	 * User is deleted from teh simulation and can no longer use
+	 * User is deleted from the simulation and can no longer use
 	 * the simulation.
 	 */
 	@FXML private void deleteUser() {
@@ -336,7 +336,7 @@ public class DashboardController {
     }
 
 	/**
-	 * On a given house layout, draw the windoes at specified location
+	 * On a given house layout, draw the windows at specified location
 	 * @param x position on the x coordinate of window
 	 * @param y position of y coordinate of window
 	 * @param size length of a window
@@ -401,28 +401,31 @@ public class DashboardController {
 	 * displays the given date from the actionEvent
 	 * onto the simulation
 	 * @param actionEvent event that triggers this method
+	 * @return date as a String
 	 */
 	//shows entered date in label box
-	public void displayDate(javafx.event.ActionEvent actionEvent) {
+	public String displayDate(javafx.event.ActionEvent actionEvent) {
 		LocalDate chosenDate = datePicker.getValue();
 		if(chosenDate == null){
 			dateLabel.setText("The Date is: ");
 		}
 		else {
 			dateLabel.setText("The Date is: " + chosenDate.toString());
-			updateDashboard();
 		}
+		return chosenDate.toString();
 	}
 
 	/**
 	 * updates the time displayed on the simulation
 	 * @param actionEvent event that triggers the method
+	 * @return time as a string
 	 */
 	//shows the time
-	public void updateTime(ActionEvent actionEvent) {
+	public String updateTime(ActionEvent actionEvent) {
 		DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss a");
 		Date date = new Date();
 		String time=dateFormat.format(date);
 		timeLabel.setText("Time is: " + time);
+		return time;
 	}
 }
