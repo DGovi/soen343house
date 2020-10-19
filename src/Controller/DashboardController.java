@@ -45,6 +45,9 @@ public class DashboardController {
     @FXML private Label timeLabel;
     GraphicsContext gc;
 
+	/**
+	 * Allows a user to log in if not already logged in.
+	 */
 	@FXML private void login() {
 		for (User u : sim.getUsers()) {
 			if (u.getName().equals(loginName.getText())) {
@@ -67,6 +70,9 @@ public class DashboardController {
 		printToConsole("ERROR: Did not find any user with the entered name:" + loginName.getText() + ".");
 	}
 
+	/**
+	 * Adds a user to the simulation and adds a user type to allow privileges
+	 */
 	@FXML private void addUser() {
 		UserType type = null;
 		if (createUserName.getText().length() == 0) {
@@ -113,6 +119,10 @@ public class DashboardController {
 		createUserName.setText("");
 	}
 
+	/**
+	 * Edit the information,such as user password, or priveleges,
+	 * of a specific user given that they are logged in.
+	 */
 	@FXML private void editUser() {
 		String choice = editUserChoice.getValue();
 
@@ -170,6 +180,10 @@ public class DashboardController {
 		editUserNewPassword.setText("");
 	}
 
+	/**
+	 * User is deleted from teh simulation and can no longer use
+	 * the simulation.
+	 */
 	@FXML private void deleteUser() {
 		String choice = deleteUserChoice.getValue();
 		if (choice == null) {
@@ -201,6 +215,9 @@ public class DashboardController {
 		return;
 	}
 
+	/**
+	 * @param output prints on the console of the simulation the output
+	 */
 	private void printToConsole(String output) {
 		console.appendText(output + "\n");
 	}
@@ -219,6 +236,10 @@ public class DashboardController {
 		}
 	}
 
+	/**
+	 * starts up the simulation
+	 * @exception  JSONException if JSON file not found
+	 */
 	// Basically the constructor --> Sets variables
 	public void initialize() throws JSONException {
 
@@ -243,8 +264,13 @@ public class DashboardController {
     
     private int windowLength = 30;
     private int ROOM_SIZE = 50;
-    
-    @FXML public void renderLayout() throws JSONException {
+
+	/**
+	 * Takes a JSON file and attempts to render a house layout
+	 * for the simulation
+	 * @exception JSONException JSON file not found
+	 */
+	@FXML public void renderLayout() throws JSONException {
 	    
 	    Model.House h = new Model.House("houseinput.json");
 
@@ -308,7 +334,14 @@ public class DashboardController {
 			}
 		}
     }
-	
+
+	/**
+	 * On a given house layout, draw the windoes at specified location
+	 * @param x position on the x coordinate of window
+	 * @param y position of y coordinate of window
+	 * @param size length of a window
+	 * @param countWindows number of windows on  a house layout
+	 */
 	@FXML public void drawWindows(int x, int y, int size, int countWindows) {
     	for(int i = 0; i < countWindows; i++) {
 			gc.setStroke(Color.LIGHTBLUE);
@@ -321,7 +354,16 @@ public class DashboardController {
     	gc.setStroke(Color.BLACK);
     	gc.setFill(Color.BLACK);
     }
-    
+
+	/**
+	 * on the house layout in the simulation, draw the available lights
+	 * in the room
+	 *
+	 * @param room which room the lights are in
+	 * @param x position on the x coordinate of the lights
+	 * @param y position of the y coordinate of the lights
+	 * @param size size of the lights
+	 */
     @FXML public void drawLights(Room room, int x, int y, int size) {
     	for(int i = 0; i < room.getLights(); i++) {
 			gc.setFill(Color.GOLD);
@@ -333,6 +375,13 @@ public class DashboardController {
     	gc.setFill(Color.BLACK);
     }
 
+	/**
+	 * Draws the room of the house layout just to be sure
+	 * @param room the room of a house layout
+	 * @param x coordinate of the ex position of the room
+	 * @param y coordinate of the y position of the room
+	 * @param sideDoor true if the door is on the side (vertical on the house layout), false if not (horizontal)
+	 */
 	@FXML public void drawRoom(Room room, int x, int y, boolean sideDoor) {
     	int size = 50 * room.getDoors().size();
 		gc.strokeRoundRect(x, y, size, size, 0, 0);
@@ -348,7 +397,12 @@ public class DashboardController {
 		gc.fillText(room.getName(), x + 5, y + 17);
     }
 
-    //shows entered date in label box
+	/**
+	 * displays the given date from the actionEvent
+	 * onto the simulation
+	 * @param actionEvent event that triggers this method
+	 */
+	//shows entered date in label box
 	public void displayDate(javafx.event.ActionEvent actionEvent) {
 		LocalDate chosenDate = datePicker.getValue();
 		if(chosenDate == null){
@@ -360,6 +414,10 @@ public class DashboardController {
 		}
 	}
 
+	/**
+	 * updates the time displayed on the simulation
+	 * @param actionEvent event that triggers the method
+	 */
 	//shows the time
 	public void updateTime(ActionEvent actionEvent) {
 		DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss a");
