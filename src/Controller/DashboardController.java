@@ -25,6 +25,7 @@ public class DashboardController {
 	private int windowLength = 30;
 	private int ROOM_SIZE = 50;
 
+	@FXML private Label houseLocationLabel;
 	@FXML private Label temperatureLabel;
 	@FXML private Label currentUser;
 	@FXML private ComboBox<String> currentUserLocationOptions;
@@ -111,7 +112,10 @@ public class DashboardController {
 
 	// Use whenever there is a change to users (logged in, names, or number of users)
 	private void updateDashboard() {
-    // reset simulation temperature
+    	// reset simulation house location
+		houseLocationLabel.setText(sim.getHouseLocation());
+
+    	// reset simulation temperature
 		temperatureLabel.setText(Float.toString(sim.getTemperature()));
     
 		// reset info of logged in user

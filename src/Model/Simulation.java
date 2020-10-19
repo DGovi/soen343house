@@ -303,6 +303,10 @@ public class Simulation{
 		return "Set house location to " + this.house.getLocation() + "!";
 	}
 
+	public String getHouseLocation() {
+		return this.house.getLocation();
+	}
+
 	public ArrayList<User> getUsers() { return users; }
 
 	public House getHouse() { return house; }
