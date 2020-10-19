@@ -18,4 +18,12 @@ public class House {
         this.rooms = Room.roomFromJSON(srcJSON);
         this.location = DEFAULT_LOCATION;
     }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 }

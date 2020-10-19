@@ -298,6 +298,11 @@ public class Simulation{
 		return "Successfully made requested changes to user.";
 	}
 
+	public String setHouseLocation(String location) {
+		this.house.setLocation(location);
+		return "Set house location to " + this.house.getLocation() + "!";
+	}
+
 	public ArrayList<User> getUsers() { return users; }
 
 	public House getHouse() { return house; }

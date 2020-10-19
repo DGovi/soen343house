@@ -57,7 +57,9 @@ public class DashboardController {
 	}
 
 	@FXML private void changeHouseLocation() {
-		System.out.print(CountriesWindow.display("Choose Country", "Choose Country"));
+		String newCountry = CountriesWindow.display("Choose Country", "Choose Country");
+		printToConsole(sim.setHouseLocation(newCountry));
+		updateDashboard();
 	}
 
 
