@@ -183,8 +183,14 @@ public class Simulation{
 		return temperature;
 	}
 
-	public void setTemperature(float temperature) {
-		this.temperature = temperature;
+	public String setTemperature(String temperatureString) {
+		try {
+			float newTemperature = Float.parseFloat(temperatureString);
+			this.temperature = newTemperature;
+			return ("Setting simulation temperature to " + this.temperature + "!");
+		} catch (Exception e) {
+			return ("ERROR: Inputted temperature is not a valid float.");
+		}
 	}
 
 	public User getLoggedInUser() {

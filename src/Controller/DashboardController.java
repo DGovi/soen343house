@@ -44,15 +44,9 @@ public class DashboardController {
     GraphicsContext gc;
   
   @FXML private void changeTemperature() {
-		String newTemperature = InputWindow.display("Change Temperature", "New Temperature");
-		try {
-			float newTemperatureInt = Float.parseFloat(newTemperature);
-			sim.setTemperature(newTemperatureInt);
-			updateDashboard();
-			printToConsole("Setting simulation temperature to " + newTemperature + "!");
-		} catch (Exception e) {
-			printToConsole("ERROR: Inputted temperature is not a valid float.");
-		}
+		String newTemperatureString = InputWindow.display("Change Temperature", "New Temperature");
+	  	printToConsole(sim.setTemperature(newTemperatureString));
+	  	updateDashboard();
 	}
 
   @FXML private void editCurrentUserLocation() {
