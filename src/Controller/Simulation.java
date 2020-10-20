@@ -64,6 +64,14 @@ public class Simulation{
 		users.add(user);
 	}
 
+	/**
+	 * adds a user to the simulation given information as strings
+	 * @param username name as string
+	 * @param password password as string
+	 * @param type UserType as string
+	 * @param location room name as string
+	 * @return message String conveying what action occured during the function
+	 */
 	public String addUser(String username, String password, String type, String location) {
 		UserType userType = null;
 		if (username.length() == 0) {
@@ -109,7 +117,7 @@ public class Simulation{
 		return "Successfully added " + username + " as a " + type.toLowerCase() + " user.";
 	}
 
-  /**
+  	/**
 	 * removes user from an arraylist
 	 * @param user an existing user object
 	 */
@@ -119,6 +127,11 @@ public class Simulation{
 		users.remove(user);
 	}
 
+	/**
+	 * Removes user given a string in the following form: "Name (ID)"
+	 * @param choice String of form "Name (ID)"
+	 * @return message String saying what action was taken given the choice.
+	 */
 	public String removeUser(String choice) {
 
 		if (choice == null) {
@@ -242,6 +255,11 @@ public class Simulation{
 		this.loggedInUser = loggedInUser;
 	}
 
+	/**
+	 * Sets the logged in users location based on the location name as a string
+	 * @param location String: room the user wants to switch to as a string
+	 * @return String: message stating what occured (success or error)
+	 */
 	public String setLoggedInUserLocation(String location) {
 		if (location == null) return "ERROR: Need to pick a location.";
 		if (location.equals("Outside")) {
@@ -259,6 +277,12 @@ public class Simulation{
 		return "ERROR: Could not find any room matchin the input.";
 	}
 
+	/**
+	 * Set the logged in user given their name and password
+	 * @param username String: name of the user that wishes to log in
+	 * @param password String: password of the user that wishes to log in
+	 * @return String: message stating whether it was a success or not and why
+	 */
 	public String login(String username, String password) {
 		for (User u : users) {
 			if (u.getName().equals(username)) {
@@ -279,6 +303,15 @@ public class Simulation{
 		return "ERROR: Could not find any user with the provided username.";
 	}
 
+	/**
+	 * Edit the user of given username and currentPassword
+	 * @param username String: string in the form "Name (ID)"
+	 * @param currentPassword String password of the user who needs to be changed
+	 * @param newPassword String password to change to (can be empty/null)
+	 * @param type String UserType the user needs to change to as a string (can be empty/null)
+	 * @param location String name of room user wants to change to as a string (can be empty/null)
+	 * @return String: message stating successful completion or error and why
+	 */
 	public String editUser(String username, String currentPassword, String newPassword, String type, String location) {
 
 		if (username == null) {
@@ -345,11 +378,20 @@ public class Simulation{
 		return "Successfully made requested changes to user.";
 	}
 
+	/**
+	 * Set the country of the house location
+	 * @param location String: country name as a string
+	 * @return error message or message of success
+	 */
 	public String setHouseLocation(String location) {
 		this.house.setLocation(location);
 		return "Set house location to " + this.house.getLocation() + "!";
 	}
 
+	/**
+	 * Gets the name of the country the house is in
+	 * @return String country location of the house
+	 */
 	public String getHouseLocation() {
 		return this.house.getLocation();
 	}
@@ -365,11 +407,19 @@ public class Simulation{
 	 * @return a House object
 	 */
 	public House getHouse() { return house; }
-	
+
+	/**
+	 * Get the current state of the simulation (running or not) as a boolean
+	 * @return bool: true if running, false otherwise
+	 */
 	public boolean getRunning() {
 		return this.running;
 	}
-	
+
+	/**
+	 * Set the running state of the simulation
+	 * @param running boolean true if running, false otherwise
+	 */
 	public void setRunning(boolean running) {
 		this.running = running;
 	}
