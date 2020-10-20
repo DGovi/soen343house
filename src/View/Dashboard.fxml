@@ -19,7 +19,7 @@
           <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation:" />
             <ToggleButton mnemonicParsing="false" onAction="#endSim" prefHeight="27.0" prefWidth="256.0" text="ON/OFF" />
-            <ToggleButton fx:id="filePicker" onAction="#loadHouseLayout" mnemonicParsing="false" prefHeight="27.0" prefWidth="141.0" text="Upload Layout"/>
+            <ToggleButton fx:id="filePicker" mnemonicParsing="false" onAction="#loadHouseLayout" prefHeight="27.0" prefWidth="243.0" text="Upload Layout" />
             <Label fx:id="currentUser" text="Username (or login)" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Permissions:" />
             <TextArea prefHeight="55.0" prefWidth="132.0" text="-permission 1&#10;-permission 2" />
@@ -45,7 +45,7 @@
             </HBox>
             <DatePicker fx:id="datePicker" onAction="#displayDate" prefHeight="27.0" prefWidth="240.0" promptText="Edit date" />
                   <Label fx:id="timeLabel" prefHeight="26.0" prefWidth="241.0" text="Time is not  set" />
-                  <Button fx:id="updateTimeButton" mnemonicParsing="false" onAction="#updateTime" prefHeight="27.0" prefWidth="142.0" text="Show Current Time" />
+                  <Button fx:id="updateTimeButton" mnemonicParsing="false" onAction="#updateTime" prefHeight="27.0" prefWidth="241.0" text="Show Current Time" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" />
           </children>
         </VBox>
@@ -112,12 +112,14 @@
                             <Tab text="SHC">
                               <content>
                                 <VBox prefHeight="200.0" prefWidth="100.0">
-                                  <Label text="Room:"/>
-                                  <ComboBox onAction="#shcChangeRooms" fx:id="shcRoomSelect"/>
-                                  <Label text="Window:"/>
-                                  <ComboBox onAction="#shcChangeWindows" fx:id="shcWindowSelect"/>
-                                  <Button onAction="#shcChangeOpen" fx:id="shcWindowOpenState"/>
-                                  <Button onAction="#shcChangeBlocked" fx:id="shcWindowBlockedState"/>
+                                   <children>
+                                     <Label text="Room:" />
+                                     <ComboBox fx:id="shcRoomSelect" onAction="#shcChangeRooms" />
+                                     <Label text="Window:" />
+                                     <ComboBox fx:id="shcWindowSelect" onAction="#shcChangeWindows" />
+                                     <Button fx:id="shcWindowOpenState" onAction="#shcChangeOpen" />
+                                     <Button fx:id="shcWindowBlockedState" onAction="#shcChangeBlocked" />
+                                   </children>
                                 </VBox>
                               </content>
                             </Tab>
