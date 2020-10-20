@@ -6,8 +6,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * This creates the Dashboard window
+ * from the Dashboard.fxml file.
+ */
 public class DashboardDriver extends Application {
-
     Stage window;
     public static void main(String args[]) {launch(args);}
 
