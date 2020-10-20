@@ -269,7 +269,7 @@ public class Simulation{
 		for (Room r : house.getRooms()) {
 			if (r.getName().equals(location)) {
 				loggedInUser.setLocation(r);
-				return "Successfully changed logged in users location.";
+				return "Successfully changed logged in user's location.";
 			}
 		}
 
