@@ -38,6 +38,8 @@ public class DashboardController {
     GraphicsContext gc;
 
 	@FXML private void login() {
+		if(!sim.getRunning())
+			return;
 		for (User u : sim.getUsers()) {
 			if (u.getName().equals(loginName.getText())) {
 				if (u.getPassword().equals(loginPassword.getText())) {
@@ -60,6 +62,8 @@ public class DashboardController {
 	}
 
 	@FXML private void addUser() {
+		if(!sim.getRunning())
+			return;
 		UserType type = null;
 		if (createUserName.getText().length() == 0) {
 			printToConsole("ERROR: Name field must not be empty.");
@@ -106,6 +110,8 @@ public class DashboardController {
 	}
 
 	@FXML private void editUser() {
+		if(!sim.getRunning())
+			return;
 		String choice = editUserChoice.getValue();
 
 		if (choice == null) {
@@ -163,6 +169,8 @@ public class DashboardController {
 	}
 
 	@FXML private void deleteUser() {
+		if(!sim.getRunning())
+			return;
 		String choice = deleteUserChoice.getValue();
 		if (choice == null) {
 			printToConsole("ERROR: Please choose a user to delete");
@@ -194,11 +202,15 @@ public class DashboardController {
 	}
 
 	private void printToConsole(String output) {
+		if(!sim.getRunning())
+			return;
 		console.appendText(output + "\n");
 	}
 
 	// Use whenever there is a change to users (logged in, names, or number of users)
 	private void updateDashboard() {
+		if(!sim.getRunning())
+			return;
 		// reset name of logged in user
 		currentUser.setText(sim.getLoggedInUser().getName());
 
@@ -219,7 +231,7 @@ public class DashboardController {
 				new Date(),
 				java.sql.Time.valueOf(LocalTime.now()),
 				25,
-				"houseinput.json"
+				"houseinput.json", true
 		);
 		currentUser.setText(sim.getLoggedInUser().getName());
 
@@ -237,6 +249,8 @@ public class DashboardController {
     private int ROOM_SIZE = 50;
     
     @FXML public void renderLayout() throws JSONException {
+		if(!sim.getRunning())
+			return;
 	    
 	    Model.House h = new Model.House("houseinput.json");
 
@@ -302,6 +316,8 @@ public class DashboardController {
     }
 	
 	@FXML public void drawWindows(int x, int y, int size, int countWindows) {
+		if(!sim.getRunning())
+			return;
     	for(int i = 0; i < countWindows; i++) {
 			gc.setStroke(Color.LIGHTBLUE);
 			gc.setLineWidth(3);
@@ -315,6 +331,8 @@ public class DashboardController {
     }
     
     @FXML public void drawLights(Room room, int x, int y, int size) {
+		if(!sim.getRunning())
+			return;
     	for(int i = 0; i < room.getLights(); i++) {
 			gc.setFill(Color.GOLD);
 			int offset = (size - 35);
@@ -326,6 +344,8 @@ public class DashboardController {
     }
 
 	@FXML public void drawRoom(Room room, int x, int y, boolean sideDoor) {
+		if(!sim.getRunning())
+			return;
     	int size = 50 * room.getDoors().size();
 		gc.strokeRoundRect(x, y, size, size, 0, 0);
 		drawLights(room, x, y, size);
@@ -341,8 +361,16 @@ public class DashboardController {
     }
 	
 	@FXML public void endSim() {
-		
-		System.exit(0);
+		if(this.sim.getRunning()) {
+			console.setVisible(false);
+			this.sim.setRunning(false);
+		}
+		else {
+			this.sim.setRunning(true);
+			console.setVisible(true);
+			printToConsole("Simulation running");
+		}
+			
 	}
 	
     

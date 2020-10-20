@@ -13,8 +13,9 @@ public class Simulation{
 	private User loggedInUser;
 	private ArrayList<User> users;
 	private House house;
+	private boolean running;
 
-	public Simulation(Date date, Time time, float temperature, String houseInput) throws JSONException {
+	public Simulation(Date date, Time time, float temperature, String houseInput, boolean running) throws JSONException {
 		this.house = new House(houseInput);
 		this.date = date;
 		this.time = time;
@@ -22,6 +23,7 @@ public class Simulation{
 		this.loggedInUser = new User(UserType.PARENT, house.rooms.get(0), "Admin", "123456");
 		this.users = new ArrayList<User>();
 		addUser(this.loggedInUser);
+		this.running = true;
 	}
 	
 	// Test main method
@@ -126,6 +128,14 @@ public class Simulation{
 	public ArrayList<User> getUsers() { return users; }
 
 	public House getHouse() { return house; }
+	
+	public boolean getRunning() {
+		return this.running;
+	}
+	
+	public void setRunning(boolean running) {
+		this.running = running;
+	}
 
 	@Override
 	public String toString() {
