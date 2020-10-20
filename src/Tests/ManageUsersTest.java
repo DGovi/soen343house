@@ -1,6 +1,9 @@
 package Tests;
 
+import Model.Room;
 import Model.Simulation;
+import Model.User;
+import Model.UserType;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 
@@ -32,11 +35,16 @@ class ManageUsersTest {
 
         Simulation simulation = new Simulation(new Date(), java.sql.Time.valueOf(LocalTime.now()), 25, "houseinput.json");
         simulation.addUser(username, password, type, password);
-        assertEquals( "Successfully removed user.", simulation.removeUser(username + " (3)")); // fix later
+
+        User testUser = simulation.getUsers().get(1);
+        assertEquals("Successfully removed user.", simulation.removeUser(testUser.getName() + "(" + testUser.getID() + ")"));
     }
 
     @Test
-    void setUserLocation() {
+    void setUserLocation() throws JSONException {
+        Simulation simulation = new Simulation(new Date(), java.sql.Time.valueOf(LocalTime.now()), 25, "houseinput.json");
+        User testUser = simulation.getUsers().get(0);
+        assertEquals("Successfully made requested changes to user.", simulation.editUser(testUser.getName() +"(" + testUser.getID() + ")", testUser.getPassword(),"", "", "Kitchen"));
 
     }
 

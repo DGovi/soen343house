@@ -255,9 +255,9 @@ public class Simulation{
 		}
 
 		User toChange = null;
-		username = username.substring(username.indexOf("(")+1,username.indexOf(")"));
+		int userID = Integer.parseInt(username.substring(username.indexOf("(")+1,username.indexOf(")")));
 		for (User u : users) {
-			if (u.getID() == Integer.parseInt(username)) {
+			if (u.getID() == userID) {
 				toChange = u;
 				break;
 			}
