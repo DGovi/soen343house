@@ -37,6 +37,15 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Location:" />
             <Label fx:id="houseLocationLabel" />
             <Button mnemonicParsing="false" onAction="#changeHouseLocation" prefHeight="27.0" prefWidth="282.0" text="Change House Location" />
+            <HBox prefHeight="18.0" prefWidth="132.0">
+               <children>
+                  <Label fx:id="dateLabel" prefHeight="17.0" prefWidth="251.0" text="Date is:" />
+               </children>
+            </HBox>
+            <DatePicker fx:id="datePicker" onAction="#displayDate" prefHeight="27.0" prefWidth="240.0" promptText="Edit date" />
+                  <Label fx:id="timeLabel" prefHeight="26.0" prefWidth="241.0" text="Time is not  set" />
+                  <Button fx:id="updateTimeButton" mnemonicParsing="false" onAction="#updateTime" prefHeight="27.0" prefWidth="142.0" text="Show Current Time" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" />
           </children>
         </VBox>
       </children>
