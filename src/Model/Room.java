@@ -117,7 +117,7 @@ public class Room {
      * @exception org.json.JSONException if the file is not found
      */
     public static ArrayList<Room> roomFromJSON(File srcJSONPath) throws org.json.JSONException, IOException {
-        String marshalled = Files.readString(srcJSONPath.toPath(), StandardCharsets.US_ASCII);
+        String marshalled = new String(Files.readAllBytes(srcJSONPath.toPath()));
 
 
         JSONTokener tokener = new JSONTokener(marshalled);
