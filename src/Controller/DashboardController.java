@@ -18,15 +18,19 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.layout.VBox;
 
 public class DashboardController {
 	private Simulation sim;
 	private int windowLength = 30;
 	private int ROOM_SIZE = 50;
 
+	// Left pane
 	@FXML private Label temperatureLabel;
 	@FXML private Label currentUser;
 	@FXML private ComboBox<String> currentUserLocationOptions;
+
+	// SHS
 	@FXML private TextField loginName;
 	@FXML private PasswordField loginPassword;
 	@FXML private TextField createUserName;
@@ -39,11 +43,18 @@ public class DashboardController {
 	@FXML private ComboBox<String> editUserType;
 	@FXML private ComboBox<String> editUserLocation;
 	@FXML private ComboBox<String> deleteUserChoice;
+
+	// SHC
+	@FXML private ComboBox<String> shcRoomSelect;
+	@FXML private ComboBox<String> shcWindowSelect;
+	@FXML private Button shcWindowOpenState;
+	@FXML private Button shcWindowBlockedState;
+
 	@FXML private TextArea console;
     @FXML private Canvas render;
     GraphicsContext gc;
   
-  @FXML private void changeTemperature() {
+  	@FXML private void changeTemperature() {
 		String newTemperature = InputWindow.display("Change Temperature", "New Temperature");
 		try {
 			float newTemperatureInt = Float.parseFloat(newTemperature);
@@ -55,7 +66,7 @@ public class DashboardController {
 		}
 	}
 
-  @FXML private void editCurrentUserLocation() {
+  	@FXML private void editCurrentUserLocation() {
     	printToConsole(sim.setLoggedInUserLocation(currentUserLocationOptions.getValue()));
     	updateDashboard();
 	}
@@ -95,6 +106,86 @@ public class DashboardController {
 	@FXML private void deleteUser() {
 		printToConsole(sim.removeUser(deleteUserChoice.getValue()));
 		updateDashboard();
+	}
+
+	@FXML private void shcChangeRooms() {
+		// SHC stuff
+		if (shcRoomSelect.getValue() != null) {
+			for (Room r : sim.getHouse().getRooms()) {
+				if (shcRoomSelect.getValue().equals(r.getName())) {
+					shcWindowSelect.getItems().clear();
+					for (int i = 1; i <= r.getWindows().size(); i++) {
+						shcWindowSelect.getItems().add("Window " + i);
+					}
+					shcWindowOpenState.setText("Pick a window");
+					shcWindowBlockedState.setText("Pick a window");
+					break;
+				}
+			}
+		}
+		printToConsole("Now pick a window to view the state of.");
+	}
+
+	@FXML private void shcChangeWindows() {
+  		if (shcWindowSelect.getValue() != null) {
+  			updateSHCbuttons();
+			printToConsole("Successfully changed windows.");
+		}
+  	}
+
+  	@FXML private void shcChangeOpen() {
+  		if ((shcRoomSelect.getValue() == null) || (shcWindowSelect.getValue() == null)) {
+  			printToConsole("ERROR: Not all fields were filled in before clicking the button");
+			return;
+  		}
+		String chosenWindowName = shcWindowSelect.getValue();
+		int chosenWindowIndex = Integer.parseInt(chosenWindowName.substring(7, chosenWindowName.length())) - 1;
+  		for (Room r : sim.getHouse().getRooms()) {
+  			if (r.getName().equals(shcRoomSelect.getValue())) {
+  				printToConsole(r.getWindows().get(chosenWindowIndex).changeOpen());
+  				updateSHCbuttons();
+  				return;
+			}
+		}
+	}
+
+	@FXML private void shcChangeBlocked() {
+		if ((shcRoomSelect.getValue() == null) || (shcWindowSelect.getValue() == null)) {
+			printToConsole("ERROR: Not all fields were filled in before clicking the button");
+			return;
+		}
+		String chosenWindowName = shcWindowSelect.getValue();
+		int chosenWindowIndex = Integer.parseInt(chosenWindowName.substring(7, chosenWindowName.length())) - 1;
+		for (Room r : sim.getHouse().getRooms()) {
+			if (r.getName().equals(shcRoomSelect.getValue())) {
+				printToConsole(r.getWindows().get(chosenWindowIndex).changeObstructed());
+				updateSHCbuttons();
+				return;
+			}
+		}
+	}
+
+	private void updateSHCbuttons() {
+		String chosenWindowName = shcWindowSelect.getValue();
+		int chosenWindowIndex = Integer.parseInt(chosenWindowName.substring(7, chosenWindowName.length())) - 1;
+		for (Room r : sim.getHouse().getRooms()) {
+			if (r.getName().equals(shcRoomSelect.getValue())) {
+				Window w = r.getWindows().get(chosenWindowIndex);
+				if (w.getObstructed()) {
+					shcWindowOpenState.setText("Open");
+					shcWindowBlockedState.setText("Obstructed");
+				}
+				else if (w.getOpen()) {
+					shcWindowOpenState.setText("Open");
+					shcWindowBlockedState.setText("Not Obstructed");
+				}
+				else {
+					shcWindowOpenState.setText("Closed");
+					shcWindowBlockedState.setText("Not Obstructed");
+				}
+			}
+		}
+
 	}
 
 	private void printToConsole(String output) {
@@ -155,10 +246,16 @@ public class DashboardController {
 			createUserLocation.getItems().add(r.getName());
 			editUserLocation.getItems().add(r.getName());
 			currentUserLocationOptions.getItems().add(r.getName());
+
+			// These don't need outside option
+			shcRoomSelect.getItems().add(r.getName());
 		}
 		createUserLocation.getItems().add("Outside");
 		editUserLocation.getItems().add("Outside");
 		currentUserLocationOptions.getItems().add("Outside");
+
+		shcWindowOpenState.setText("Pick a window");
+		shcWindowBlockedState.setText("Pick a window");
 
 		// Set dropdown options for dropdowns with users
 		updateDashboard();

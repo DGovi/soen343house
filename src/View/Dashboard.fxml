@@ -102,52 +102,12 @@
                             <Tab text="SHC">
                               <content>
                                 <VBox prefHeight="200.0" prefWidth="100.0">
-                                  <children>
-                                    <VBox prefHeight="263.0" prefWidth="275.0">
-                                      <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Opened Doors"/>
-                                        <HBox prefHeight="16.0" prefWidth="275.0">
-                                          <children>
-                                            <CheckBox mnemonicParsing="false" text="door 1"/>
-                                            <CheckBox mnemonicParsing="false" text="block"/>
-                                          </children>
-                                        </HBox>
-                                        <HBox prefHeight="10.0" prefWidth="275.0">
-                                          <children>
-                                            <CheckBox mnemonicParsing="false" text="door 2"/>
-                                            <CheckBox mnemonicParsing="false" text="block"/>
-                                          </children>
-                                        </HBox>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Open Windows"/>
-                                        <HBox prefHeight="10.0" prefWidth="275.0">
-                                          <children>
-                                            <CheckBox mnemonicParsing="false" text="window1"/>
-                                            <CheckBox mnemonicParsing="false" text="block"/>
-                                          </children>
-                                        </HBox>
-                                        <HBox prefHeight="10.0" prefWidth="275.0">
-                                          <children>
-                                            <CheckBox mnemonicParsing="false" text="window2"/>
-                                            <CheckBox mnemonicParsing="false" text="block"/>
-                                          </children>
-                                        </HBox>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="locked doors"/>
-                                        <HBox prefHeight="10.0" prefWidth="275.0">
-                                          <children>
-                                            <CheckBox mnemonicParsing="false" text="lock 1"/>
-                                          </children>
-                                        </HBox>
-                                        <HBox prefHeight="10.0" prefWidth="275.0">
-                                          <children>
-                                            <CheckBox mnemonicParsing="false" text="lock2"/>
-                                          </children>
-                                        </HBox>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lights"/>
-                                        <CheckBox mnemonicParsing="false" text="Light 1"/>
-                                        <CheckBox mnemonicParsing="false" text="Light2"/>
-                                      </children>
-                                    </VBox>
-                                  </children>
+                                  <Label text="Room:"/>
+                                  <ComboBox onAction="#shcChangeRooms" fx:id="shcRoomSelect"/>
+                                  <Label text="Window:"/>
+                                  <ComboBox onAction="#shcChangeWindows" fx:id="shcWindowSelect"/>
+                                  <Button onAction="#shcChangeOpen" fx:id="shcWindowOpenState"/>
+                                  <Button onAction="#shcChangeBlocked" fx:id="shcWindowBlockedState"/>
                                 </VBox>
                               </content>
                             </Tab>
