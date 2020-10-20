@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -7,39 +11,39 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<SplitPane fx:controller="Controller.DashboardController" dividerPositions="0.22742474916387959" maxHeight="-Infinity"
-           maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0"
-           xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<SplitPane dividerPositions="0.22742474916387959" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.DashboardController">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
       <children>
-        <VBox layoutY="2.0" prefHeight="398.0" prefWidth="132.0">
+        <VBox layoutY="2.0" prefHeight="398.0" prefWidth="247.0">
           <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation:"/>
-            <ToggleButton onAction="#endSim" mnemonicParsing="false" prefHeight="27.0" prefWidth="141.0" text="ON/OFF"/>
-            <Label fx:id="currentUser" text="Username (or login)"/>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Permissions:"/>
-            <TextArea prefHeight="55.0" prefWidth="132.0" text="-permission 1&#10;-permission 2"/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation:" />
+            <ToggleButton mnemonicParsing="false" onAction="#endSim" prefHeight="27.0" prefWidth="256.0" text="ON/OFF" />
+            <Label fx:id="currentUser" text="Username (or login)" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Permissions:" />
+            <TextArea prefHeight="55.0" prefWidth="132.0" text="-permission 1&#10;-permission 2" />
             <ImageView fitHeight="64.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
               <image>
-                <Image url="@../Model/iOS-OS-X-Style-Pure-CSS-Loading-Spinner.jpg"/>
+                <Image url="@../Model/iOS-OS-X-Style-Pure-CSS-Loading-Spinner.jpg" />
               </image>
             </ImageView>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Current Location:"/>
-            <ComboBox onAction="#editCurrentUserLocation" fx:id="currentUserLocationOptions"/>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Temperature:"/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Current Location:" />
+            <ComboBox fx:id="currentUserLocationOptions" onAction="#editCurrentUserLocation" prefHeight="27.0" prefWidth="262.0" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Temperature:" />
             <Label fx:id="temperatureLabel" />
-            <Button onAction="#changeTemperature" mnemonicParsing="false" prefHeight="27.0" prefWidth="136.0" text="Change Temp"/>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date:"/>
-            <DatePicker promptText="Edit date"/>
+            <Button mnemonicParsing="false" onAction="#changeTemperature" prefHeight="27.0" prefWidth="260.0" text="Change Temp" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date:" />
+            <DatePicker prefHeight="27.0" prefWidth="251.0" promptText="Edit date" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Location:" />
+            <Label fx:id="houseLocationLabel" />
+            <Button mnemonicParsing="false" onAction="#changeHouseLocation" prefHeight="27.0" prefWidth="282.0" text="Change House Location" />
           </children>
         </VBox>
       </children>
     </AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
       <children>
-        <SplitPane dividerPositions="0.7626262626262627" layoutX="-1.0" layoutY="2.0" orientation="VERTICAL"
-                   prefHeight="900.0" prefWidth="620.0">
+        <SplitPane dividerPositions="0.7626262626262627" layoutX="-1.0" layoutY="2.0" orientation="VERTICAL" prefHeight="900.0" prefWidth="620.0">
           <items>
             <AnchorPane minHeight="0" minWidth="0" prefHeight="100.0" prefWidth="618.0">
               <children>
@@ -55,44 +59,40 @@
                                   <children>
                                     <VBox prefHeight="800.0" prefWidth="275.0">
                                       <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0"/>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Login/Switch User"/>
-                                        <Label text="Name:"/>
-                                        <TextField fx:id="loginName"/>
-                                        <Label text="Password:"/>
-                                        <PasswordField fx:id="loginPassword"/>
-                                        <Button onAction="#login" mnemonicParsing="false" prefHeight="27.0" prefWidth="281.0"
-                                                text="Login"/>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="CREATING USER"/>
-                                        <Label text="Name:"/>
-                                        <TextField fx:id="createUserName"/>
-                                        <Label text="Password"/>
-                                        <PasswordField fx:id="createUserPassword"/>
-                                        <Label text="Type:"/>
-                                        <ComboBox fx:id="createUserType"/>
-                                        <Label text="Location:"/>
-                                        <ComboBox fx:id="createUserLocation"/>
-                                        <Button onAction="#createUser" mnemonicParsing="false" prefHeight="27.0"
-                                                prefWidth="284.0" text="Add User"/>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="EDITING USER"/>
-                                        <Label text="User:"/>
-                                        <ComboBox fx:id="editUserChoice"/>
-                                        <Label text="Current Password: (Required)"/>
-                                        <PasswordField fx:id="editUserCurrentPassword"/>
-                                        <Label text="New Password:"/>
-                                        <PasswordField fx:id="editUserNewPassword"/>
-                                        <Label text="Type:"/>
-                                        <ComboBox fx:id="editUserType"/>
-                                        <Label text="Location:"/>
-                                        <ComboBox fx:id="editUserLocation"/>
-                                        <Button onAction="#editUser" mnemonicParsing="false" prefHeight="27.0"
-                                                prefWidth="293.0" text="Edit User"/>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="DELETING USER"/>
-                                        <Label text="User:"/>
-                                        <ComboBox fx:id="deleteUserChoice"/>
-                                        <Button onAction="#deleteUser" mnemonicParsing="false" prefHeight="27.0"
-                                                prefWidth="293.0" text="Delete User"/>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0"/>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" />
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Login/Switch User" />
+                                        <Label text="Name:" />
+                                        <TextField fx:id="loginName" />
+                                        <Label text="Password:" />
+                                        <PasswordField fx:id="loginPassword" />
+                                        <Button mnemonicParsing="false" onAction="#login" prefHeight="27.0" prefWidth="281.0" text="Login" />
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="CREATING USER" />
+                                        <Label text="Name:" />
+                                        <TextField fx:id="createUserName" />
+                                        <Label text="Password" />
+                                        <PasswordField fx:id="createUserPassword" />
+                                        <Label text="Type:" />
+                                        <ComboBox fx:id="createUserType" />
+                                        <Label text="Location:" />
+                                        <ComboBox fx:id="createUserLocation" />
+                                        <Button mnemonicParsing="false" onAction="#createUser" prefHeight="27.0" prefWidth="284.0" text="Add User" />
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="EDITING USER" />
+                                        <Label text="User:" />
+                                        <ComboBox fx:id="editUserChoice" />
+                                        <Label text="Current Password: (Required)" />
+                                        <PasswordField fx:id="editUserCurrentPassword" />
+                                        <Label text="New Password:" />
+                                        <PasswordField fx:id="editUserNewPassword" />
+                                        <Label text="Type:" />
+                                        <ComboBox fx:id="editUserType" />
+                                        <Label text="Location:" />
+                                        <ComboBox fx:id="editUserLocation" />
+                                        <Button mnemonicParsing="false" onAction="#editUser" prefHeight="27.0" prefWidth="293.0" text="Edit User" />
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="DELETING USER" />
+                                        <Label text="User:" />
+                                        <ComboBox fx:id="deleteUserChoice" />
+                                        <Button mnemonicParsing="false" onAction="#deleteUser" prefHeight="27.0" prefWidth="293.0" text="Delete User" />
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" />
                                       </children>
                                     </VBox>
                                   </children>
@@ -105,46 +105,46 @@
                                   <children>
                                     <VBox prefHeight="263.0" prefWidth="275.0">
                                       <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Opened Doors"/>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Opened Doors" />
                                         <HBox prefHeight="16.0" prefWidth="275.0">
                                           <children>
-                                            <CheckBox mnemonicParsing="false" text="door 1"/>
-                                            <CheckBox mnemonicParsing="false" text="block"/>
+                                            <CheckBox mnemonicParsing="false" text="door 1" />
+                                            <CheckBox mnemonicParsing="false" text="block" />
                                           </children>
                                         </HBox>
                                         <HBox prefHeight="10.0" prefWidth="275.0">
                                           <children>
-                                            <CheckBox mnemonicParsing="false" text="door 2"/>
-                                            <CheckBox mnemonicParsing="false" text="block"/>
+                                            <CheckBox mnemonicParsing="false" text="door 2" />
+                                            <CheckBox mnemonicParsing="false" text="block" />
                                           </children>
                                         </HBox>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Open Windows"/>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Open Windows" />
                                         <HBox prefHeight="10.0" prefWidth="275.0">
                                           <children>
-                                            <CheckBox mnemonicParsing="false" text="window1"/>
-                                            <CheckBox mnemonicParsing="false" text="block"/>
-                                          </children>
-                                        </HBox>
-                                        <HBox prefHeight="10.0" prefWidth="275.0">
-                                          <children>
-                                            <CheckBox mnemonicParsing="false" text="window2"/>
-                                            <CheckBox mnemonicParsing="false" text="block"/>
-                                          </children>
-                                        </HBox>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="locked doors"/>
-                                        <HBox prefHeight="10.0" prefWidth="275.0">
-                                          <children>
-                                            <CheckBox mnemonicParsing="false" text="lock 1"/>
+                                            <CheckBox mnemonicParsing="false" text="window1" />
+                                            <CheckBox mnemonicParsing="false" text="block" />
                                           </children>
                                         </HBox>
                                         <HBox prefHeight="10.0" prefWidth="275.0">
                                           <children>
-                                            <CheckBox mnemonicParsing="false" text="lock2"/>
+                                            <CheckBox mnemonicParsing="false" text="window2" />
+                                            <CheckBox mnemonicParsing="false" text="block" />
                                           </children>
                                         </HBox>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lights"/>
-                                        <CheckBox mnemonicParsing="false" text="Light 1"/>
-                                        <CheckBox mnemonicParsing="false" text="Light2"/>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="locked doors" />
+                                        <HBox prefHeight="10.0" prefWidth="275.0">
+                                          <children>
+                                            <CheckBox mnemonicParsing="false" text="lock 1" />
+                                          </children>
+                                        </HBox>
+                                        <HBox prefHeight="10.0" prefWidth="275.0">
+                                          <children>
+                                            <CheckBox mnemonicParsing="false" text="lock2" />
+                                          </children>
+                                        </HBox>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lights" />
+                                        <CheckBox mnemonicParsing="false" text="Light 1" />
+                                        <CheckBox mnemonicParsing="false" text="Light2" />
                                       </children>
                                     </VBox>
                                   </children>
@@ -155,43 +155,41 @@
                               <content>
                                 <HBox prefHeight="81.0" prefWidth="275.0">
                                   <children>
-                                    <CheckBox mnemonicParsing="false" text="Away mode"/>
-                                    <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="186.0"
-                                            text="settings"/>
+                                    <CheckBox mnemonicParsing="false" text="Away mode" />
+                                    <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="186.0" text="settings" />
                                   </children>
                                 </HBox>
                               </content>
                             </Tab>
                             <Tab text="SHH">
                               <content>
-                                <Button mnemonicParsing="false" text="Configure Zones"/>
+                                <Button mnemonicParsing="false" text="Configure Zones" />
                               </content>
                             </Tab>
-                            <Tab text="Other modules"/>
+                            <Tab text="Other modules" />
                           </tabs>
                         </TabPane>
                       </children>
                     </AnchorPane>
                   </items>
                 </SplitPane>
-                <AnchorPane layoutX="276.0" layoutY="6.0" minHeight="0.0" minWidth="0.0" prefHeight="440.0"
-                            prefWidth="327.0">
+                <AnchorPane layoutX="276.0" layoutY="6.0" minHeight="0.0" minWidth="0.0" prefHeight="440.0" prefWidth="327.0">
                   <children>
                     <ImageView fitHeight="451" fitWidth="329" pickOnBounds="true" preserveRatio="true">
                       <image>
-                        <Image url="@../Model/iOS-OS-X-Style-Pure-CSS-Loading-Spinner.jpg"/>
+                        <Image url="@../Model/iOS-OS-X-Style-Pure-CSS-Loading-Spinner.jpg" />
                       </image>
                     </ImageView>
-                    <Text layoutX="49.0" layoutY="431.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Model Layout"/>
-                    <Canvas fx:id="render" height="451.0" width="329.0"/>
+                    <Text layoutX="49.0" layoutY="431.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Model Layout" />
+                    <Canvas fx:id="render" height="451.0" width="329.0" />
                   </children>
                 </AnchorPane>
               </children>
             </AnchorPane>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="288.0" prefWidth="600.0">
               <children>
-                <Text layoutX="168.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Console"/>
-                <TextArea fx:id="console" layoutX="14.0" layoutY="23.0" prefHeight="64.0" prefWidth="430.0"/>
+                <Text layoutX="168.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Console" />
+                <TextArea fx:id="console" layoutX="14.0" layoutY="23.0" prefHeight="64.0" prefWidth="430.0" />
               </children>
             </AnchorPane>
           </items>

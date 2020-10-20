@@ -8,6 +8,7 @@ import java.util.Stack;
 import java.util.Date;
 import java.time.LocalTime;
 
+import View.CountriesWindow;
 import View.InputWindow;
 import org.json.JSONException;
 
@@ -24,6 +25,7 @@ public class DashboardController {
 	private int windowLength = 30;
 	private int ROOM_SIZE = 50;
 
+	@FXML private Label houseLocationLabel;
 	@FXML private Label temperatureLabel;
 	@FXML private Label currentUser;
 	@FXML private ComboBox<String> currentUserLocationOptions;
@@ -42,8 +44,8 @@ public class DashboardController {
 	@FXML private TextArea console;
     @FXML private Canvas render;
     GraphicsContext gc;
-  
-  @FXML private void changeTemperature() {
+
+    @FXML private void changeTemperature() {
 		String newTemperature = InputWindow.display("Change Temperature", "New Temperature");
 		try {
 			float newTemperatureInt = Float.parseFloat(newTemperature);
@@ -54,6 +56,13 @@ public class DashboardController {
 			printToConsole("ERROR: Inputted temperature is not a valid float.");
 		}
 	}
+
+	@FXML private void changeHouseLocation() {
+		String newCountry = CountriesWindow.display("Choose Country", "Choose Country");
+		printToConsole(sim.setHouseLocation(newCountry));
+		updateDashboard();
+	}
+
 
   @FXML private void editCurrentUserLocation() {
     	printToConsole(sim.setLoggedInUserLocation(currentUserLocationOptions.getValue()));
@@ -103,7 +112,10 @@ public class DashboardController {
 
 	// Use whenever there is a change to users (logged in, names, or number of users)
 	private void updateDashboard() {
-    // reset simulation temperature
+    	// reset simulation house location
+		houseLocationLabel.setText(sim.getHouseLocation());
+
+    	// reset simulation temperature
 		temperatureLabel.setText(Float.toString(sim.getTemperature()));
     
 		// reset info of logged in user
