@@ -1,5 +1,7 @@
 package Controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -15,6 +17,7 @@ import java.time.LocalTime;
 import javafx.event.ActionEvent;
 import View.CountriesWindow;
 import View.InputWindow;
+import javafx.stage.FileChooser;
 import org.json.JSONException;
 
 import Model.*;
@@ -30,6 +33,7 @@ public class DashboardController {
 	private Simulation sim;
 	private int windowLength = 30;
 	private int ROOM_SIZE = 50;
+	final FileChooser fileChooser = new FileChooser();
 
 	// Left pane
 	@FXML private Label houseLocationLabel;
@@ -58,12 +62,12 @@ public class DashboardController {
 	@FXML private Button shcWindowBlockedState;
 
 	@FXML private TextArea console;
-  @FXML private Canvas render;
-
-  @FXML private DatePicker datePicker;
-  @FXML private Label dateLabel;
-  @FXML private Label timeLabel;
-  GraphicsContext gc;
+	@FXML private Canvas render;
+	@FXML private ToggleButton filePicker;
+    @FXML private DatePicker datePicker;
+    @FXML private Label dateLabel;
+    @FXML private Label timeLabel;
+    GraphicsContext gc;
 
   @FXML private void changeTemperature() {
 		String newTemperature = InputWindow.display("Change Temperature", "New Temperature");
@@ -242,10 +246,30 @@ public class DashboardController {
 		}
 
 	}
+	@FXML private void loadHouseLayout() {
+		javafx.stage.Window stage = filePicker.getScene().getWindow();
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Open House layout File");
+
+		File file = fileChooser.showOpenDialog(stage);
+		if (file == null) {
+			printToConsole("ERROR LOADING FILE");
+			return;
+		}
+
+		try {
+			System.out.println(file.toPath());
+			afterLoadInitialize(file);
+		} catch (JSONException | IOException e) {
+			printToConsole("ERROR LOADING FILE");
+		}
+	}
+
 
 	/**
 	 * @param output prints on the console of the simulation the output
 	 */
+
 	private void printToConsole(String output) {
 		console.appendText(output + "\n");
 	}
@@ -298,12 +322,15 @@ public class DashboardController {
 	// Basically the constructor --> Sets variables
 	public void initialize() throws JSONException {
 
+	}
+
+	public void afterLoadInitialize(File file) throws JSONException, IOException {
 		// Set simulation
 		sim = new Simulation(
 				new String(),
 				java.sql.Time.valueOf(LocalTime.now()),
 				25,
-				"houseinput.json"
+				file
 		);
 		currentUser.setText(sim.getLoggedInUser().getName());
 
@@ -329,19 +356,15 @@ public class DashboardController {
 
 		// Set dropdown options for dropdowns with users
 		updateDashboard();
-		renderLayout();
-
+		renderLayout(sim.getHouse());
 	}
     
-	/**
+  /**
 	 * Takes a JSON file and attempts to render a house layout
 	 * for the simulation
 	 * @exception JSONException JSON file not found
 	 */
-	@FXML public void renderLayout() throws JSONException {
-	    
-	    Model.House h = new Model.House("houseinput.json");
-
+    @FXML public void renderLayout(Model.House h) throws JSONException, IOException {
 	    gc = render.getGraphicsContext2D();
 	    
 	    gc.setFill(Color.WHITE);

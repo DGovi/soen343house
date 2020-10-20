@@ -2,6 +2,8 @@ package Model;
 
 import org.json.JSONException;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -21,12 +23,13 @@ public class House {
 		return rooms;
 	}
 
-    /**
+
+   /**
      * creates a house using an inputted JSON file
      * @param srcJSON the file in which the house layout is contained
      * @exception JSONException if the file is not found or is incorrect
      */
-	public House(String srcJSON) throws JSONException {
+  	public House(File srcJSON) throws JSONException, IOException {
         this.rooms = Room.roomFromJSON(srcJSON);
         this.location = DEFAULT_LOCATION;
     }
