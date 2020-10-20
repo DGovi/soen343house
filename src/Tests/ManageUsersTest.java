@@ -23,4 +23,25 @@ class ManageUsersTest {
         assertEquals(simulation.addUser(username, password, type, password), "Successfully added " + username + " as a " + type.toLowerCase() + " user.");
     }
 
+    @Test
+    void removeUser() {
+
+    }
+
+    @Test
+    void setUserLocation() {
+
+    }
+
+    @Test
+    void loginUser() {
+
+    }
+
+    @Test
+    void logoutUser() {
+
+    }
+
+
 }
