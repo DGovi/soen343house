@@ -197,6 +197,7 @@ public class DashboardController {
 		coordinates.put(firstRoom, new javafx.util.Pair<Integer, Integer>(Integer.valueOf(startX), Integer.valueOf(startY)));
 		
 		drawRoom(firstRoom, startX, startY, false);
+		drawWindows(startX, startY, firstRoom.getDoors().size() * ROOM_SIZE, firstRoom.getWindows().size());
 		
 		while(!stack.empty()) {
 			Room top = stack.pop();
