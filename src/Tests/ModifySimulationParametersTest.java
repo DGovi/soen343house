@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Time;
 import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,5 +37,12 @@ class ModifySimulationParametersTest {
         // turn off then back on
         assertEquals("Simulation OFF", simulation.toggleRunning());
         assertEquals("Simulation ON", simulation.toggleRunning());
+    }
+    @Test
+
+    void setTime() throws IOException, JSONException {
+        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE, true);
+        Time time =java.sql.Time.valueOf(LocalTime.now());
+        assertEquals("Time set to " + time + ".", simulation.setTime(time));
     }
 }

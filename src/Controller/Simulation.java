@@ -206,7 +206,7 @@ public class Simulation{
 	 */
 	public String setTime(Time time) {
 		this.time = time;
-		return "Time updated.";
+		return "Time set to " + time + ".";
 	}
 
 	/**
@@ -391,7 +391,6 @@ public class Simulation{
 		this.running = true;
 		return "Simulation ON";
 	}
-
 
 	@Override
 	public String toString() {
