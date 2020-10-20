@@ -5,23 +5,15 @@ package Model;
  */
 public class Window {
 
+    private Boolean open;
     private Boolean obstructed;
-    private ArbitraryObject obstruction;
 
     /**
      * creates a window
      */
     public Window() {
-        obstructed = false; obstruction = null;
-    }
-
-    /**
-     * creates a window with an obstruction
-     * @param obs object that blocks a window
-     */
-    public Window(ArbitraryObject obs) {
-        obstruction = obs;
-        obstructed = (obs != null);
+        this.open = false;
+        this.obstructed = false;
     }
 
     /**
@@ -35,22 +27,43 @@ public class Window {
      * @param obs object that blocks a window
      */
     public void setObstructed(Boolean obs) {
-        setObstructed(obs, "Arbitrary Object");
-    }
-
-    /**
-     * set and obstruction on a window and displays a message
-     * @param obs object that is obstructing the window
-     * @param s message
-     */
-    public void setObstructed(Boolean obs, String s) {
-        if (obs) {
-            obstruction = new ArbitraryObject(s);
-            obstructed = true;
+        // Can only perform obstruction if window is open
+        if (open) {
+            obstructed = obs;
         }
         else {
-            obstruction = null;
+            // ensure it's not obstructed when closed
             obstructed = false;
+        }
+    }
+
+    public Boolean getOpen() { return open; }
+
+    public void setOpen(Boolean open) {
+        if (!obstructed) {
+            this.open = open;
+        }
+    }
+
+    public String changeOpen() {
+        if (obstructed && open) {
+            return "ERROR: Cannot change from open while blocked.";
+        }
+        else {
+            open = !open;
+            return "Successfully changed state of window.";
+        }
+    }
+
+    public String changeObstructed() {
+        if (!open) {
+            // ensure it is not obstructed while closed
+            obstructed = false;
+            return "ERROR: Can't block window if it's not open.";
+        }
+        else {
+            obstructed = !obstructed;
+            return "Successfully changed the blocking state of the window.";
         }
     }
 }

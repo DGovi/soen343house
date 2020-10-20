@@ -1,0 +1,8 @@
+@startuml
+actor Simulation_User
+
+Simulation_User -> DashboardDriver: Trigger UI event
+DashboardDriver -> DashboardController: displayDate()
+DashboardController -> Simulation: setDate(date)
+DashboardDriver <-- Simulation: new_date
+@enduml

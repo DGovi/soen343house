@@ -111,6 +111,12 @@
                             <Tab text="SHC">
                               <content>
                                 <VBox prefHeight="200.0" prefWidth="100.0">
+                                  <Label text="Room:"/>
+                                  <ComboBox onAction="#shcChangeRooms" fx:id="shcRoomSelect"/>
+                                  <Label text="Window:"/>
+                                  <ComboBox onAction="#shcChangeWindows" fx:id="shcWindowSelect"/>
+                                  <Button onAction="#shcChangeOpen" fx:id="shcWindowOpenState"/>
+                                  <Button onAction="#shcChangeBlocked" fx:id="shcWindowBlockedState"/>
                                   <children>
                                     <VBox prefHeight="263.0" prefWidth="275.0">
                                       <children>
