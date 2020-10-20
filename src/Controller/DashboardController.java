@@ -1,9 +1,5 @@
 package Controller;
 
-import java.sql.Time;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,7 +8,6 @@ import java.util.Stack;
 import java.util.Date;
 import java.time.LocalTime;
 
-import javafx.event.ActionEvent;
 import View.CountriesWindow;
 import View.InputWindow;
 import org.json.JSONException;
@@ -48,7 +43,6 @@ public class DashboardController {
 	@FXML private ComboBox<String> deleteUserChoice;
 	@FXML private TextArea console;
   @FXML private Canvas render;
-
   @FXML private DatePicker datePicker;
   @FXML private Label dateLabel;
   @FXML private Label timeLabel;
@@ -67,32 +61,6 @@ public class DashboardController {
 		}
 	}
 
-	/**
-	 * Adds a user to the simulation and adds a user type to allow privileges
-	 */
-	@FXML private void addUser() {
-		UserType type = null;
-		if (createUserName.getText().length() == 0) {
-			printToConsole("ERROR: Name field must not be empty.");
-			return;
-		}
-		else if (createUserType.getValue() == null) {
-			printToConsole("ERROR: Type field must not be empty.");
-			return;
-		}
-		else if (createUserPassword.getText() == null) {
-			printToConsole("ERROR: Password cannot be null.");
-		}
-		else if (createUserType.getValue() == "Parent") { type = UserType.PARENT; }
-		else if (createUserType.getValue() == "Child") { type = UserType.CHILD; }
-		else if (createUserType.getValue() == "Guest") { type = UserType.GUEST; }
-		else if (createUserType.getValue() == "Stranger") { type = UserType.STRANGER; }
-		else {
-			printToConsole("ERROR: Unhandled add user case. You did something weird.");
-			return;
-		}
-  }
-  
 	@FXML private void changeHouseLocation() {
 		String newCountry = CountriesWindow.display("Choose Country", "Choose Country");
 		printToConsole(sim.setHouseLocation(newCountry));
@@ -127,10 +95,6 @@ public class DashboardController {
 		updateDashboard();
 	}
 
-	/**
-	 * Edit the information,such as user password, or priveleges,
-	 * of a specific user given that they are logged in.
-	 */
 	@FXML private void editUser() {
 		printToConsole(
 				sim.editUser(
@@ -144,18 +108,11 @@ public class DashboardController {
 		updateDashboard();
 	}
 
-	/**
-	 * User is deleted from the simulation and can no longer use
-	 * the simulation.
-	 */
 	@FXML private void deleteUser() {
 		printToConsole(sim.removeUser(deleteUserChoice.getValue()));
 		updateDashboard();
 	}
 
-	/**
-	 * @param output prints on the console of the simulation the output
-	 */
 	private void printToConsole(String output) {
 		console.appendText(output + "\n");
 	}
@@ -185,10 +142,6 @@ public class DashboardController {
 			deleteUserChoice.getItems().add(u.getName() + " (" + u.getID() + ")");
 		}
 
-		// updating date and time
-		dateLabel.setText("Date is: " + sim.getDate());
-		timeLabel.setText(java.sql.Time.valueOf(LocalTime.now()).toString());
-
 		// Reset field content
 		loginName.setText("");
 		loginPassword.setText("");
@@ -198,19 +151,14 @@ public class DashboardController {
 		createUserLocation.valueProperty().set(null);
 		editUserCurrentPassword.setText("");
 		editUserNewPassword.setText("");
-
 	}
 
-	/**
-	 * starts up the simulation
-	 * @exception  JSONException if JSON file not found
-	 */
 	// Basically the constructor --> Sets variables
 	public void initialize() throws JSONException {
 
 		// Set simulation
 		sim = new Simulation(
-				new String(),
+				new Date(),
 				java.sql.Time.valueOf(LocalTime.now()),
 				25,
 				"houseinput.json"
@@ -243,6 +191,7 @@ public class DashboardController {
 	 * @exception JSONException JSON file not found
 	 */
 	@FXML public void renderLayout() throws JSONException {
+
 	    
 	    Model.House h = new Model.House("houseinput.json");
 
@@ -306,14 +255,7 @@ public class DashboardController {
 			}
 		}
     }
-
-	/**
-	 * On a given house layout, draw the windows at specified location
-	 * @param x position on the x coordinate of window
-	 * @param y position of y coordinate of window
-	 * @param size length of a window
-	 * @param countWindows number of windows on  a house layout
-	 */
+	
 	@FXML public void drawWindows(int x, int y, int size, int countWindows) {
     	for(int i = 0; i < countWindows; i++) {
 			gc.setStroke(Color.LIGHTBLUE);
@@ -326,16 +268,7 @@ public class DashboardController {
     	gc.setStroke(Color.BLACK);
     	gc.setFill(Color.BLACK);
     }
-
-	/**
-	 * on the house layout in the simulation, draw the available lights
-	 * in the room
-	 *
-	 * @param room which room the lights are in
-	 * @param x position on the x coordinate of the lights
-	 * @param y position of the y coordinate of the lights
-	 * @param size size of the lights
-	 */
+    
     @FXML public void drawLights(Room room, int x, int y, int size) {
     	for(int i = 0; i < room.getLights(); i++) {
 			gc.setFill(Color.GOLD);
@@ -347,13 +280,6 @@ public class DashboardController {
     	gc.setFill(Color.BLACK);
     }
 
-	/**
-	 * Draws the room of the house layout just to be sure
-	 * @param room the room of a house layout
-	 * @param x coordinate of the ex position of the room
-	 * @param y coordinate of the y position of the room
-	 * @param sideDoor true if the door is on the side (vertical on the house layout), false if not (horizontal)
-	 */
 	@FXML public void drawRoom(Room room, int x, int y, boolean sideDoor) {
     	int size = 50 * room.getDoors().size();
 		gc.strokeRoundRect(x, y, size, size, 0, 0);
@@ -368,27 +294,6 @@ public class DashboardController {
 		gc.setStroke(Color.BLACK);
 		gc.fillText(room.getName(), x + 5, y + 17);
     }
-
-	/**
-	 * displays the given date from the actionEvent
-	 * onto the simulation
-	 * @param actionEvent event that triggers this method
-	 */
-	//shows entered date in label box
-	public void displayDate(javafx.event.ActionEvent actionEvent) {
-		printToConsole(sim.setDate(datePicker.getValue().toString()));
-		updateDashboard();
-	}
-
-	/**
-	 * updates the time displayed on the simulation
-	 * @param actionEvent event that triggers the method
-	 */
-	//shows the time
-	public void updateTime(ActionEvent actionEvent) {
-		printToConsole(sim.setTime(java.sql.Time.valueOf(LocalTime.now())));
-		updateDashboard();
-	}
 	
 	@FXML public void endSim() {
 		
