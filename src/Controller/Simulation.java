@@ -23,13 +23,14 @@ public class Simulation{
 	private boolean running;
 
   /**
-	 * creates a simulation object with date, time, temperature, houseinput as input
-	 * @param date a date object
-	 * @param time a time object
-	 * @param temperature temperature outside of the house
-	 * @param houseInput JSON file
-	 * @exception JSONException if the file is not found
-	 */
+   * creates a simulation object with date, time, temperature, houseinput as input
+   * @param date a date object
+   * @param time a time object
+   * @param temperature temperature outside of the house
+   * @param houseInput JSON file
+   * @exception JSONException if runtime exception occurs
+   * @exception IOException if the file is not found
+   */
 	public Simulation(String date, Time time, float temperature, File houseInput, boolean running) throws JSONException, IOException {
 		this.house = new House(houseInput);
 		this.date = date;
@@ -42,7 +43,7 @@ public class Simulation{
 	}
 
 	/**
-	 * adds user to an arraylist
+	 * adds user to users list
 	 * @param user user object
 	 */
 	// adds user to users ArrayList
@@ -64,6 +65,14 @@ public class Simulation{
 		users.add(user);
 	}
 
+	/**
+	 * adds user to arraylist with given parameters
+	 * @param username the username that the user wants to have
+	 * @param password the password that is paried witht he username
+	 * @param type one of the four enums
+	 * @param location user is placed in a location inside a house object
+	 * @return success message or error message
+	 */
 	public String addUser(String username, String password, String type, String location) {
 		UserType userType = null;
 		if (username.length() == 0) {
@@ -109,7 +118,7 @@ public class Simulation{
 		return "Successfully added " + username + " as a " + type.toLowerCase() + " user.";
 	}
 
-  /**
+  	/**
 	 * removes user from an arraylist
 	 * @param user an existing user object
 	 */
@@ -119,6 +128,11 @@ public class Simulation{
 		users.remove(user);
 	}
 
+	/**
+	 * removes the user from the users list
+	 * @param choice the username of the user to delete
+	 * @return a success or error message
+	 */
 	public String removeUser(String choice) {
 
 		if (choice == null) {
@@ -160,7 +174,7 @@ public class Simulation{
 	}
 
 	/**
-	 * logs out the current user
+	 * logs out the user that is currently logged in
 	 */
 	// logouts the current logged in user
 	public void logout() {
@@ -177,7 +191,7 @@ public class Simulation{
 
 	/**
 	 * gets the date on the simulation
-	 * @return Date object
+	 * @return date as a string
 	 */
 	public String getDate() {
 		return date;
@@ -185,7 +199,7 @@ public class Simulation{
 
 	/**
 	 * sets the date of the simulation
-	 * @param date
+	 * @param date the date of the simulation as a string
 	 */
 	public String setDate(String date) {
 		this.date = date;
@@ -211,15 +225,15 @@ public class Simulation{
 	}
 
 	/**
-	 * get the temperature outside fo teh house in the simulation
-	 * @return the temperature outside fo the house
+	 * get the temperature outside the home in the simulation
+	 * @return the temperature outside of the house
 	 */
 	public float getTemperature() {
 		return temperature;
 	}
 
 	/**
-	 * set the new temperature of the simulation
+	 * set the new temperature outside of the home
 	 * @param temperature new temperature to be set
 	 */
 	public void setTemperature(float temperature) {
@@ -228,7 +242,7 @@ public class Simulation{
 
 	/**
 	 * gets the current logged in user
-	 * @return User object
+	 * @return User object of the current logged in user
 	 */
 	public User getLoggedInUser() {
 		return loggedInUser;
@@ -242,6 +256,11 @@ public class Simulation{
 		this.loggedInUser = loggedInUser;
 	}
 
+	/**
+	 * set the currently logged in user's location
+	 * @param location location in the house
+	 * @return string message success scenario and error scenario
+	 */
 	public String setLoggedInUserLocation(String location) {
 		if (location == null) return "ERROR: Need to pick a location.";
 		if (location.equals("Outside")) {
@@ -259,6 +278,13 @@ public class Simulation{
 		return "ERROR: Could not find any room matchin the input.";
 	}
 
+	/**
+	 * given a username and the corresponding password,
+	 * a user can log in to the simulator
+	 * @param username the users username
+	 * @param password the password to the username
+	 * @return a string success message or an error message
+	 */
 	public String login(String username, String password) {
 		for (User u : users) {
 			if (u.getName().equals(username)) {
@@ -274,11 +300,18 @@ public class Simulation{
 				}
 			}
 		}
-
-
 		return "ERROR: Could not find any user with the provided username.";
 	}
 
+	/**
+	 * edits a chosen users information
+	 * @param username the user whose information is targetted
+	 * @param currentPassword the users current password
+	 * @param newPassword the password that will be the users password
+	 * @param type parent, child, guest, stranger
+	 * @param location the users current locaiton in the house
+	 * @return a success or error message
+	 */
 	public String editUser(String username, String currentPassword, String newPassword, String type, String location) {
 
 		if (username == null) {
@@ -345,16 +378,25 @@ public class Simulation{
 		return "Successfully made requested changes to user.";
 	}
 
+	/**
+	 * sets the location of the house
+	 * @param location the location on the planet
+	 * @return a string of the location of the house
+	 */
 	public String setHouseLocation(String location) {
 		this.house.setLocation(location);
 		return "Set house location to " + this.house.getLocation() + "!";
 	}
 
+	/**
+	 * gets the house location
+	 * @return the house.getLocation(), a location string
+	 */
 	public String getHouseLocation() {
 		return this.house.getLocation();
 	}
 
-  /**
+  	/**
 	 * gets a list of all the simulation users
 	 * @return a list of users
 	 */
@@ -365,11 +407,19 @@ public class Simulation{
 	 * @return a House object
 	 */
 	public House getHouse() { return house; }
-	
+
+	/**
+	 * checks if the simulation is running or not
+	 * @return a boolean value if the simulation is running
+	 */
 	public boolean getRunning() {
 		return this.running;
 	}
-	
+
+	/**
+	 * sets the simulation to running or not
+	 * @param running a boolean value if the simulation is running or not
+	 */
 	public void setRunning(boolean running) {
 		this.running = running;
 	}

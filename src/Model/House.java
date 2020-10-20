@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 /**
  * represents a house in a house layout
+ * the house has an array of rooms, and a location
  */
 public class House {
     private final String DEFAULT_LOCATION = "Canada";
@@ -34,10 +35,18 @@ public class House {
         this.location = DEFAULT_LOCATION;
     }
 
+    /**
+     * gets the String location of the house
+     * @return a string descibing the house
+     */
     public String getLocation() {
         return location;
     }
 
+    /**
+     * sets the location of the house
+     * @param location the current location of the house
+     */
     public void setLocation(String location) {
         this.location = location;
     }

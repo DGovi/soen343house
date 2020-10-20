@@ -2,6 +2,11 @@ package Model;
 
 /**
  * represents a user in a simulation
+ * a user is someone who can interact with
+ * the simulation
+ * a user has a type, an ID,
+ * a location in the house (room name)
+ * a name and a password
  */
 public class User {
 	static private int counter = 0;
@@ -53,7 +58,7 @@ public class User {
 
 	/**
 	 * gets the location of the user
-	 * @return a room location
+	 * @return a room object 
 	 */
 	public Room getLocation() {
 		return location;

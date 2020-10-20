@@ -2,6 +2,8 @@ package Model;
 
 /**
  * Represents a window in the simulation
+ * a window can be opened and closed and
+ * can also be obstructed by a random object
  */
 public class Window {
 
@@ -9,7 +11,7 @@ public class Window {
     private Boolean obstructed;
 
     /**
-     * creates a window
+     * creates a window that is not open and not obstructed
      */
     public Window() {
         this.open = false;
@@ -37,14 +39,26 @@ public class Window {
         }
     }
 
+    /**
+     * get if the window is open or not
+     * @return true if window is open, false otherhwise
+     */
     public Boolean getOpen() { return open; }
 
+    /**
+     * sets the model to open
+     * @param open
+     */
     public void setOpen(Boolean open) {
         if (!obstructed) {
             this.open = open;
         }
     }
 
+    /**
+     * closes and opens the window
+     * @return if there is an obstruction, error message, success message otherwise
+     */
     public String changeOpen() {
         if (obstructed && open) {
             return "ERROR: Cannot change from open while blocked.";
@@ -55,6 +69,10 @@ public class Window {
         }
     }
 
+    /**
+     * removes the obstruction if any
+     * @return message saying that it was a success or there was an error
+     */
     public String changeObstructed() {
         if (!open) {
             // ensure it is not obstructed while closed
