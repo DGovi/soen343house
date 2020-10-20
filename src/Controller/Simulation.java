@@ -1,5 +1,9 @@
-package Model;
+package Controller;
 
+import Model.House;
+import Model.Room;
+import Model.User;
+import Model.UserType;
 import org.json.JSONException;
 
 import java.io.File;
@@ -31,7 +35,7 @@ public class Simulation{
 		this.date = date;
 		this.time = time;
 		this.temperature = temperature;
-		this.loggedInUser = new User(UserType.PARENT, house.rooms.get(0), "Admin", "123456");
+		this.loggedInUser = new User(UserType.PARENT, house.getRooms().get(0), "Admin", "123456");
 		this.users = new ArrayList<User>();
 		addUser(this.loggedInUser);
 		this.running = true;

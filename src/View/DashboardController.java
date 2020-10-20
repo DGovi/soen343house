@@ -1,19 +1,15 @@
-package Controller;
+package View;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Time;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
-import java.util.Date;
 import java.time.LocalTime;
 
+import Controller.Simulation;
 import javafx.event.ActionEvent;
 import View.CountriesWindow;
 import View.InputWindow;
@@ -27,7 +23,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.layout.VBox;
 
 public class DashboardController {
 	private Simulation sim;
