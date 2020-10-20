@@ -221,7 +221,7 @@ public class Simulation{
 		try {
 			float newTemperature = Float.parseFloat(temperatureString);
 			this.temperature = newTemperature;
-			return ("Setting simulation temperature to " + this.temperature + "!");
+			return ("Setting simulation temperature to " + temperatureString + "!");
 		} catch (Exception e) {
 			return ("ERROR: Inputted temperature is not a valid float.");
 		}
@@ -265,7 +265,7 @@ public class Simulation{
 		}
 
 		// This should never occur... Only existing rooms are available inputs in a dropdown.
-		return "ERROR: Could not find any room matchin the input.";
+		return "ERROR: Could not find any room matching the input.";
 	}
 
 	public String login(String username, String password) {

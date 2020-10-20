@@ -18,5 +18,14 @@ class ModifySimulationParametersTest {
         Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE, true);
         String location = "Software Development Hell";
         assertEquals("Set house location to " + location + "!",simulation.setHouseLocation(location));
+        assertEquals(location, simulation.getHouseLocation());
+    }
+
+    @Test
+    void setOutsideTemperature() throws IOException, JSONException {
+        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE, true);
+        String temperature = "42069.0";
+        assertEquals("Setting simulation temperature to " + temperature + "!", simulation.setTemperature(temperature));
+        assertEquals(temperature, String.valueOf(simulation.getTemperature()));
     }
 }
