@@ -25,7 +25,7 @@ public class Simulation{
 	 * @param houseInput JSON file
 	 * @exception JSONException if the file is not found
 	 */
-	public Simulation(Date date, Time time, float temperature, File houseInput) throws JSONException, IOException {
+	public Simulation(String date, Time time, float temperature, File houseInput) throws JSONException, IOException {
 		this.house = new House(houseInput);
 		this.date = date;
 		this.time = time;

@@ -51,13 +51,12 @@ public class DashboardController {
 	@FXML private ComboBox<String> editUserLocation;
 	@FXML private ComboBox<String> deleteUserChoice;
 	@FXML private TextArea console;
-  @FXML private Canvas render;
-  @FXML private Canvas render;
+	@FXML private Canvas render;
 	@FXML private ToggleButton filePicker;
-  @FXML private DatePicker datePicker;
-  @FXML private Label dateLabel;
-  @FXML private Label timeLabel;
-  GraphicsContext gc;
+    @FXML private DatePicker datePicker;
+    @FXML private Label dateLabel;
+    @FXML private Label timeLabel;
+    GraphicsContext gc;
 
 
   @FXML private void changeTemperature() {
@@ -271,8 +270,6 @@ public class DashboardController {
 	 * @exception JSONException JSON file not found
 	 */
     @FXML public void renderLayout(Model.House h) throws JSONException, IOException {
-
-
 	    gc = render.getGraphicsContext2D();
 	    
 	    gc.setFill(Color.WHITE);
