@@ -1,5 +1,9 @@
 package Model;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.*;
 import java.io.InputStream;
 
@@ -34,51 +38,89 @@ public class Room {
         System.out.println();
     }
 
+    /**
+     * creates a room object with a name, windows,
+     * lights, and doors
+     * @param name the name of the room
+     * @param windows an arraylist of windows
+     * @param lights number of windows
+     * @param doors number of doors
+     */
     Room(String name, ArrayList<Window> windows, int lights, ArrayList<String> doors) {
         this.name = name;
         this.windows = windows;
         this.lights = lights;
         this.doors= doors;
     }
-    
-    
 
+
+    /**
+     * gets an arraylist of doors
+     * @return an arraylist of doors
+     */
     public ArrayList<String> getDoors() {
 		return doors;
 	}
 
+    /**
+     * set the doors in room
+     * @param doors a list of doors
+     */
 	public void setDoors(ArrayList<String> doors) {
 		this.doors = doors;
 	}
 
+    /**
+     * get the name of the room
+     * @return the name of the room
+     */
 	public String getName() {
 		return name;
 	}
 
+    /**
+     * set the name of a room
+     * @param name the new name of a room
+     */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+    /**
+     * get the windows of a room
+     * @return the list of windows
+     */
 	public ArrayList<Window> getWindows() {
 		return windows;
 	}
 
+    /**
+     * get the numbers of lights in a room
+     * @return the number of lights in a room
+     */
 	public int getLights() {
 		return lights;
 	}
 
+    /**
+     * set the number of lights in a room
+     * @param lights the new number of lights in a room
+     */
 	public void setLights(int lights) {
 		this.lights = lights;
 	}
 
-    public static ArrayList<Room> roomFromJSON(String srcJSONPath) throws org.json.JSONException {
-        InputStream is = Room.class.getResourceAsStream(srcJSONPath);
+    /**
+     * creates room objects from a inputted JSON file
+     * @param srcJSONPath a file that is needed as input
+     * @return a list of room objects
+     * @exception org.json.JSONException if the file is not found
+     */
+    public static ArrayList<Room> roomFromJSON(File srcJSONPath) throws org.json.JSONException, IOException {
+        String marshalled = Files.readString(srcJSONPath.toPath(), StandardCharsets.US_ASCII);
 
-        if (is == null) {
-            throw new NullPointerException("Can't open JSON file: " + srcJSONPath);
-        }
 
-        JSONTokener tokener = new JSONTokener(is);
+        JSONTokener tokener = new JSONTokener(marshalled);
         JSONObject object = new JSONObject(tokener);
 
         Iterator<String> keys = object.keys();
