@@ -1,5 +1,6 @@
 package Tests;
 
+import Controller.DashboardController;
 import Controller.Simulation;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
@@ -27,5 +28,13 @@ class ModifySimulationParametersTest {
         String temperature = "42069.0";
         assertEquals("Setting simulation temperature to " + temperature + "!", simulation.setTemperature(temperature));
         assertEquals(temperature, String.valueOf(simulation.getTemperature()));
+    }
+
+    @Test
+    void turnSimOnOff() throws IOException, JSONException {
+        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE, true);
+        // turn off then back on
+        assertEquals("Simulation OFF", simulation.toggleRunning());
+        assertEquals("Simulation ON", simulation.toggleRunning());
     }
 }

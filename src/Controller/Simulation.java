@@ -383,6 +383,16 @@ public class Simulation{
 		this.running = running;
 	}
 
+	public String toggleRunning() {
+		if (this.running) {
+			this.running = false;
+			return "Simulation OFF";
+		}
+		this.running = true;
+		return "Simulation ON";
+	}
+
+
 	@Override
 	public String toString() {
 		return "Simulation [date=" + date + ", time=" + time + ", temperature=" + temperature + ", loggedInUser="
