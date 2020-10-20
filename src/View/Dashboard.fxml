@@ -19,6 +19,7 @@
           <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation:" />
             <ToggleButton mnemonicParsing="false" onAction="#endSim" prefHeight="27.0" prefWidth="256.0" text="ON/OFF" />
+            <ToggleButton fx:id="filePicker" onAction="#loadHouseLayout" mnemonicParsing="false" prefHeight="27.0" prefWidth="141.0" text="Upload Layout"/>
             <Label fx:id="currentUser" text="Username (or login)" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Permissions:" />
             <TextArea prefHeight="55.0" prefWidth="132.0" text="-permission 1&#10;-permission 2" />
