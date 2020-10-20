@@ -45,16 +45,16 @@ class ManageUsersTest {
         Simulation simulation = new Simulation(new Date(), java.sql.Time.valueOf(LocalTime.now()), 25, "houseinput.json");
         User testUser = simulation.getUsers().get(0);
         assertEquals("Successfully made requested changes to user.", simulation.editUser(testUser.getName() +"(" + testUser.getID() + ")", testUser.getPassword(),"", "", "Kitchen"));
+    }
 
+    @Test
+    void setLoggedInUserLocation() throws JSONException {
+        Simulation simulation = new Simulation(new Date(), java.sql.Time.valueOf(LocalTime.now()), 25, "houseinput.json");
+        assertEquals("Successfully changed logged in users location.", simulation.setLoggedInUserLocation("Kitchen"));
     }
 
     @Test
     void loginUser() {
-
-    }
-
-    @Test
-    void logoutUser() {
 
     }
 
