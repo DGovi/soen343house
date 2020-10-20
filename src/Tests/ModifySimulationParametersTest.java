@@ -17,7 +17,6 @@ class ModifySimulationParametersTest {
     void setHouseLocation() throws IOException, JSONException {
         Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE, true);
         String location = "Software Development Hell";
-        simulation.setHouseLocation(location);
-        assertEquals(location, simulation.getHouseLocation());
+        assertEquals("Set house location to " + location + "!",simulation.setHouseLocation(location));
     }
 }
