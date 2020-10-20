@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class House {
     private final String DEFAULT_LOCATION = "Canada";
 
-    protected ArrayList<Room> rooms;
+    private ArrayList<Room> rooms;
     private String location;
 
     /**
