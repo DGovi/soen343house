@@ -1,12 +1,12 @@
 package Model;
 
 /**
- * represents a user in a simulation
- * a user is someone who can interact with
- * the simulation
- * a user has a type, an ID,
+ * Represents a user actor in a simulation.
+ * A user is someone who can interact with
+ * the simulation.
+ * A user has a type, an ID,
  * a location in the house (room name)
- * a name and a password
+ * a name and a password.
  */
 public class User {
 	static private int counter = 0;
@@ -18,7 +18,7 @@ public class User {
 	private String password;
 
 	/**
-	 * creates a user with a type, a location, a name, and a password
+	 * Creates a user with a type, a location, a name, and a password
 	 * @param type is one of the four types
 	 * @param location the location the user is in the house
 	 * @param name name of the user
@@ -33,7 +33,7 @@ public class User {
 	}
 
 	/**
-	 * gets the type of the user
+	 * Gets the type of the user.
 	 * @return type
 	 */
 	public UserType getType() {
@@ -41,7 +41,7 @@ public class User {
 	}
 
 	/**
-	 * sets the type of a user
+	 * Sets the type of a user.
 	 * @param type one of the four types
 	 */
 	public void setType(UserType type) {
@@ -49,7 +49,7 @@ public class User {
 	}
 
 	/**
-	 * gets the id of the user
+	 * Gets the id of the user.
 	 * @return the id of the user
 	 */
 	public int getID() {
@@ -57,7 +57,7 @@ public class User {
 	}
 
 	/**
-	 * gets the location of the user
+	 * Gets the location of the user.
 	 * @return a room object 
 	 */
 	public Room getLocation() {
@@ -65,7 +65,7 @@ public class User {
 	}
 
 	/**
-	 * sets the locatino of a user
+	 * Sets the location of a user.
 	 * @param location room object in which a user is in
 	 */
 	public void setLocation(Room location) {
@@ -73,19 +73,19 @@ public class User {
 	}
 
 	/**
-	 * get the name of a user
+	 * Gets the name of a user.
 	 * @return the name of a user
 	 */
 	public String getName() { return this.name; }
 
 	/**
-	 * get the password for a user
+	 * Gets the password for a user.
 	 * @return the users password
 	 */
 	public String getPassword() { return this.password; }
 
 	/**
-	 * sets a new password for the user
+	 * Sets a new password for the user.
 	 * @param password the new password for the user
 	 */
 	public void setPassword(String password) { this.password = password; }

@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * represents a house in a house layout
- * the house has an array of rooms, and a location
+ * Represents a house in a house layout.
+ * The house has an array of rooms, and a location.
  */
 public class House {
     private final String DEFAULT_LOCATION = "Canada";
@@ -17,7 +17,7 @@ public class House {
     private String location;
 
     /**
-     * gets the room objects from an arraylist
+     * Gets the room objects from an arraylist.
      * @return the rooms in house object
      */
     public ArrayList<Room> getRooms() {
@@ -26,7 +26,7 @@ public class House {
 
 
    /**
-     * creates a house using an inputted JSON file
+     * Creates a house using an inputted JSON file.
      * @param srcJSON the file in which the house layout is contained
      * @exception JSONException if the file is not found or is incorrect
      */
@@ -36,7 +36,7 @@ public class House {
     }
 
     /**
-     * gets the String location of the house
+     * Gets the String location of the house.
      * @return a string descibing the house
      */
     public String getLocation() {
@@ -44,7 +44,7 @@ public class House {
     }
 
     /**
-     * sets the location of the house
+     * Sets the location of the house.
      * @param location the current location of the house
      */
     public void setLocation(String location) {

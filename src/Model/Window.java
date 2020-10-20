@@ -6,12 +6,11 @@ package Model;
  * can also be obstructed by a random object
  */
 public class Window {
-
     private Boolean open;
     private Boolean obstructed;
 
     /**
-     * creates a window that is not open and not obstructed
+     * Creates a window that is by default not open and not obstructed.
      */
     public Window() {
         this.open = false;
@@ -19,14 +18,14 @@ public class Window {
     }
 
     /**
-     * Gets the state of the window if obstructed or not
+     * Gets the state of the window if obstructed or not.
      * @return true if window is obstructed, false otherwise
      */
     public Boolean getObstructed() { return obstructed; }
 
     /**
-     * sets an obstruction on a window
-     * can only obstruct if the window is open
+     * Sets an obstruction on a window.
+     * Can only obstruct if the window is open.
      * @param obs boolean that sets the blocked state of the window
      */
     public void setObstructed(Boolean obs) {
@@ -41,14 +40,14 @@ public class Window {
     }
 
     /**
-     * Gets the state of the window if open or not
+     * Gets the state of the window if open or not.
      * @return true if window is open, false otherwise
      */
     public Boolean getOpen() { return open; }
 
     /**
-     * Sets the state of the window open or not
-     * Can only close the window if it is not obstructed
+     * Sets the state of the window open or not.
+     * Can only close the window if it is not obstructed.
      * @param open boolean representing the requested state of the window (true if open)
      */
     public void setOpen(Boolean open) {
@@ -58,9 +57,9 @@ public class Window {
     }
 
     /**
-     * Change the current state of the window (open or close)
-     * Can only close the window if it is not obstructed
-     * Can always open the window
+     * Changes the current state of the window (open or closed).
+     * Can only close the window if it is not obstructed.
+     * Can always open the window.
      * @return message String to be printed when the operation is complete or cancelled
      */
     public String changeOpen() {
@@ -74,9 +73,9 @@ public class Window {
     }
 
     /**
-     * Change the current state of blocking the window
-     * Can only block the window if it is open
-     * Can always unblock the window
+     * Changes the current blocked state of blocking the window.
+     * Can only block the window if it is open.
+     * Can always unblock the window.
      * @return message String to be printed when the operation is complete or cancelled
      */
     public String changeObstructed() {
