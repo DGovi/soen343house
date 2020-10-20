@@ -79,7 +79,7 @@ public class DashboardController {
 	}
 
 	/**
-	 * Adds a user to the simulation and adds a user type to allow privileges
+	 * Adds a user and a user type  to the simulation object
 	 */
 	@FXML private void addUser() {
 		if(!sim.getRunning())
@@ -105,7 +105,10 @@ public class DashboardController {
 			return;
 		}
   }
-  
+
+	/**
+	 * changes the user location on the simulation object
+	 */
 	@FXML private void changeHouseLocation() {
 		if(!sim.getRunning())
 			return;
@@ -114,7 +117,9 @@ public class DashboardController {
 		updateDashboard();
 	}
 
-
+	/**
+	 * edits the location of the user in a house object
+	 */
   @FXML private void editCurrentUserLocation() {
     if(!sim.getRunning())
 	  return;
@@ -123,7 +128,7 @@ public class DashboardController {
   }
 
 	/**
-	 * Allows a user to log in if not already logged in.
+	 * logs in a user
 	 */
 	@FXML private void login() {
 		if(!sim.getRunning())
@@ -132,6 +137,9 @@ public class DashboardController {
 		updateDashboard();
 	}
 
+	/**
+	 * creates a new user and adds it to the simulation object
+	 */
 	@FXML private void createUser() {
 		if(!sim.getRunning())
 			return;
@@ -149,8 +157,7 @@ public class DashboardController {
 	}
 
 	/**
-	 * Edit the information,such as user password, or priveleges,
-	 * of a specific user given that they are logged in.
+	 * Edit the information of a user
 	 */
 	@FXML private void editUser() {
 		if(!sim.getRunning())
@@ -268,6 +275,11 @@ public class DashboardController {
 		}
 
 	}
+
+	/**
+	 * opens a file picker window that allows the user to choose a
+	 * house layout for the simulation to load.
+	 */
 	@FXML private void loadHouseLayout() {
 		javafx.stage.Window stage = filePicker.getScene().getWindow();
 		FileChooser fileChooser = new FileChooser();
@@ -298,7 +310,10 @@ public class DashboardController {
 		console.appendText(output + "\n");
 	}
 
-	// Use whenever there is a change to users (logged in, names, or number of users)
+	/**
+	 * refreshes the dashboard when there is a change that
+	 * has occurred in simulation object sim
+	 */
 	private void updateDashboard() {
 		if(!sim.getRunning())
 			return;
@@ -351,6 +366,13 @@ public class DashboardController {
 
 	}
 
+	/**
+	 * the simulation initializes only after a
+	 * layout file has been loaded in the simulation
+	 * @param file inputted house layout file
+	 * @throws JSONException if there is an error during runtime
+	 * @throws IOException if there was a problem loading the file
+	 */
 	public void afterLoadInitialize(File file) throws JSONException, IOException {
 		// Set simulation
 		sim = new Simulation(
@@ -388,10 +410,11 @@ public class DashboardController {
 	}
     
   /**
-	 * Takes a JSON file and attempts to render a house layout
-	 * for the simulation
-	 * @exception JSONException JSON file not found
-	 */
+   * Takes a JSON file and attempts to render a house layout
+   * for the simulation
+   * @exception JSONException runtime error while loading the house layout file
+   * @exception IOException file not found
+   */
     @FXML public void renderLayout(Model.House h) throws JSONException, IOException {
 			if(!sim.getRunning())
 				return;
@@ -549,7 +572,11 @@ public class DashboardController {
 		printToConsole(sim.setTime(java.sql.Time.valueOf(LocalTime.now())));
 		updateDashboard();
 	}
-	
+
+	/**
+	 * turn the simulator off. The simulation does
+	 * not accept any input until turned back on.
+	 */
 	@FXML public void endSim() {
 		if(this.sim.getRunning()) {
 			console.setVisible(false);

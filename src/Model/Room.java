@@ -114,7 +114,8 @@ public class Room {
      * creates room objects from a inputted JSON file
      * @param srcJSONPath a file that is needed as input
      * @return a list of room objects
-     * @exception org.json.JSONException if the file is not found
+     * @exception org.json.JSONException if there is a runtime error
+     * @exception IOException if there is a loading error
      */
     public static ArrayList<Room> roomFromJSON(File srcJSONPath) throws org.json.JSONException, IOException {
         String marshalled = Files.readString(srcJSONPath.toPath(), StandardCharsets.US_ASCII);
