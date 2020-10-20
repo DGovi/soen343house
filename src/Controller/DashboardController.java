@@ -235,6 +235,9 @@ public class DashboardController {
 			editUserChoice.getItems().add(u.getName() + " (" + u.getID() + ")");
 			deleteUserChoice.getItems().add(u.getName() + " (" + u.getID() + ")");
 		}
+
+		// updating date and time
+		dateLabel.setText("Date is: " + sim.getDate());
 		timeLabel.setText(java.sql.Time.valueOf(LocalTime.now()).toString());
 	}
 
