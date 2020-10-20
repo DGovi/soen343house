@@ -38,11 +38,19 @@ class ModifySimulationParametersTest {
         assertEquals("Simulation OFF", simulation.toggleRunning());
         assertEquals("Simulation ON", simulation.toggleRunning());
     }
-    @Test
 
+    @Test
     void setTime() throws IOException, JSONException {
         Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE, true);
         Time time =java.sql.Time.valueOf(LocalTime.now());
-        assertEquals("Time set to " + time + ".", simulation.setTime(time));
+        assertEquals("Time set to: " + time + ".", simulation.setTime(time));
+    }
+
+
+    @Test
+    void setDate() throws IOException, JSONException {
+        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE, true);
+        String date = "friday";
+        assertEquals("Date set to: " + date + ".", simulation.setDate(date));
     }
 }

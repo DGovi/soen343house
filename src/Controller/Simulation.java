@@ -188,7 +188,7 @@ public class Simulation{
 	 */
 	public String setDate(String date) {
 		this.date = date;
-		return "Date set to: " + date;
+		return "Date set to: " + date + ".";
 	}
 
 	/**
@@ -206,7 +206,7 @@ public class Simulation{
 	 */
 	public String setTime(Time time) {
 		this.time = time;
-		return "Time set to " + time + ".";
+		return "Time set to: " + time + ".";
 	}
 
 	/**
