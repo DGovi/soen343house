@@ -141,7 +141,7 @@ public class Simulation{
 		}
 
 		// Should never reach this point.
-		return "ERROR: Could not find the give user to delete.";
+		return "ERROR: Could not find the given user to delete.";
 	}
 
 	// finds and returns the user with the given ID
