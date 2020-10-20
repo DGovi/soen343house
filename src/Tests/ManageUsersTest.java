@@ -54,8 +54,15 @@ class ManageUsersTest {
     }
 
     @Test
-    void loginUser() {
+    void loginUser() throws JSONException {
+        String username = "testboy";
+        String password = "123456";
+        String type = "Stranger";
+        String location = "Garage";
 
+        Simulation simulation = new Simulation(new Date(), java.sql.Time.valueOf(LocalTime.now()), 25, "houseinput.json");
+        simulation.addUser(username, password, type, password);
+        assertEquals("Successfully switched users.", simulation.login(username, password));
     }
 
 
