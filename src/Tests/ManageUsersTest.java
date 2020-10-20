@@ -14,9 +14,7 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ManageUsersTest {
-
     private static final File HOUSE_FILE = new File("./houseinput.json");
-
 
     @Test
     void addUser() throws IOException, JSONException {
