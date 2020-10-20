@@ -1,5 +1,11 @@
 package Controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,6 +14,10 @@ import java.util.Stack;
 import java.util.Date;
 import java.time.LocalTime;
 
+import javafx.event.ActionEvent;
+import View.CountriesWindow;
+import View.InputWindow;
+import javafx.stage.FileChooser;
 import org.json.JSONException;
 
 import Model.*;
@@ -17,50 +27,65 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.layout.VBox;
 
 public class DashboardController {
 	private Simulation sim;
+	private int windowLength = 30;
+	private int ROOM_SIZE = 50;
+	final FileChooser fileChooser = new FileChooser();
 
-
+	// Left pane
+	@FXML private Label houseLocationLabel;
+	@FXML private Label temperatureLabel;
 	@FXML private Label currentUser;
+	@FXML private ComboBox<String> currentUserLocationOptions;
+
+	// SHS
 	@FXML private TextField loginName;
 	@FXML private PasswordField loginPassword;
 	@FXML private TextField createUserName;
 	@FXML private PasswordField createUserPassword;
 	@FXML private ComboBox<String> createUserType;
+	@FXML private ComboBox<String> createUserLocation;
 	@FXML private ComboBox<String> editUserChoice;
 	@FXML private PasswordField editUserCurrentPassword;
 	@FXML private PasswordField editUserNewPassword;
 	@FXML private ComboBox<String> editUserType;
+	@FXML private ComboBox<String> editUserLocation;
 	@FXML private ComboBox<String> deleteUserChoice;
+
+	// SHC
+	@FXML private ComboBox<String> shcRoomSelect;
+	@FXML private ComboBox<String> shcWindowSelect;
+	@FXML private Button shcWindowOpenState;
+	@FXML private Button shcWindowBlockedState;
+
 	@FXML private TextArea console;
-    @FXML private Canvas render;
+	@FXML private Canvas render;
+	@FXML private ToggleButton filePicker;
+    @FXML private DatePicker datePicker;
+    @FXML private Label dateLabel;
+    @FXML private Label timeLabel;
     GraphicsContext gc;
 
-	@FXML private void login() {
-		if(!sim.getRunning())
-			return;
-		for (User u : sim.getUsers()) {
-			if (u.getName().equals(loginName.getText())) {
-				if (u.getPassword().equals(loginPassword.getText())) {
-					if (u == sim.getLoggedInUser()) {
-						printToConsole("ERROR: Already logged into this user.");
-						return;
-					}
-					sim.setLoggedInUser(u);
-					updateDashboard();
-					printToConsole("Successfully switched users.");
-					return;
-				}
-				else {
-					printToConsole("ERROR: Found a user with the same name, but different password.");
-					printToConsole("Continuing search...");
-				}
-			}
+  @FXML private void changeTemperature() {
+	  if(!sim.getRunning())
+		  return;
+		String newTemperature = InputWindow.display("Change Temperature", "New Temperature");
+		try {
+			float newTemperatureInt = Float.parseFloat(newTemperature);
+			sim.setTemperature(newTemperatureInt);
+			updateDashboard();
+			printToConsole("Setting simulation temperature to " + newTemperature + "!");
+		} catch (Exception e) {
+			printToConsole("ERROR: Inputted temperature is not a valid float.");
 		}
-		printToConsole("ERROR: Did not find any user with the entered name:" + loginName.getText() + ".");
 	}
 
+	/**
+	 * Adds a user to the simulation and adds a user type to allow privileges
+	 */
 	@FXML private void addUser() {
 		if(!sim.getRunning())
 			return;
@@ -84,122 +109,175 @@ public class DashboardController {
 			printToConsole("ERROR: Unhandled add user case. You did something weird.");
 			return;
 		}
+  }
+  
+	@FXML private void changeHouseLocation() {
+		String newCountry = CountriesWindow.display("Choose Country", "Choose Country");
+		printToConsole(sim.setHouseLocation(newCountry));
+		updateDashboard();
+	}
 
-		// Add user to simulation
-		sim.addUser(new User(
-				type,
-				sim.getHouse().getRooms().get(0),
-				createUserName.getText(),
-				createUserPassword.getText()
-		));
+
+  @FXML private void editCurrentUserLocation() {
+	printToConsole(sim.setLoggedInUserLocation(currentUserLocationOptions.getValue()));
+	updateDashboard();
+  }
+
+	/**
+	 * Allows a user to log in if not already logged in.
+	 */
+	@FXML private void login() {
+		if(!sim.getRunning())
+			return;
+		printToConsole(sim.login(loginName.getText(), loginPassword.getText()));
+		updateDashboard();
+	}
+
+	@FXML private void createUser() {
+		printToConsole(
+				sim.addUser(
+						createUserName.getText(),
+						createUserPassword.getText(),
+						createUserType.getValue(),
+						createUserLocation.getValue()
+				)
+		);
 
 		// Update other dropdownlist
 		updateDashboard();
-
-		// Print action to console
-		printToConsole(
-				"Successfully added " +
-						createUserName.getText() +
-						" as a " +
-						(createUserType.getValue()).toLowerCase() +
-						" user."
-		);
-
-		// Reset field content
-		createUserName.setText("");
 	}
 
+	/**
+	 * Edit the information,such as user password, or priveleges,
+	 * of a specific user given that they are logged in.
+	 */
 	@FXML private void editUser() {
 		if(!sim.getRunning())
 			return;
 		String choice = editUserChoice.getValue();
-
-		if (choice == null) {
-			printToConsole("ERROR: Did not choose a user to edit.");
-			return;
-		}
-		else if (editUserCurrentPassword.getText().length() == 0) {
-			printToConsole("ERROR: Need to enter the chosen user's password to make changes.");
-			return;
-		}
-		else if (editUserType.getValue() == null && editUserNewPassword.getText().length() == 0) {
-			printToConsole("ERROR: Need to give changes to make.");
-			return;
-		}
-
-		User toChange = null;
-		choice = choice.substring(choice.indexOf("(")+1,choice.indexOf(")"));
-		for (User u : sim.getUsers()) {
-			if (u.getID() == Integer.parseInt(choice)) {
-				toChange = u;
-				break;
-			}
-		}
-
-		if (toChange == null) {
-			printToConsole("ERROR: Somehow did not find user chosen from dropdown list... Try again.");
-			return;
-		}
-		if (!toChange.getPassword().equals(editUserCurrentPassword.getText())) {
-			printToConsole("ERROR: Entered password is not correct for chosen user.");
-			return;
-		}
-		if (editUserCurrentPassword.getText().equals(editUserNewPassword.getText())) {
-			printToConsole("ERROR: Current and new password are the same.");
-			return;
-		}
-
-		UserType type = null;
-		if (editUserType.getValue() == "Parent") { type = UserType.PARENT; }
-		else if (editUserType.getValue() == "Child") { type = UserType.CHILD; }
-		else if (editUserType.getValue() == "Guest") { type = UserType.GUEST; }
-		else if (editUserType.getValue() == "Stranger") { type = UserType.STRANGER; }
-
-		if (type == null) {
-			toChange.setPassword(editUserNewPassword.getText());
-			printToConsole("Set new password for chosen user.");
-			return;
-		}
-		toChange.setPassword(editUserNewPassword.getText());
-		toChange.setType(type);
-		printToConsole("Set new password and changed type for chosen user.");
-
-		editUserCurrentPassword.setText("");
-		editUserNewPassword.setText("");
+		printToConsole(
+				sim.editUser(
+						editUserChoice.getValue(),
+						editUserCurrentPassword.getText(),
+						editUserNewPassword.getText(),
+						editUserType.getValue(),
+						editUserLocation.getValue()
+				)
+		);
+		updateDashboard();
 	}
 
+	/**
+	 * User is deleted from the simulation and can no longer use
+	 * the simulation.
+	 */
 	@FXML private void deleteUser() {
-		if(!sim.getRunning())
-			return;
-		String choice = deleteUserChoice.getValue();
-		if (choice == null) {
-			printToConsole("ERROR: Please choose a user to delete");
-			return;
-		}
-		if (sim.getLoggedInUser().getType() != UserType.PARENT) {
-			printToConsole("ERROR: Need admin/parental privileges to delete a user.");
-			return;
-		}
+		printToConsole(sim.removeUser(deleteUserChoice.getValue()));
+		updateDashboard();
+	}
 
-		// extract id of choice
-		choice = choice.substring(choice.indexOf("(")+1,choice.indexOf(")"));
-		for (User u : sim.getUsers()) {
-			if (u.getID() == Integer.parseInt(choice)) {
-				if (u.getID() == sim.getLoggedInUser().getID()) {
-					printToConsole("ERROR: Cannot delete logged in user.");
-					return;
+	@FXML private void shcChangeRooms() {
+		// SHC stuff
+		if (shcRoomSelect.getValue() != null) {
+			for (Room r : sim.getHouse().getRooms()) {
+				if (shcRoomSelect.getValue().equals(r.getName())) {
+					shcWindowSelect.getItems().clear();
+					for (int i = 1; i <= r.getWindows().size(); i++) {
+						shcWindowSelect.getItems().add("Window " + i);
+					}
+					shcWindowOpenState.setText("Pick a window");
+					shcWindowBlockedState.setText("Pick a window");
+					break;
 				}
-				sim.removeUser(u);
-				updateDashboard();
-				printToConsole("Successfully removed user.");
+			}
+		}
+		printToConsole("Now pick a window to view the state of.");
+	}
+
+	@FXML private void shcChangeWindows() {
+  		if (shcWindowSelect.getValue() != null) {
+  			updateSHCbuttons();
+			printToConsole("Successfully changed windows.");
+		}
+  	}
+
+  	@FXML private void shcChangeOpen() {
+  		if ((shcRoomSelect.getValue() == null) || (shcWindowSelect.getValue() == null)) {
+  			printToConsole("ERROR: Not all fields were filled in before clicking the button");
+			return;
+  		}
+		String chosenWindowName = shcWindowSelect.getValue();
+		int chosenWindowIndex = Integer.parseInt(chosenWindowName.substring(7, chosenWindowName.length())) - 1;
+  		for (Room r : sim.getHouse().getRooms()) {
+  			if (r.getName().equals(shcRoomSelect.getValue())) {
+  				printToConsole(r.getWindows().get(chosenWindowIndex).changeOpen());
+  				updateSHCbuttons();
+  				return;
+			}
+		}
+	}
+
+	@FXML private void shcChangeBlocked() {
+		if ((shcRoomSelect.getValue() == null) || (shcWindowSelect.getValue() == null)) {
+			printToConsole("ERROR: Not all fields were filled in before clicking the button");
+			return;
+		}
+		String chosenWindowName = shcWindowSelect.getValue();
+		int chosenWindowIndex = Integer.parseInt(chosenWindowName.substring(7, chosenWindowName.length())) - 1;
+		for (Room r : sim.getHouse().getRooms()) {
+			if (r.getName().equals(shcRoomSelect.getValue())) {
+				printToConsole(r.getWindows().get(chosenWindowIndex).changeObstructed());
+				updateSHCbuttons();
 				return;
 			}
 		}
-
-		printToConsole("ERROR: Somehow could not find user in dropdown list...");
-		printToConsole("CHECK ANY USER UPDATING ACTIONS FOR MISSING DROPDOWN UPDATES.");
-		return;
 	}
+
+	private void updateSHCbuttons() {
+		String chosenWindowName = shcWindowSelect.getValue();
+		int chosenWindowIndex = Integer.parseInt(chosenWindowName.substring(7, chosenWindowName.length())) - 1;
+		for (Room r : sim.getHouse().getRooms()) {
+			if (r.getName().equals(shcRoomSelect.getValue())) {
+				Window w = r.getWindows().get(chosenWindowIndex);
+				if (w.getObstructed()) {
+					shcWindowOpenState.setText("Open");
+					shcWindowBlockedState.setText("Obstructed");
+				}
+				else if (w.getOpen()) {
+					shcWindowOpenState.setText("Open");
+					shcWindowBlockedState.setText("Not Obstructed");
+				}
+				else {
+					shcWindowOpenState.setText("Closed");
+					shcWindowBlockedState.setText("Not Obstructed");
+				}
+			}
+		}
+
+	}
+	@FXML private void loadHouseLayout() {
+		javafx.stage.Window stage = filePicker.getScene().getWindow();
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Open House layout File");
+
+		File file = fileChooser.showOpenDialog(stage);
+		if (file == null) {
+			printToConsole("ERROR LOADING FILE");
+			return;
+		}
+
+		try {
+			System.out.println(file.toPath());
+			afterLoadInitialize(file);
+		} catch (JSONException | IOException e) {
+			printToConsole("ERROR LOADING FILE");
+		}
+	}
+
+
+	/**
+	 * @param output prints on the console of the simulation the output
+	 */
 
 	private void printToConsole(String output) {
 		if(!sim.getRunning())
@@ -212,7 +290,20 @@ public class DashboardController {
 		if(!sim.getRunning())
 			return;
 		// reset name of logged in user
+    	// reset simulation house location
+		houseLocationLabel.setText(sim.getHouseLocation());
+
+    	// reset simulation temperature
+		temperatureLabel.setText(Float.toString(sim.getTemperature()));
+    
+		// reset info of logged in user
 		currentUser.setText(sim.getLoggedInUser().getName());
+		if (sim.getLoggedInUser().getLocation() == null) {
+			currentUserLocationOptions.valueProperty().set("Outside");
+		}
+		else {
+			currentUserLocationOptions.valueProperty().set(sim.getLoggedInUser().getLocation().getName());
+		}
 
 		// reset list of users
 		editUserChoice.getItems().clear();
@@ -221,17 +312,40 @@ public class DashboardController {
 			editUserChoice.getItems().add(u.getName() + " (" + u.getID() + ")");
 			deleteUserChoice.getItems().add(u.getName() + " (" + u.getID() + ")");
 		}
+
+		// updating date and time
+		dateLabel.setText("Date is: " + sim.getDate());
+		timeLabel.setText(java.sql.Time.valueOf(LocalTime.now()).toString());
+
+		// Reset field content
+		loginName.setText("");
+		loginPassword.setText("");
+		createUserName.setText("");
+		createUserPassword.setText("");
+		createUserType.valueProperty().set(null);
+		createUserLocation.valueProperty().set(null);
+		editUserCurrentPassword.setText("");
+		editUserNewPassword.setText("");
+
 	}
 
+	/**
+	 * starts up the simulation
+	 * @exception  JSONException if JSON file not found
+	 */
 	// Basically the constructor --> Sets variables
 	public void initialize() throws JSONException {
 
+	}
+
+	public void afterLoadInitialize(File file) throws JSONException, IOException {
 		// Set simulation
 		sim = new Simulation(
-				new Date(),
+				new String(),
 				java.sql.Time.valueOf(LocalTime.now()),
 				25,
-				"houseinput.json", true
+				file,
+				true
 		);
 		currentUser.setText(sim.getLoggedInUser().getName());
 
@@ -239,21 +353,35 @@ public class DashboardController {
 		createUserType.getItems().setAll("Parent", "Child", "Guest", "Stranger");
 		editUserType.getItems().setAll("Parent", "Child", "Guest", "Stranger");
 
+		// Set dropdown options for locations
+		for (Room r : sim.getHouse().getRooms()) {
+			createUserLocation.getItems().add(r.getName());
+			editUserLocation.getItems().add(r.getName());
+			currentUserLocationOptions.getItems().add(r.getName());
+
+			// These don't need outside option
+			shcRoomSelect.getItems().add(r.getName());
+		}
+		createUserLocation.getItems().add("Outside");
+		editUserLocation.getItems().add("Outside");
+		currentUserLocationOptions.getItems().add("Outside");
+
+		shcWindowOpenState.setText("Pick a window");
+		shcWindowBlockedState.setText("Pick a window");
+
 		// Set dropdown options for dropdowns with users
 		updateDashboard();
-		renderLayout();
-
+		renderLayout(sim.getHouse());
 	}
     
-    private int windowLength = 30;
-    private int ROOM_SIZE = 50;
-    
-    @FXML public void renderLayout() throws JSONException {
-		if(!sim.getRunning())
-			return;
-	    
-	    Model.House h = new Model.House("houseinput.json");
-
+  /**
+	 * Takes a JSON file and attempts to render a house layout
+	 * for the simulation
+	 * @exception JSONException JSON file not found
+	 */
+    @FXML public void renderLayout(Model.House h) throws JSONException, IOException {
+			if(!sim.getRunning())
+				return;
 	    gc = render.getGraphicsContext2D();
 	    
 	    gc.setFill(Color.WHITE);
@@ -314,7 +442,14 @@ public class DashboardController {
 			}
 		}
     }
-	
+
+	/**
+	 * On a given house layout, draw the windows at specified location
+	 * @param x position on the x coordinate of window
+	 * @param y position of y coordinate of window
+	 * @param size length of a window
+	 * @param countWindows number of windows on  a house layout
+	 */
 	@FXML public void drawWindows(int x, int y, int size, int countWindows) {
 		if(!sim.getRunning())
 			return;
@@ -329,7 +464,16 @@ public class DashboardController {
     	gc.setStroke(Color.BLACK);
     	gc.setFill(Color.BLACK);
     }
-    
+
+	/**
+	 * on the house layout in the simulation, draw the available lights
+	 * in the room
+	 *
+	 * @param room which room the lights are in
+	 * @param x position on the x coordinate of the lights
+	 * @param y position of the y coordinate of the lights
+	 * @param size size of the lights
+	 */
     @FXML public void drawLights(Room room, int x, int y, int size) {
 		if(!sim.getRunning())
 			return;
@@ -343,6 +487,13 @@ public class DashboardController {
     	gc.setFill(Color.BLACK);
     }
 
+	/**
+	 * Draws the room of the house layout just to be sure
+	 * @param room the room of a house layout
+	 * @param x coordinate of the ex position of the room
+	 * @param y coordinate of the y position of the room
+	 * @param sideDoor true if the door is on the side (vertical on the house layout), false if not (horizontal)
+	 */
 	@FXML public void drawRoom(Room room, int x, int y, boolean sideDoor) {
 		if(!sim.getRunning())
 			return;
@@ -359,6 +510,27 @@ public class DashboardController {
 		gc.setStroke(Color.BLACK);
 		gc.fillText(room.getName(), x + 5, y + 17);
     }
+
+	/**
+	 * displays the given date from the actionEvent
+	 * onto the simulation
+	 * @param actionEvent event that triggers this method
+	 */
+	//shows entered date in label box
+	public void displayDate(javafx.event.ActionEvent actionEvent) {
+		printToConsole(sim.setDate(datePicker.getValue().toString()));
+		updateDashboard();
+	}
+
+	/**
+	 * updates the time displayed on the simulation
+	 * @param actionEvent event that triggers the method
+	 */
+	//shows the time
+	public void updateTime(ActionEvent actionEvent) {
+		printToConsole(sim.setTime(java.sql.Time.valueOf(LocalTime.now())));
+		updateDashboard();
+	}
 	
 	@FXML public void endSim() {
 		if(this.sim.getRunning()) {
