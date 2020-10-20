@@ -1,16 +1,31 @@
 package Model;
 
+/**
+ * Represents a window in the simulation
+ */
 public class Window {
 
     private Boolean open;
     private Boolean obstructed;
 
+    /**
+     * creates a window
+     */
     public Window() {
-        open = false; obstructed = false;
+        this.open = false;
+        this.obstructed = false;
     }
 
+    /**
+     * Gets the state of the window if obstructed or not
+     * @return true if window is obstructed, false otherwise
+     */
     public Boolean getObstructed() { return obstructed; }
 
+    /**
+     * sets an obstruction on a window
+     * @param obs object that blocks a window
+     */
     public void setObstructed(Boolean obs) {
         // Can only perform obstruction if window is open
         if (open) {
