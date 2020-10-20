@@ -11,7 +11,8 @@ import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
 /**
- * represents a simulation
+ * The primary controller of the smart home simulation.
+ * Stores many important simulation variables.
  */
 public class Simulation{
 	private String date;
@@ -23,7 +24,7 @@ public class Simulation{
 	private boolean running;
 
   /**
-   * creates a simulation object with date, time, temperature, houseinput as input
+   * Creates a simulation object with date, time, temperature, houseinput as input.
    * @param date a date object
    * @param time a time object
    * @param temperature temperature outside of the house
@@ -43,10 +44,9 @@ public class Simulation{
 	}
 
 	/**
-	 * adds user to users list
+	 * Adds user to users list.
 	 * @param user user object
 	 */
-	// adds user to users ArrayList
 	public void addUser(User user) {
 		// user is null
 		if (user == null) return;
@@ -66,7 +66,7 @@ public class Simulation{
 	}
 
 	/**
-	 * adds a user to the simulation given information as strings
+	 * Adds a user to the simulation given information as strings.
 	 * @param username name as string
 	 * @param password password as string
 	 * @param type UserType as string
@@ -119,7 +119,7 @@ public class Simulation{
 	}
 
   	/**
-	 * removes user from an arraylist
+	 * Removes user from an the simulation.
 	 * @param user an existing user object
 	 */
 	public void removeUser(User user) {
@@ -129,7 +129,7 @@ public class Simulation{
 	}
 
 	/**
-	 * Removes user given a string in the following form: "Name (ID)"
+	 * Removes user given a string in the following form: "Name (ID)".
 	 * @param choice String of form "Name (ID)"
 	 * @return message String saying what action was taken given the choice.
 	 */
@@ -160,7 +160,7 @@ public class Simulation{
 	}
 
 	/**
-	 * finds the user using their ID
+	 * Finds the user using their ID.
 	 * @param id the ID of a user
 	 * @return a user object if found, null if not
 	 */
@@ -174,23 +174,16 @@ public class Simulation{
 	}
 
 	/**
-	 * logs out the user that is currently logged in
+	 * Logs out the user that is currently logged in
+     *
+	 * @deprecated will crash the simulation
 	 */
-	// logouts the current logged in user
 	public void logout() {
 		if (this.loggedInUser != null) this.loggedInUser = null;
 	}
 
 	/**
-	 * prints all users
-	 */
-	// DEBUG METHOD to print all users in users ArrayList
-	public void printUsers() {
-		this.users.stream().forEach(user -> System.out.println(user));
-	}
-
-	/**
-	 * gets the date on the simulation
+	 * Gets the date of the simulation.
 	 * @return date as a string
 	 */
 	public String getDate() {
@@ -198,7 +191,7 @@ public class Simulation{
 	}
 
 	/**
-	 * sets the date of the simulation
+	 * Sets the date of the simulation.
 	 * @param date the date of the simulation as a string
 	 */
 	public String setDate(String date) {
@@ -207,7 +200,7 @@ public class Simulation{
 	}
 
 	/**
-	 * gets the time of the simulation
+	 * Gets the time of the simulation.
 	 * @return Time object
 	 */
 	public Time getTime() {
@@ -215,7 +208,7 @@ public class Simulation{
 	}
 
 	/**
-	 * sets the time of the simulation using time object
+	 * Sets the time of the simulation using time object.
 	 * @param time new time to be set
 	 * @return a string: "time updated"
 	 */
@@ -225,7 +218,7 @@ public class Simulation{
 	}
 
 	/**
-	 * get the temperature outside the home in the simulation
+	 * Gets the temperature outside the home in the simulation.
 	 * @return the temperature outside of the house
 	 */
 	public float getTemperature() {
@@ -233,7 +226,7 @@ public class Simulation{
 	}
 
 	/**
-	 * set the new temperature outside of the home
+	 * Sets the new temperature outside of the home.
 	 * @param temperature new temperature to be set
 	 */
 	public void setTemperature(float temperature) {
@@ -241,7 +234,7 @@ public class Simulation{
 	}
 
 	/**
-	 * gets the current logged in user
+	 * Gets the current logged in user.
 	 * @return User object of the current logged in user
 	 */
 	public User getLoggedInUser() {
@@ -249,7 +242,7 @@ public class Simulation{
 	}
 
 	/**
-	 * set a user to a logged in user
+	 * Sets a user to a logged in user.
 	 * @param loggedInUser a User object
 	 */
 	public void setLoggedInUser(User loggedInUser) {
@@ -257,7 +250,7 @@ public class Simulation{
 	}
 
 	/**
-	 * Sets the logged in users location based on the location name as a string
+	 * Sets the logged in users location based on the location name as a string.
 	 * @param location String: room the user wants to switch to as a string
 	 * @return String: message stating what occurred (success or error)
 	 */
@@ -279,7 +272,7 @@ public class Simulation{
 	}
 
 	/**
-	 * Set the logged in user given their name and password
+	 * Sets the logged in user given their name and password.
 	 * @param username String: name of the user that wishes to log in
 	 * @param password String: password of the user that wishes to log in
 	 * @return String: message stating whether it was a success or not and why
@@ -303,7 +296,7 @@ public class Simulation{
 	}
 
 	/**
-	 * Edit the user of given username and currentPassword
+	 * Edits the user of given username and currentPassword.
 	 * @param username String: string in the form "Name (ID)"
 	 * @param currentPassword String password of the user who needs to be changed
 	 * @param newPassword String password to change to (can be empty/null)
@@ -312,7 +305,6 @@ public class Simulation{
 	 * @return String: message stating successful completion or error and why
 	 */
 	public String editUser(String username, String currentPassword, String newPassword, String type, String location) {
-
 		if (username == null) {
 			return "ERROR: Did not choose a user to edit.";
 		}
@@ -378,7 +370,7 @@ public class Simulation{
 	}
 
 	/**
-	 * Set the country of the house location
+	 * Sets the country of the house location.
 	 * @param location String: country name as a string
 	 * @return error message or message of success
 	 */
@@ -388,7 +380,7 @@ public class Simulation{
 	}
 
 	/**
-	 * Gets the name of the country the house is in
+	 * Gets the name of the country the house is in.
 	 * @return String country location of the house
 	 */
 	public String getHouseLocation() {
@@ -396,19 +388,19 @@ public class Simulation{
 	}
 
   	/**
-	 * gets a list of all the simulation users
+	 * Gets a list of all the simulation users.
 	 * @return a list of users
 	 */
 	public ArrayList<User> getUsers() { return users; }
 
 	/**
-	 * get the house object of a simulation
+	 * Gets the house object of a simulation.
 	 * @return a House object
 	 */
 	public House getHouse() { return house; }
 
 	/**
-	 * Get the current state of the simulation (running or not) as a boolean
+	 * Gets the current state of the simulation (running or not) as a boolean.
 	 * @return bool: true if running, false otherwise
 	 */
 	public boolean getRunning() {
@@ -416,7 +408,7 @@ public class Simulation{
 	}
 
 	/**
-	 * Set the running state of the simulation
+	 * Sets the running state of the simulation.
 	 * @param running boolean true if running, false otherwise
 	 */
 	public void setRunning(boolean running) {
