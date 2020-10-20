@@ -15,17 +15,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ManageUsersTest {
 
-    private static Simulation simulation;
     private static final File HOUSE_FILE = new File("./houseinput.json");
 
-    @BeforeAll
-    static void resetSimulation() throws IOException, JSONException {
-        // reset the simulation
-        simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE, true);
-    }
 
     @Test
-    void addUser() {
+    void addUser() throws IOException, JSONException {
+        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE, true);
         String username = "testboy";
         String password = "123456";
         String type = "Stranger";
@@ -35,7 +30,8 @@ class ManageUsersTest {
     }
 
     @Test
-    void removeUser() {
+    void removeUser() throws IOException, JSONException {
+        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE, true);
         String username = "testboy";
         String password = "123456";
         String type = "Stranger";
@@ -48,18 +44,21 @@ class ManageUsersTest {
     }
 
     @Test
-    void setUserLocation() {
+    void setUserLocation() throws IOException, JSONException {
+        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE, true);
         User testUser = simulation.getUsers().get(0);
         assertEquals("Successfully made requested changes to user.", simulation.editUser(testUser.getName() +"(" + testUser.getID() + ")", testUser.getPassword(),"", "", "Kitchen"));
     }
 
     @Test
-    void setLoggedInUserLocation() {
+    void setLoggedInUserLocation() throws IOException, JSONException {
+        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE, true);
         assertEquals("Successfully changed logged in users location.", simulation.setLoggedInUserLocation("Kitchen"));
     }
 
     @Test
-    void loginUser() {
+    void loginUser() throws IOException, JSONException {
+        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE, true);
         String username = "testboy";
         String password = "123456";
         String type = "Stranger";
