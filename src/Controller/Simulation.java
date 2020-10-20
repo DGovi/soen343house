@@ -66,12 +66,12 @@ public class Simulation{
 	}
 
 	/**
-	 * adds user to arraylist with given parameters
-	 * @param username the username that the user wants to have
-	 * @param password the password that is paried witht he username
-	 * @param type one of the four enums
-	 * @param location user is placed in a location inside a house object
-	 * @return success message or error message
+	 * adds a user to the simulation given information as strings
+	 * @param username name as string
+	 * @param password password as string
+	 * @param type UserType as string
+	 * @param location room name as string
+	 * @return message String conveying what action occurred during the function
 	 */
 	public String addUser(String username, String password, String type, String location) {
 		UserType userType = null;
@@ -129,9 +129,9 @@ public class Simulation{
 	}
 
 	/**
-	 * removes the user from the users list
-	 * @param choice the username of the user to delete
-	 * @return a success or error message
+	 * Removes user given a string in the following form: "Name (ID)"
+	 * @param choice String of form "Name (ID)"
+	 * @return message String saying what action was taken given the choice.
 	 */
 	public String removeUser(String choice) {
 
@@ -257,9 +257,9 @@ public class Simulation{
 	}
 
 	/**
-	 * set the currently logged in user's location
-	 * @param location location in the house
-	 * @return string message success scenario and error scenario
+	 * Sets the logged in users location based on the location name as a string
+	 * @param location String: room the user wants to switch to as a string
+	 * @return String: message stating what occurred (success or error)
 	 */
 	public String setLoggedInUserLocation(String location) {
 		if (location == null) return "ERROR: Need to pick a location.";
@@ -270,7 +270,7 @@ public class Simulation{
 		for (Room r : house.getRooms()) {
 			if (r.getName().equals(location)) {
 				loggedInUser.setLocation(r);
-				return "Successfully changed logged in users location.";
+				return "Successfully changed logged in user's location.";
 			}
 		}
 
@@ -279,11 +279,10 @@ public class Simulation{
 	}
 
 	/**
-	 * given a username and the corresponding password,
-	 * a user can log in to the simulator
-	 * @param username the users username
-	 * @param password the password to the username
-	 * @return a string success message or an error message
+	 * Set the logged in user given their name and password
+	 * @param username String: name of the user that wishes to log in
+	 * @param password String: password of the user that wishes to log in
+	 * @return String: message stating whether it was a success or not and why
 	 */
 	public String login(String username, String password) {
 		for (User u : users) {
@@ -304,13 +303,13 @@ public class Simulation{
 	}
 
 	/**
-	 * edits a chosen users information
-	 * @param username the user whose information is targetted
-	 * @param currentPassword the users current password
-	 * @param newPassword the password that will be the users password
-	 * @param type parent, child, guest, stranger
-	 * @param location the users current locaiton in the house
-	 * @return a success or error message
+	 * Edit the user of given username and currentPassword
+	 * @param username String: string in the form "Name (ID)"
+	 * @param currentPassword String password of the user who needs to be changed
+	 * @param newPassword String password to change to (can be empty/null)
+	 * @param type String UserType the user needs to change to as a string (can be empty/null)
+	 * @param location String name of room user wants to change to as a string (can be empty/null)
+	 * @return String: message stating successful completion or error and why
 	 */
 	public String editUser(String username, String currentPassword, String newPassword, String type, String location) {
 
@@ -379,9 +378,9 @@ public class Simulation{
 	}
 
 	/**
-	 * sets the location of the house
-	 * @param location the location on the planet
-	 * @return a string of the location of the house
+	 * Set the country of the house location
+	 * @param location String: country name as a string
+	 * @return error message or message of success
 	 */
 	public String setHouseLocation(String location) {
 		this.house.setLocation(location);
@@ -389,8 +388,8 @@ public class Simulation{
 	}
 
 	/**
-	 * gets the house location
-	 * @return the house.getLocation(), a location string
+	 * Gets the name of the country the house is in
+	 * @return String country location of the house
 	 */
 	public String getHouseLocation() {
 		return this.house.getLocation();
@@ -409,16 +408,16 @@ public class Simulation{
 	public House getHouse() { return house; }
 
 	/**
-	 * checks if the simulation is running or not
-	 * @return a boolean value if the simulation is running
+	 * Get the current state of the simulation (running or not) as a boolean
+	 * @return bool: true if running, false otherwise
 	 */
 	public boolean getRunning() {
 		return this.running;
 	}
 
 	/**
-	 * sets the simulation to running or not
-	 * @param running a boolean value if the simulation is running or not
+	 * Set the running state of the simulation
+	 * @param running boolean true if running, false otherwise
 	 */
 	public void setRunning(boolean running) {
 		this.running = running;

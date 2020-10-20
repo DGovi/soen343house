@@ -26,7 +26,8 @@ public class Window {
 
     /**
      * sets an obstruction on a window
-     * @param obs object that blocks a window
+     * can only obstruct if the window is open
+     * @param obs boolean that sets the blocked state of the window
      */
     public void setObstructed(Boolean obs) {
         // Can only perform obstruction if window is open
@@ -40,14 +41,15 @@ public class Window {
     }
 
     /**
-     * get if the window is open or not
-     * @return true if window is open, false otherhwise
+     * Gets the state of the window if open or not
+     * @return true if window is open, false otherwise
      */
     public Boolean getOpen() { return open; }
 
     /**
-     * sets the model to open
-     * @param open
+     * Sets the state of the window open or not
+     * Can only close the window if it is not obstructed
+     * @param open boolean representing the requested state of the window (true if open)
      */
     public void setOpen(Boolean open) {
         if (!obstructed) {
@@ -56,8 +58,10 @@ public class Window {
     }
 
     /**
-     * closes and opens the window
-     * @return if there is an obstruction, error message, success message otherwise
+     * Change the current state of the window (open or close)
+     * Can only close the window if it is not obstructed
+     * Can always open the window
+     * @return message String to be printed when the operation is complete or cancelled
      */
     public String changeOpen() {
         if (obstructed && open) {
@@ -70,8 +74,10 @@ public class Window {
     }
 
     /**
-     * removes the obstruction if any
-     * @return message saying that it was a success or there was an error
+     * Change the current state of blocking the window
+     * Can only block the window if it is open
+     * Can always unblock the window
+     * @return message String to be printed when the operation is complete or cancelled
      */
     public String changeObstructed() {
         if (!open) {
