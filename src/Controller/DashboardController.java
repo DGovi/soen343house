@@ -1,5 +1,6 @@
 package Controller;
 
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -234,6 +235,7 @@ public class DashboardController {
 			editUserChoice.getItems().add(u.getName() + " (" + u.getID() + ")");
 			deleteUserChoice.getItems().add(u.getName() + " (" + u.getID() + ")");
 		}
+		timeLabel.setText(java.sql.Time.valueOf(LocalTime.now()).toString());
 	}
 
 	/**
@@ -245,7 +247,7 @@ public class DashboardController {
 
 		// Set simulation
 		sim = new Simulation(
-				new Date(),
+				new String(),
 				java.sql.Time.valueOf(LocalTime.now()),
 				25,
 				"houseinput.json"
@@ -401,31 +403,20 @@ public class DashboardController {
 	 * displays the given date from the actionEvent
 	 * onto the simulation
 	 * @param actionEvent event that triggers this method
-	 * @return date as a String
 	 */
 	//shows entered date in label box
-	public String displayDate(javafx.event.ActionEvent actionEvent) {
-		LocalDate chosenDate = datePicker.getValue();
-		if(chosenDate == null){
-			dateLabel.setText("The Date is: ");
-		}
-		else {
-			dateLabel.setText("The Date is: " + chosenDate.toString());
-		}
-		return chosenDate.toString();
+	public void displayDate(javafx.event.ActionEvent actionEvent) {
+		printToConsole(sim.setDate(datePicker.getValue().toString()));
+		updateDashboard();
 	}
 
 	/**
 	 * updates the time displayed on the simulation
 	 * @param actionEvent event that triggers the method
-	 * @return time as a string
 	 */
 	//shows the time
-	public String updateTime(ActionEvent actionEvent) {
-		DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss a");
-		Date date = new Date();
-		String time=dateFormat.format(date);
-		timeLabel.setText("Time is: " + time);
-		return time;
+	public void updateTime(ActionEvent actionEvent) {
+		printToConsole(sim.setTime(java.sql.Time.valueOf(LocalTime.now())));
+		updateDashboard();
 	}
 }

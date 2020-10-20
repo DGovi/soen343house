@@ -3,13 +3,11 @@ package Model;
 import org.json.JSONException;
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
-
 /**
  * represents a simulation
  */
 public class Simulation{
-	private Date date;
+	private String date;
 	private Time time;
 	private float temperature;
 	private User loggedInUser;
@@ -24,7 +22,7 @@ public class Simulation{
 	 * @param houseInput JSON file
 	 * @exception JSONException if the file is not found
 	 */
-	public Simulation(Date date, Time time, float temperature, String houseInput) throws JSONException {
+	public Simulation(String date, Time time, float temperature, String houseInput) throws JSONException {
 		this.house = new House(houseInput);
 		this.date = date;
 		this.time = time;
@@ -90,7 +88,7 @@ public class Simulation{
 	}
 
 	/**
-	 * finds teh user using their ID
+	 * finds the user using their ID
 	 * @param id the ID of a user
 	 * @return a user object if found, null if not
 	 */
@@ -124,7 +122,7 @@ public class Simulation{
 	 * gets the date on the simulation
 	 * @return Date object
 	 */
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
@@ -132,8 +130,9 @@ public class Simulation{
 	 * sets the date of the simulation
 	 * @param date
 	 */
-	public void setDate(Date date) {
+	public String setDate(String date) {
 		this.date = date;
+		return "Date set to: " + date;
 	}
 
 	/**
@@ -147,9 +146,11 @@ public class Simulation{
 	/**
 	 * sets the time of the simulation using time object
 	 * @param time new time to be set
+	 * @return a string: "time updated"
 	 */
-	public void setTime(Time time) {
+	public String setTime(Time time) {
 		this.time = time;
+		return "Time updated.";
 	}
 
 	/**
