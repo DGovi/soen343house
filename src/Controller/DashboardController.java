@@ -54,29 +54,7 @@ public class DashboardController {
   @FXML private Label timeLabel;
   GraphicsContext gc;
 
-	/**
-	 * Allows a user to log in if not already logged in.
-	 */
-	@FXML private void login() {
-	  for (User u : sim.getUsers()) {
-		  if (u.getName().equals(loginName.getText())) {
-			  if (u.getPassword().equals(loginPassword.getText())) {
-				  if (u == sim.getLoggedInUser()) {
-					  printToConsole("ERROR: Already logged into this user.");
-					  return;
-				    }
-				  sim.setLoggedInUser(u);
-					updateDashboard();
-					printToConsole("Successfully switched users.");
-					return;
-				} else {
-				  printToConsole("ERROR: Found a user with the same name, but different password.");
-				  printToConsole("Continuing search...");
-				}
-			}
-    }
-  }
-      
+
   @FXML private void changeTemperature() {
 		String newTemperature = InputWindow.display("Change Temperature", "New Temperature");
 		try {
@@ -127,6 +105,9 @@ public class DashboardController {
     	updateDashboard();
 	}
 
+	/**
+	 * Allows a user to log in if not already logged in.
+	 */
 	@FXML private void login() {
 		printToConsole(sim.login(loginName.getText(), loginPassword.getText()));
 		updateDashboard();
@@ -255,9 +236,6 @@ public class DashboardController {
 		renderLayout();
 
 	}
-    
-  private int windowLength = 30;
-  private int ROOM_SIZE = 50;
 
 	/**
 	 * Takes a JSON file and attempts to render a house layout
