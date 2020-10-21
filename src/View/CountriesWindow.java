@@ -10,13 +10,21 @@ import javafx.geometry.*;
 
 import java.util.Locale;
 
-
+/**
+ * This is a pop up window used when the user is prompt to enter
+ * a new location for their house.
+ */
 public class CountriesWindow {
     private static final int MIN_WIDTH = 250; //px
     private static String returnValue = null;
 
+    /**
+     * Creates a window from which the user needs to enter a country.
+     * @param title the title of the window
+     * @param message the prompt to enter text
+     * @return a country value
+     */
     public static String display(String title, String message) {
-
         Stage window = new Stage();
 
         // Block interaction with other windows while this window is active

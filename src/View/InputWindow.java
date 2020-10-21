@@ -6,13 +6,21 @@ import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.geometry.*;
 
-
+/**
+ * This represents an input window when being prompt to
+ * enter information.
+ */
 public class InputWindow {
     private static final int MIN_WIDTH = 250; //px
     private static String returnValue = null;
 
+    /**
+     * Displays a window with a title and a prompt.
+     * @param title title of the window
+     * @param message prompt
+     * @return entered values
+     */
     public static String display(String title, String message) {
-
         Stage window = new Stage();
 
         // Block interaction with other windows while this window is active
