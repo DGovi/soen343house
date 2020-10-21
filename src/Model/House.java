@@ -16,6 +16,11 @@ public class House {
     private final ArrayList<Room> rooms;
     private String location;
 
+    public House(ArrayList<Room> r, String l) {
+        rooms = r;
+        location = l;
+    }
+
     /**
      * Gets the room objects from an arraylist.
      *

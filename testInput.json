@@ -1,0 +1,12 @@
+{
+  "Garage": {
+    "windows": 1,
+    "lights": 1,
+    "doorsTo": ["Kitchen"]
+  },
+  "Kitchen": {
+    "windows": 0,
+    "lights": 0,
+    "doorsTo": ["Garage"]
+  }
+}
