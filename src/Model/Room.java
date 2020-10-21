@@ -26,81 +26,90 @@ public class Room {
     /**
      * Creates a room object with a name, windows,
      * lights, and doors.
-     * @param name the name of the room
+     *
+     * @param name    the name of the room
      * @param windows an arraylist of windows
-     * @param lights number of windows
-     * @param doors number of doors
+     * @param lights  number of windows
+     * @param doors   number of doors
      */
     Room(String name, ArrayList<Window> windows, int lights, ArrayList<String> doors) {
         this.name = name;
         this.windows = windows;
         this.lights = lights;
-        this.doors= doors;
+        this.doors = doors;
     }
 
 
     /**
      * Gets an arraylist of doors.
+     *
      * @return an arraylist of doors
      */
     public ArrayList<String> getDoors() {
-		return doors;
-	}
+        return doors;
+    }
 
     /**
      * Set the doors in room.
+     *
      * @param doors a list of doors
      */
-	public void setDoors(ArrayList<String> doors) {
-		this.doors = doors;
-	}
+    public void setDoors(ArrayList<String> doors) {
+        this.doors = doors;
+    }
 
     /**
      * Get the name of the room.
+     *
      * @return the name of the room
      */
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
     /**
      * Set the name of a room.
+     *
      * @param name the new name of a room
      */
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
     /**
      * Get the windows of a room.
+     *
      * @return the list of windows
      */
-	public ArrayList<Window> getWindows() {
-		return windows;
-	}
+    public ArrayList<Window> getWindows() {
+        return windows;
+    }
 
     /**
      * Get the numbers of lights in a room.
+     *
      * @return the number of lights in a room
      */
-	public int getLights() {
-		return lights;
-	}
+    public int getLights() {
+        return lights;
+    }
 
     /**
      * Set the number of lights in a room.
+     *
      * @param lights the new number of lights in a room
      */
-	public void setLights(int lights) {
-		this.lights = lights;
-	}
+    public void setLights(int lights) {
+        this.lights = lights;
+    }
 
     /**
      * Creates room objects from a inputted JSON file.
+     *
      * @param srcJSONPath a file that is needed as input
      * @return a list of room objects
-     * @exception org.json.JSONException if there is a runtime error
-     * @exception IOException if there is a loading error
+     * @throws org.json.JSONException if there is a runtime error
+     * @throws IOException            if there is a loading error
      */
     public static ArrayList<Room> roomFromJSON(File srcJSONPath) throws org.json.JSONException, IOException {
         String marshalled = new String(Files.readAllBytes(srcJSONPath.toPath()));
@@ -109,7 +118,7 @@ public class Room {
         Iterator<String> keys = object.keys();
         ArrayList<Room> rooms = new ArrayList<Room>();
 
-        while(keys.hasNext()) {
+        while (keys.hasNext()) {
             String key = keys.next();
             if (object.get(key) instanceof JSONObject) {
                 JSONArray array = object.getJSONObject(key).getJSONArray("doorsTo");
@@ -122,10 +131,10 @@ public class Room {
                     windows.add(new Window());
                 }
                 rooms.add(new Room(
-                        key,
-                        windows,
-                        object.getJSONObject(key).getInt("lights"),
-                        list
+                                key,
+                                windows,
+                                object.getJSONObject(key).getInt("lights"),
+                                list
                         )
                 );
             }

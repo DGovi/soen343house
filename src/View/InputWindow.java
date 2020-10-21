@@ -16,7 +16,8 @@ public class InputWindow {
 
     /**
      * Displays a window with a title and a prompt.
-     * @param title title of the window
+     *
+     * @param title   title of the window
      * @param message prompt
      * @return entered values
      */
@@ -45,7 +46,7 @@ public class InputWindow {
         HBox buttonsBox = new HBox(10);
         buttonsBox.setAlignment(Pos.CENTER);
         buttonsBox.getChildren().addAll(closeButton, submitButton);
-        layout.getChildren().addAll(label,inputField, buttonsBox);
+        layout.getChildren().addAll(label, inputField, buttonsBox);
         layout.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(layout);

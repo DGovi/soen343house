@@ -13,30 +13,33 @@ import java.util.ArrayList;
 public class House {
     private final String DEFAULT_LOCATION = "Canada";
 
-    private ArrayList<Room> rooms;
+    private final ArrayList<Room> rooms;
     private String location;
 
     /**
      * Gets the room objects from an arraylist.
+     *
      * @return the rooms in house object
      */
     public ArrayList<Room> getRooms() {
-		return rooms;
-	}
+        return rooms;
+    }
 
 
-   /**
+    /**
      * Creates a house using an inputted JSON file.
+     *
      * @param srcJSON the file in which the house layout is contained
-     * @exception JSONException if the file is not found or is incorrect
+     * @throws JSONException if the file is not found or is incorrect
      */
-  	public House(File srcJSON) throws JSONException, IOException {
+    public House(File srcJSON) throws JSONException, IOException {
         this.rooms = Room.roomFromJSON(srcJSON);
         this.location = DEFAULT_LOCATION;
     }
 
     /**
      * Gets the String location of the house.
+     *
      * @return a string descibing the house
      */
     public String getLocation() {
@@ -45,6 +48,7 @@ public class House {
 
     /**
      * Sets the location of the house.
+     *
      * @param location the current location of the house
      */
     public void setLocation(String location) {

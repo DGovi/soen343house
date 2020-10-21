@@ -20,7 +20,8 @@ public class CountriesWindow {
 
     /**
      * Creates a window from which the user needs to enter a country.
-     * @param title the title of the window
+     *
+     * @param title   the title of the window
      * @param message the prompt to enter text
      * @return a country value
      */
@@ -41,7 +42,7 @@ public class CountriesWindow {
         String[] locales1 = Locale.getISOCountries();
         for (String countrylist : locales1) {
             Locale obj = new Locale("", countrylist);
-            String[] city = { obj.getDisplayCountry() };
+            String[] city = {obj.getDisplayCountry()};
             for (int x = 0; x < city.length; x++) {
                 cities.add(obj.getDisplayCountry());
             }
@@ -61,7 +62,7 @@ public class CountriesWindow {
         HBox buttonsBox = new HBox(10);
         buttonsBox.setAlignment(Pos.CENTER);
         buttonsBox.getChildren().addAll(closeButton, submitButton);
-        layout.getChildren().addAll(label,countrySelect, buttonsBox);
+        layout.getChildren().addAll(label, countrySelect, buttonsBox);
         layout.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(layout);

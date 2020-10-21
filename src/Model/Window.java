@@ -19,21 +19,24 @@ public class Window {
 
     /**
      * Gets the state of the window if obstructed or not.
+     *
      * @return true if window is obstructed, false otherwise
      */
-    public Boolean getObstructed() { return obstructed; }
+    public Boolean getObstructed() {
+        return obstructed;
+    }
 
     /**
      * Sets an obstruction on a window.
      * Can only obstruct if the window is open.
+     *
      * @param obs boolean that sets the blocked state of the window
      */
     public void setObstructed(Boolean obs) {
         // Can only perform obstruction if window is open
         if (open) {
             obstructed = obs;
-        }
-        else {
+        } else {
             // ensure it's not obstructed when closed
             obstructed = false;
         }
@@ -41,13 +44,17 @@ public class Window {
 
     /**
      * Gets the state of the window if open or not.
+     *
      * @return true if window is open, false otherwise
      */
-    public Boolean getOpen() { return open; }
+    public Boolean getOpen() {
+        return open;
+    }
 
     /**
      * Sets the state of the window open or not.
      * Can only close the window if it is not obstructed.
+     *
      * @param open boolean representing the requested state of the window (true if open)
      */
     public void setOpen(Boolean open) {
@@ -60,13 +67,13 @@ public class Window {
      * Changes the current state of the window (open or closed).
      * Can only close the window if it is not obstructed.
      * Can always open the window.
+     *
      * @return message String to be printed when the operation is complete or cancelled
      */
     public String changeOpen() {
         if (obstructed && open) {
             return "ERROR: Cannot change from open while blocked.";
-        }
-        else {
+        } else {
             open = !open;
             return "Successfully changed state of window.";
         }
@@ -76,6 +83,7 @@ public class Window {
      * Changes the current blocked state of blocking the window.
      * Can only block the window if it is open.
      * Can always unblock the window.
+     *
      * @return message String to be printed when the operation is complete or cancelled
      */
     public String changeObstructed() {
@@ -83,8 +91,7 @@ public class Window {
             // ensure it is not obstructed while closed
             obstructed = false;
             return "ERROR: Can't block window if it's not open.";
-        }
-        else {
+        } else {
             obstructed = !obstructed;
             return "Successfully changed the blocking state of the window.";
         }
