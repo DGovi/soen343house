@@ -383,6 +383,10 @@ public class Simulation{
 		this.running = running;
 	}
 
+	/**
+	 * Toggles the running attribute of the Simulation.
+	 * @return console msg indicating new Simulation running state.
+	 */
 	public String toggleRunning() {
 		if (this.running) {
 			this.running = false;
