@@ -51,7 +51,7 @@ class ManageUsersTest {
     @Test
     void setLoggedInUserLocation() throws IOException, JSONException {
         Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE, true);
-        assertEquals("Successfully changed logged in users location.", simulation.setLoggedInUserLocation("Kitchen"));
+        assertEquals("Successfully changed logged in user's location.", simulation.setLoggedInUserLocation("Kitchen"));
     }
 
     @Test
