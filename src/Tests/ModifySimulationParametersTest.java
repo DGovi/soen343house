@@ -2,6 +2,9 @@ package Tests;
 
 import Controller.DashboardController;
 import Controller.Simulation;
+import Model.House;
+import Model.Room;
+import Model.Window;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 
@@ -9,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Time;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 

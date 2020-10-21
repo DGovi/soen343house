@@ -32,7 +32,7 @@ public class Room {
      * @param lights  number of windows
      * @param doors   number of doors
      */
-    Room(String name, ArrayList<Window> windows, int lights, ArrayList<String> doors) {
+    public Room(String name, ArrayList<Window> windows, int lights, ArrayList<String> doors) {
         this.name = name;
         this.windows = windows;
         this.lights = lights;
