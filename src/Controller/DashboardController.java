@@ -586,14 +586,11 @@ public class DashboardController {
 	 * not accept any input until turned back on.
 	 */
 	@FXML public void endSim() {
+		printToConsole(sim.toggleRunning());
 		if(this.sim.getRunning()) {
-			console.setVisible(false);
-			this.sim.setRunning(false);
-		}
-		else {
-			this.sim.setRunning(true);
 			console.setVisible(true);
-			printToConsole("Simulation running");
+		} else {
+			console.setVisible(false);
 		}
 			
 	}

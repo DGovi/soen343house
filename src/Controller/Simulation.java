@@ -5,11 +5,10 @@ import Model.Room;
 import Model.User;
 import Model.UserType;
 import org.json.JSONException;
-
-import java.io.File;
-import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
 /**
  * The primary controller of the smart home simulation.
  * Stores many important simulation variables.
@@ -156,7 +155,7 @@ public class Simulation{
 		}
 
 		// Should never reach this point.
-		return "ERROR: Could not find the give user to delete.";
+		return "ERROR: Could not find the given user to delete.";
 	}
 
 	/**
@@ -196,7 +195,7 @@ public class Simulation{
 	 */
 	public String setDate(String date) {
 		this.date = date;
-		return "Date set to: " + date;
+		return "Date set to: " + date + ".";
 	}
 
 	/**
@@ -214,7 +213,7 @@ public class Simulation{
 	 */
 	public String setTime(Time time) {
 		this.time = time;
-		return "Time updated.";
+		return "Time set to: " + time + ".";
 	}
 
 	/**
@@ -223,6 +222,16 @@ public class Simulation{
 	 */
 	public float getTemperature() {
 		return temperature;
+	}
+
+	public String setTemperature(String temperatureString) {
+		try {
+			float newTemperature = Float.parseFloat(temperatureString);
+			this.temperature = newTemperature;
+			return ("Setting simulation temperature to " + temperatureString + "!");
+		} catch (Exception e) {
+			return ("ERROR: Inputted temperature is not a valid float.");
+		}
 	}
 
 	/**
@@ -268,7 +277,7 @@ public class Simulation{
 		}
 
 		// This should never occur... Only existing rooms are available inputs in a dropdown.
-		return "ERROR: Could not find any room matchin the input.";
+		return "ERROR: Could not find any room matching the input.";
 	}
 
 	/**
@@ -319,9 +328,9 @@ public class Simulation{
 		}
 
 		User toChange = null;
-		username = username.substring(username.indexOf("(")+1,username.indexOf(")"));
+		int userID = Integer.parseInt(username.substring(username.indexOf("(")+1,username.indexOf(")")));
 		for (User u : users) {
-			if (u.getID() == Integer.parseInt(username)) {
+			if (u.getID() == userID) {
 				toChange = u;
 				break;
 			}
@@ -413,6 +422,19 @@ public class Simulation{
 	 */
 	public void setRunning(boolean running) {
 		this.running = running;
+	}
+
+	/**
+	 * Toggles the running attribute of the Simulation.
+	 * @return console msg indicating new Simulation running state.
+	 */
+	public String toggleRunning() {
+		if (this.running) {
+			this.running = false;
+			return "Simulation OFF";
+		}
+		this.running = true;
+		return "Simulation ON";
 	}
 
 	@Override
