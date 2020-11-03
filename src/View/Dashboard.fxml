@@ -15,12 +15,12 @@
       <children>
         <VBox layoutY="2.0" prefHeight="398.0" prefWidth="247.0">
           <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation:">
+            <Label fx:id="simRunningLabel" text="Simulation: OFF">
               <VBox.margin>
                 <Insets bottom="10.0"/>
               </VBox.margin>
-            </Text>
-            <ToggleButton fx:id="simToggleButton" mnemonicParsing="false" onAction="#toggleSim" prefHeight="27.0" prefWidth="256.0" text="OFF" disable="true">
+            </Label>
+            <ToggleButton fx:id="simToggleButton" mnemonicParsing="false" onAction="#toggleSim" prefHeight="27.0" prefWidth="256.0" text="ON/OFF" disable="true">
               <VBox.margin>
                 <Insets bottom="5.0"/>
               </VBox.margin>

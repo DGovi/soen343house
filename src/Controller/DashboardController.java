@@ -39,6 +39,8 @@ public class DashboardController {
     final FileChooser fileChooser = new FileChooser();
 
     @FXML
+    private Label simRunningLabel;
+    @FXML
     private ToggleButton simToggleButton;
     @FXML
     private VBox leftPaneControls;
@@ -405,9 +407,9 @@ public class DashboardController {
         leftPaneControls.setDisable(! running);
         tabsPane.setDisable(! running);
         if (running)
-            simToggleButton.setText("ON");
+            simRunningLabel.setText("Simulation: ON");
         else
-            simToggleButton.setText("OFF");
+            simRunningLabel.setText("Simulation: OFF");
 
     }
 
@@ -460,10 +462,10 @@ public class DashboardController {
         shcWindowOpenState.setText("Pick a window");
         shcWindowBlockedState.setText("Pick a window");
 
-        // enabling ON button
+        // enabling ON/OFF button
         simToggleButton.setDisable(false);
-        // Set dropdown options for dropdowns with users
-        updateDashboard();
+        // Set simulation to ON and updating the dashboard
+        toggleSim();
         renderLayout(sim.getHouse());
     }
 
