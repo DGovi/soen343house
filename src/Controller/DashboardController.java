@@ -52,6 +52,8 @@ public class DashboardController {
     @FXML
     private ComboBox<String> currentUserLocationOptions;
 
+    @FXML
+    private AnchorPane tabsPane;
     // SHS
     @FXML
     private TextField loginName;
@@ -401,6 +403,7 @@ public class DashboardController {
         boolean running = sim.getRunning();
         //console.setVisible(running);
         leftPaneControls.setDisable(! running);
+        tabsPane.setDisable(! running);
         if (running)
             simToggleButton.setText("ON");
         else
