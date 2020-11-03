@@ -11,7 +11,7 @@
            minWidth="-Infinity" prefHeight="720.0" prefWidth="867.0" xmlns="http://javafx.com/javafx/11.0.1"
            xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.DashboardController">
   <items>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="255.0">
+    <AnchorPane fx:id="leftPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="255.0">
       <children>
         <VBox layoutY="2.0" prefHeight="398.0" prefWidth="247.0">
           <children>
@@ -20,7 +20,7 @@
                 <Insets bottom="10.0"/>
               </VBox.margin>
             </Text>
-            <ToggleButton mnemonicParsing="false" onAction="#endSim" prefHeight="27.0" prefWidth="256.0" text="ON/OFF">
+            <ToggleButton mnemonicParsing="false" onAction="#toggleSim" prefHeight="27.0" prefWidth="256.0" text="ON/OFF">
               <VBox.margin>
                 <Insets bottom="5.0"/>
               </VBox.margin>
@@ -32,76 +32,81 @@
                 <Insets left="-5.0" right="-5.0" top="10.0"/>
               </VBox.margin>
             </Separator>
-            <Label fx:id="currentUser" text="Username (or login)">
-              <VBox.margin>
-                <Insets top="10.0"/>
-              </VBox.margin>
-            </Label>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Current Location:">
-              <VBox.margin>
-                <Insets top="10.0"/>
-              </VBox.margin>
-            </Text>
-            <ComboBox fx:id="currentUserLocationOptions" onAction="#editCurrentUserLocation" prefHeight="27.0"
-                      prefWidth="262.0">
-              <VBox.margin>
-                <Insets top="5.0"/>
-              </VBox.margin>
-            </ComboBox>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Temperature:">
-              <VBox.margin>
-                <Insets bottom="5.0" top="10.0"/>
-              </VBox.margin>
-            </Text>
-            <Button mnemonicParsing="false" onAction="#changeTemperature" prefHeight="27.0" prefWidth="260.0"
-                    text="Change Temp">
-              <VBox.margin>
-                <Insets bottom="5.0"/>
-              </VBox.margin>
-            </Button>
-            <Label fx:id="temperatureLabel"/>
-            <Separator prefWidth="200.0">
-              <VBox.margin>
-                <Insets left="-5.0" right="-5.0" top="5.0"/>
-              </VBox.margin>
-            </Separator>
-            <Label fx:id="dateLabel1" prefHeight="17.0" prefWidth="251.0" text="Location:">
-              <padding>
-                <Insets bottom="5.0"/>
-              </padding>
-              <VBox.margin>
-                <Insets top="10.0"/>
-              </VBox.margin>
-            </Label>
-            <Button mnemonicParsing="false" onAction="#changeHouseLocation" prefHeight="27.0" prefWidth="282.0"
-                    text="Change House Location">
-              <VBox.margin>
-                <Insets bottom="5.0" top="5.0"/>
-              </VBox.margin>
-            </Button>
-            <Label fx:id="houseLocationLabel"/>
-            <HBox prefHeight="18.0" prefWidth="132.0">
+            <VBox fx:id="leftPaneControls">
               <children>
-                <Label fx:id="dateLabel" prefHeight="17.0" prefWidth="251.0" text="Date is:">
+                <Label fx:id="currentUser" text="Username (or login)">
+                  <VBox.margin>
+                    <Insets top="10.0"/>
+                  </VBox.margin>
+                </Label>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Current Location:">
+                  <VBox.margin>
+                    <Insets top="10.0"/>
+                  </VBox.margin>
+                </Text>
+                <ComboBox fx:id="currentUserLocationOptions" onAction="#editCurrentUserLocation" prefHeight="27.0"
+                          prefWidth="262.0">
+                  <VBox.margin>
+                    <Insets top="5.0"/>
+                  </VBox.margin>
+                </ComboBox>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Temperature:">
+                  <VBox.margin>
+                    <Insets bottom="5.0" top="10.0"/>
+                  </VBox.margin>
+                </Text>
+                <Button mnemonicParsing="false" onAction="#changeTemperature" prefHeight="27.0" prefWidth="260.0"
+                        text="Change Temp">
+                  <VBox.margin>
+                    <Insets bottom="5.0"/>
+                  </VBox.margin>
+                </Button>
+                <Label fx:id="temperatureLabel"/>
+                <Separator prefWidth="200.0">
+                  <VBox.margin>
+                    <Insets left="-5.0" right="-5.0" top="5.0"/>
+                  </VBox.margin>
+                </Separator>
+                <Label fx:id="dateLabel1" prefHeight="17.0" prefWidth="251.0" text="Location:">
                   <padding>
                     <Insets bottom="5.0"/>
                   </padding>
-                  <HBox.margin>
-                    <Insets top="5.0"/>
-                  </HBox.margin>
+                  <VBox.margin>
+                    <Insets top="10.0"/>
+                  </VBox.margin>
                 </Label>
+                <Button mnemonicParsing="false" onAction="#changeHouseLocation" prefHeight="27.0" prefWidth="282.0"
+                        text="Change House Location">
+                  <VBox.margin>
+                    <Insets bottom="5.0" top="5.0"/>
+                  </VBox.margin>
+                </Button>
+                <Label fx:id="houseLocationLabel"/>
+                <HBox prefHeight="18.0" prefWidth="132.0">
+                  <children>
+                    <Label fx:id="dateLabel" prefHeight="17.0" prefWidth="251.0" text="Date is:">
+                      <padding>
+                        <Insets bottom="5.0"/>
+                      </padding>
+                      <HBox.margin>
+                        <Insets top="5.0"/>
+                      </HBox.margin>
+                    </Label>
+                  </children>
+                </HBox>
+                <DatePicker fx:id="datePicker" onAction="#displayDate" prefHeight="27.0" prefWidth="240.0"
+                            promptText="Edit date"/>
+                <Label fx:id="timeLabel" prefHeight="26.0" prefWidth="241.0" text="Time is not set">
+                  <VBox.margin>
+                    <Insets bottom="5.0" top="15.0"/>
+                  </VBox.margin>
+                </Label>
+                <Button fx:id="updateTimeButton" mnemonicParsing="false" onAction="#updateTime" prefHeight="27.0"
+                        prefWidth="282.0" text="Show Current Time"/>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0"/>
+
               </children>
-            </HBox>
-            <DatePicker fx:id="datePicker" onAction="#displayDate" prefHeight="27.0" prefWidth="240.0"
-                        promptText="Edit date"/>
-            <Label fx:id="timeLabel" prefHeight="26.0" prefWidth="241.0" text="Time is not set">
-              <VBox.margin>
-                <Insets bottom="5.0" top="15.0"/>
-              </VBox.margin>
-            </Label>
-            <Button fx:id="updateTimeButton" mnemonicParsing="false" onAction="#updateTime" prefHeight="27.0"
-                    prefWidth="282.0" text="Show Current Time"/>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0"/>
+            </VBox>
           </children>
           <padding>
             <Insets bottom="10.0" left="20.0" right="20.0" top="10.0"/>

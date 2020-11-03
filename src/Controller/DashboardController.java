@@ -13,6 +13,9 @@ import Controller.Simulation;
 import javafx.event.ActionEvent;
 import View.CountriesWindow;
 import View.InputWindow;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import org.json.JSONException;
 
@@ -35,6 +38,8 @@ public class DashboardController {
     private final int ROOM_SIZE = 50;
     final FileChooser fileChooser = new FileChooser();
 
+    @FXML
+    private VBox leftPaneControls;
     // Left pane
     @FXML
     private Label houseLocationLabel;
@@ -654,9 +659,12 @@ public class DashboardController {
      * not accept any input until turned back on.
      */
     @FXML
-    public void endSim() {
+    public void toggleSim() {
         printToConsole(sim.toggleRunning());
-        console.setVisible(this.sim.getRunning());
+
+        boolean running = sim.getRunning();
+        console.setVisible(running);
+        leftPaneControls.setDisable(! running);
 
     }
 
