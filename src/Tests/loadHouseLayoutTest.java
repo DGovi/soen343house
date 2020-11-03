@@ -1,6 +1,5 @@
 package Tests;
 
-import Controller.DashboardController;
 import Controller.Simulation;
 import Model.House;
 import Model.Room;
@@ -20,7 +19,7 @@ class loadHouseLayoutTest {
 
     @Test
     void loadHouseLayout() throws IOException, JSONException {
-        Simulation simulation = new Simulation("", java.sql.Time.valueOf(LocalTime.now()), 25, TEST_HOUSE, true);
+        Simulation simulation = new Simulation("", java.sql.Time.valueOf(LocalTime.now()), 25, TEST_HOUSE);
         House loadedHouse = simulation.getHouse();
 
         ArrayList<Room> rooms =  new ArrayList<>();

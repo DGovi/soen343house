@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.Stack;
 import java.time.LocalTime;
 
-import Controller.Simulation;
 import javafx.event.ActionEvent;
 import View.CountriesWindow;
 import View.InputWindow;
@@ -33,6 +32,7 @@ public class DashboardController {
     private Simulation sim;
     private final int windowLength = 30;
     private final int ROOM_SIZE = 50;
+    private File userInput = new File("users.json");
     final FileChooser fileChooser = new FileChooser();
 
     // Left pane
@@ -114,36 +114,6 @@ public class DashboardController {
     }
 
     /**
-     * Adds a user and a user type  to the simulation object.
-     */
-    @FXML
-    private void addUser() {
-        if (!sim.getRunning())
-            return;
-        UserType type = null;
-        if (createUserName.getText().length() == 0) {
-            printToConsole("ERROR: Name field must not be empty.");
-            return;
-        } else if (createUserType.getValue() == null) {
-            printToConsole("ERROR: Type field must not be empty.");
-            return;
-        } else if (createUserPassword.getText() == null) {
-            printToConsole("ERROR: Password cannot be null.");
-        } else if (createUserType.getValue() == "Parent") {
-            type = UserType.PARENT;
-        } else if (createUserType.getValue() == "Child") {
-            type = UserType.CHILD;
-        } else if (createUserType.getValue() == "Guest") {
-            type = UserType.GUEST;
-        } else if (createUserType.getValue() == "Stranger") {
-            type = UserType.STRANGER;
-        } else {
-            printToConsole("ERROR: Unhandled add user case. You did something weird.");
-            return;
-        }
-    }
-
-    /**
      * Changes the user location on the simulation object.
      */
     @FXML
@@ -181,7 +151,7 @@ public class DashboardController {
      * Creates a new user and adds it to the simulation object.
      */
     @FXML
-    private void createUser() {
+    private void createUser() throws JSONException, IOException {
         if (!sim.getRunning())
             return;
         printToConsole(
@@ -201,7 +171,7 @@ public class DashboardController {
      * Edit the information of a user.
      */
     @FXML
-    private void editUser() {
+    private void editUser() throws JSONException, IOException {
         if (!sim.getRunning())
             return;
         String choice = editUserChoice.getValue();
@@ -222,7 +192,7 @@ public class DashboardController {
      * the simulation.
      */
     @FXML
-    private void deleteUser() {
+    private void deleteUser() throws JSONException, IOException {
         if (!sim.getRunning())
             return;
         printToConsole(sim.removeUser(deleteUserChoice.getValue()));
@@ -447,7 +417,7 @@ public class DashboardController {
                 java.sql.Time.valueOf(LocalTime.now()),
                 25,
                 file,
-                true
+                userInput
         );
         currentUser.setText(sim.getLoggedInUser().getName());
 
