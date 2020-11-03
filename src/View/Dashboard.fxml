@@ -20,7 +20,7 @@
                 <Insets bottom="10.0"/>
               </VBox.margin>
             </Text>
-            <ToggleButton mnemonicParsing="false" onAction="#toggleSim" prefHeight="27.0" prefWidth="256.0" text="ON/OFF">
+            <ToggleButton fx:id="simToggleButton" mnemonicParsing="false" onAction="#toggleSim" prefHeight="27.0" prefWidth="256.0" text="OFF" disable="true">
               <VBox.margin>
                 <Insets bottom="5.0"/>
               </VBox.margin>
@@ -32,7 +32,7 @@
                 <Insets left="-5.0" right="-5.0" top="10.0"/>
               </VBox.margin>
             </Separator>
-            <VBox fx:id="leftPaneControls">
+            <VBox fx:id="leftPaneControls" disable="true">
               <children>
                 <Label fx:id="currentUser" text="Username (or login)">
                   <VBox.margin>
