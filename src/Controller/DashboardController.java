@@ -382,8 +382,6 @@ public class DashboardController {
         // reset simulation temperature
         temperatureLabel.setText(Float.toString(sim.getTemperature()));
 
-        printToConsole("1");
-
         // reset info of logged in user
         currentUser.setText(sim.getLoggedInUser().getName());
         if (sim.getLoggedInUser().getLocation() == null) {
