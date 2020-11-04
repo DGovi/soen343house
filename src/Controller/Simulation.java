@@ -364,12 +364,13 @@ public class Simulation {
     public String editUser(String username, String currentPassword, String newPassword, String type, String location) throws JSONException, IOException {
         if (username == null) {
             return "ERROR: Did not choose a user to edit.";
-        } else if (currentPassword.length() == 0) {
+        }
+        else if (currentPassword.length() == 0) {
             return "ERROR: Need to enter the chosen user's password to make changes.";
-        } else if (type == null &&
+        }
+        else if (type == null &&
                 newPassword.length() == 0 &&
-                location == null
-        ) {
+                location == null) {
             return "ERROR: Need to give changes to make.";
         }
 
@@ -413,14 +414,17 @@ public class Simulation {
             toChange.setPassword(newPassword);
         }
 
-        // Change location if that had input
-        if (location.equals("Outside")) {
-            toChange.setLocation(null);
-        } else if (location != null) {
-            for (Room r : house.getRooms()) {
-                if (r.getName().equals(location)) {
-                    toChange.setLocation(r);
-                    break;
+        //Change location if that had input
+        if (location != null) {
+            if (location.equalsIgnoreCase("outside")) {
+                toChange.setLocation(null);
+            }
+            else {
+                for (Room r : house.getRooms()) {
+                    if (r.getName().equals(location)) {
+                        toChange.setLocation(r);
+                        break;
+                    }
                 }
             }
         }

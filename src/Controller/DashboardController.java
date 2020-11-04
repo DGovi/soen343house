@@ -32,7 +32,7 @@ public class DashboardController {
     private Simulation sim;
     private final int windowLength = 30;
     private final int ROOM_SIZE = 50;
-    private File userInput = new File("users.json");
+    private final File userInput = new File("users.json");
     final FileChooser fileChooser = new FileChooser();
 
     // Left pane
@@ -44,6 +44,12 @@ public class DashboardController {
     private Label currentUser;
     @FXML
     private ComboBox<String> currentUserLocationOptions;
+    @FXML
+    private Label permissionsDeleteUser;
+    @FXML
+    private Label permissionsControlWindows;
+    @FXML
+    private Label permissionsAwayMode;
 
     // SHS
     @FXML
@@ -126,10 +132,10 @@ public class DashboardController {
     }
 
     /**
-     * Edits the location of the user in a house object.
+     * Edits the location of the user in a simulation object.
      */
     @FXML
-    private void editCurrentUserLocation() {
+    private void editCurrentUserLocation() throws JSONException, IOException {
         if (!sim.getRunning())
             return;
         printToConsole(sim.setLoggedInUserLocation(currentUserLocationOptions.getValue()));
@@ -249,10 +255,18 @@ public class DashboardController {
             printToConsole("ERROR: Not all fields were filled in before clicking the button");
             return;
         }
+        if (sim.getLoggedInUser().getType() == UserType.STRANGER) {
+            printToConsole("ERROR: Strangers are not allowed to change the state of the windows.");
+            return;
+        }
         String chosenWindowName = shcWindowSelect.getValue();
         int chosenWindowIndex = Integer.parseInt(chosenWindowName.substring(7)) - 1;
         for (Room r : sim.getHouse().getRooms()) {
             if (r.getName().equals(shcRoomSelect.getValue())) {
+                if ((sim.getLoggedInUser().getType() == UserType.CHILD || sim.getLoggedInUser().getType() == UserType.GUEST) && sim.getLoggedInUser().getLocation() != r) {
+                    printToConsole("ERROR: Children need to be in the room to change open/close windows.");
+                    return;
+                }
                 printToConsole(r.getWindows().get(chosenWindowIndex).changeOpen());
                 updateSHCbuttons();
                 return;
@@ -273,10 +287,18 @@ public class DashboardController {
             printToConsole("ERROR: Not all fields were filled in before clicking the button");
             return;
         }
+        if (sim.getLoggedInUser().getType() == UserType.STRANGER) {
+            printToConsole("ERROR: Strangers are not allowed to change the state of the windows.");
+            return;
+        }
         String chosenWindowName = shcWindowSelect.getValue();
         int chosenWindowIndex = Integer.parseInt(chosenWindowName.substring(7)) - 1;
         for (Room r : sim.getHouse().getRooms()) {
             if (r.getName().equals(shcRoomSelect.getValue())) {
+                if ((sim.getLoggedInUser().getType() == UserType.CHILD || sim.getLoggedInUser().getType() == UserType.GUEST) && sim.getLoggedInUser().getLocation() != r) {
+                    printToConsole("ERROR: Children and guests need to be in the room to change the state of the windows.");
+                    return;
+                }
                 printToConsole(r.getWindows().get(chosenWindowIndex).changeObstructed());
                 updateSHCbuttons();
                 return;
@@ -360,12 +382,31 @@ public class DashboardController {
         // reset simulation temperature
         temperatureLabel.setText(Float.toString(sim.getTemperature()));
 
+        printToConsole("1");
+
         // reset info of logged in user
         currentUser.setText(sim.getLoggedInUser().getName());
         if (sim.getLoggedInUser().getLocation() == null) {
             currentUserLocationOptions.valueProperty().set("Outside");
         } else {
             currentUserLocationOptions.valueProperty().set(sim.getLoggedInUser().getLocation().getName());
+        }
+        if (sim.getLoggedInUser().getType() == UserType.PARENT) {
+            permissionsDeleteUser.setText("Delete user: Able");
+            permissionsControlWindows.setText("Open/Close Windows: Able");
+            permissionsAwayMode.setText("Set Away Mode: Able");
+        } else if (sim.getLoggedInUser().getType() == UserType.CHILD) {
+            permissionsDeleteUser.setText("Delete user: Not Able");
+            permissionsControlWindows.setText("Open/Close Windows: Only when in room");
+            permissionsAwayMode.setText("Set Away Mode: Able");
+        } else if (sim.getLoggedInUser().getType() == UserType.GUEST) {
+            permissionsDeleteUser.setText("Delete user: Not Able");
+            permissionsControlWindows.setText("Open/Close Windows: Only when in room");
+            permissionsAwayMode.setText("Set Away Mode: Not Able");
+        } else if (sim.getLoggedInUser().getType() == UserType.STRANGER) {
+            permissionsDeleteUser.setText("Delete user: Not Able");
+            permissionsControlWindows.setText("Open/Close Windows: Not Able");
+            permissionsAwayMode.setText("Set Away Mode: Not Able");
         }
 
         // reset list of users
