@@ -471,7 +471,6 @@ public class Simulation implements Subject{
 
     //OBSERVER PATTERN START
 
-
     @Override
     public void addMotionSensor(Observer newMotionSensor) {
         motionSensors.add(newMotionSensor);
@@ -484,10 +483,13 @@ public class Simulation implements Subject{
     }
 
     @Override
-    public void notifyMotionSensors() {
+    public String notifyMotionSensors() {
+        String message = "temp boi\n";
         for (Observer motionSensor: motionSensors){
             motionSensor.update(isAway);
+            message += "MotionSensor " + motionSensor.getMotionSensorID() + "is ON\n";
         }
+        return message;
     }
 
     public String setSimulationAway(boolean checked){
@@ -500,7 +502,6 @@ public class Simulation implements Subject{
             isAway = false;
             message = "User has returned Home, Away Mode disabled.";
         }
-        notifyMotionSensors();
         return message;
     }
 

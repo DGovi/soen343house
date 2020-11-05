@@ -646,6 +646,7 @@ public class DashboardController {
 
     public void setAwayMode(ActionEvent actionEvent){
         printToConsole(sim.setSimulationAway(awayButton.isSelected()));
+        printToConsole(sim.notifyMotionSensors());
         updateDashboard();
     }
 
