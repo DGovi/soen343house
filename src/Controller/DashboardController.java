@@ -106,6 +106,9 @@ public class DashboardController {
     private Label timeLabel;
     GraphicsContext gc;
 
+    @FXML
+    private CheckBox awayButton;
+
     /**
      * Changes the simulation temperature.
      */
@@ -638,6 +641,11 @@ public class DashboardController {
     public void toggleSim() {
         printToConsole(sim.toggleRunning());
 
+        updateDashboard();
+    }
+
+    public void setAwayMode(ActionEvent actionEvent){
+        printToConsole(sim.setSimulationAway(awayButton.isSelected()));
         updateDashboard();
     }
 

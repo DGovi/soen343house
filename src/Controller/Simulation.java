@@ -1,9 +1,6 @@
 package Controller;
 
-import Model.House;
-import Model.Room;
-import Model.User;
-import Model.UserType;
+import Model.*;
 import org.json.JSONException;
 
 import java.sql.Time;
@@ -15,7 +12,7 @@ import java.io.IOException;
  * The primary controller of the smart home simulation.
  * Stores many important simulation variables.
  */
-public class Simulation {
+public class Simulation implements Subject{
     private String date;
     private Time time;
     private float temperature;
@@ -24,6 +21,8 @@ public class Simulation {
     private final House house;
     private boolean running;
 
+    private ArrayList<Observer> motionSensors;
+    private boolean isAway;
     /**
      * Creates a simulation object with date, time, temperature, houseinput as input.
      *
@@ -43,6 +42,8 @@ public class Simulation {
         this.users = new ArrayList<User>();
         addUser(this.loggedInUser);
         this.running = false;
+        this.motionSensors = new ArrayList<Observer>();
+
     }
 
     /**
@@ -468,6 +469,46 @@ public class Simulation {
         return "Simulation ON";
     }
 
+    //OBSERVER PATTERN START
+
+
+    @Override
+    public void addMotionSensor(Observer newMotionSensor) {
+        motionSensors.add(newMotionSensor);
+    }
+
+    @Override
+    public void removeMotionSensor(Observer motionSensorToBeDeleted) {
+        int anIndex = motionSensors.indexOf(motionSensorToBeDeleted);
+        motionSensors.remove(anIndex);
+    }
+
+    @Override
+    public void notifyMotionSensors() {
+        for (Observer motionSensor: motionSensors){
+            motionSensor.update(isAway);
+        }
+    }
+
+    public String setSimulationAway(boolean checked){
+        String message;
+        if(checked){
+            isAway = true;
+            message = "Away Mode has been set";
+        }
+        else {
+            isAway = false;
+            message = "User has returned Home, Away Mode disabled.";
+        }
+        notifyMotionSensors();
+        return message;
+    }
+
+
+    //OBSERVER PATTERN END
+
+
+    
     @Override
     public String toString() {
         return "Simulation [date=" + date + ", time=" + time + ", temperature=" + temperature + ", loggedInUser="
