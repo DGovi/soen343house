@@ -1,0 +1,13 @@
+@startuml
+[*] --> NoLayout
+NoLayout --> LayoutLoaded: Load Layout File
+LayoutLoaded --> NoLayout: Load Bad File
+
+state LayoutLoaded {
+    [*] --> SimOFF
+    SimOFF --> SimON: Turn Simulation On
+    SimON --> SimOFF: Turn Simulation Off
+}
+
+}
+@enduml
