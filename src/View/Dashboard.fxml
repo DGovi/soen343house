@@ -104,7 +104,18 @@
                 <Button fx:id="updateTimeButton" mnemonicParsing="false" onAction="#updateTime" prefHeight="27.0"
                         prefWidth="282.0" text="Show Current Time"/>
                 <Text strokeType="OUTSIDE" strokeWidth="0.0"/>
-
+                <Separator prefWidth="200.0">
+                  <VBox.margin>
+                    <Insets left="-5.0" right="-5.0" top="10.0"/>
+                  </VBox.margin>
+                </Separator>
+                <Label text="Current Permissions:"></Label>
+                <Label text="SHS:"></Label>
+                <Label text="Delete User:" fx:id="permissionsDeleteUser"></Label>
+                <Label text="SHC:"></Label>
+                <Label text="Open/Close Windows:" fx:id="permissionsControlWindows"></Label>
+                <Label text="SHP:"></Label>
+                <Label text="Set Away Mode:" fx:id="permissionsAwayMode"></Label>
               </children>
             </VBox>
           </children>

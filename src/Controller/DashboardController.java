@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.Stack;
 import java.time.LocalTime;
 
-import Controller.Simulation;
 import javafx.event.ActionEvent;
 import View.CountriesWindow;
 import View.InputWindow;
@@ -36,6 +35,7 @@ public class DashboardController {
     private Simulation sim;
     private final int windowLength = 30;
     private final int ROOM_SIZE = 50;
+    private final File userInput = new File("users.json");
     final FileChooser fileChooser = new FileChooser();
 
     @FXML
@@ -53,6 +53,12 @@ public class DashboardController {
     private Label currentUser;
     @FXML
     private ComboBox<String> currentUserLocationOptions;
+    @FXML
+    private Label permissionsDeleteUser;
+    @FXML
+    private Label permissionsControlWindows;
+    @FXML
+    private Label permissionsAwayMode;
 
     @FXML
     private AnchorPane tabsPane;
@@ -161,10 +167,10 @@ public class DashboardController {
     }
 
     /**
-     * Edits the location of the user in a house object.
+     * Edits the location of the user in a simulation object.
      */
     @FXML
-    private void editCurrentUserLocation() {
+    private void editCurrentUserLocation() throws JSONException, IOException {
         printToConsole(sim.setLoggedInUserLocation(currentUserLocationOptions.getValue()));
         updateDashboard();
     }
@@ -182,7 +188,7 @@ public class DashboardController {
      * Creates a new user and adds it to the simulation object.
      */
     @FXML
-    private void createUser() {
+    private void createUser() throws JSONException, IOException {
         printToConsole(
                 sim.addUser(
                         createUserName.getText(),
@@ -200,7 +206,7 @@ public class DashboardController {
      * Edit the information of a user.
      */
     @FXML
-    private void editUser() {
+    private void editUser() throws JSONException, IOException {
         String choice = editUserChoice.getValue();
         printToConsole(
                 sim.editUser(
@@ -219,7 +225,7 @@ public class DashboardController {
      * the simulation.
      */
     @FXML
-    private void deleteUser() {
+    private void deleteUser() throws JSONException, IOException {
         printToConsole(sim.removeUser(deleteUserChoice.getValue()));
         updateDashboard();
     }
@@ -268,10 +274,18 @@ public class DashboardController {
             printToConsole("ERROR: Not all fields were filled in before clicking the button");
             return;
         }
+        if (sim.getLoggedInUser().getType() == UserType.STRANGER) {
+            printToConsole("ERROR: Strangers are not allowed to change the state of the windows.");
+            return;
+        }
         String chosenWindowName = shcWindowSelect.getValue();
         int chosenWindowIndex = Integer.parseInt(chosenWindowName.substring(7)) - 1;
         for (Room r : sim.getHouse().getRooms()) {
             if (r.getName().equals(shcRoomSelect.getValue())) {
+                if ((sim.getLoggedInUser().getType() == UserType.CHILD || sim.getLoggedInUser().getType() == UserType.GUEST) && sim.getLoggedInUser().getLocation() != r) {
+                    printToConsole("ERROR: Children need to be in the room to change open/close windows.");
+                    return;
+                }
                 printToConsole(r.getWindows().get(chosenWindowIndex).changeOpen());
                 updateSHCbuttons();
                 return;
@@ -290,10 +304,18 @@ public class DashboardController {
             printToConsole("ERROR: Not all fields were filled in before clicking the button");
             return;
         }
+        if (sim.getLoggedInUser().getType() == UserType.STRANGER) {
+            printToConsole("ERROR: Strangers are not allowed to change the state of the windows.");
+            return;
+        }
         String chosenWindowName = shcWindowSelect.getValue();
         int chosenWindowIndex = Integer.parseInt(chosenWindowName.substring(7)) - 1;
         for (Room r : sim.getHouse().getRooms()) {
             if (r.getName().equals(shcRoomSelect.getValue())) {
+                if ((sim.getLoggedInUser().getType() == UserType.CHILD || sim.getLoggedInUser().getType() == UserType.GUEST) && sim.getLoggedInUser().getLocation() != r) {
+                    printToConsole("ERROR: Children and guests need to be in the room to change the state of the windows.");
+                    return;
+                }
                 printToConsole(r.getWindows().get(chosenWindowIndex).changeObstructed());
                 updateSHCbuttons();
                 return;
@@ -377,6 +399,23 @@ public class DashboardController {
         } else {
             currentUserLocationOptions.valueProperty().set(sim.getLoggedInUser().getLocation().getName());
         }
+        if (sim.getLoggedInUser().getType() == UserType.PARENT) {
+            permissionsDeleteUser.setText("Delete user: Able");
+            permissionsControlWindows.setText("Open/Close Windows: Able");
+            permissionsAwayMode.setText("Set Away Mode: Able");
+        } else if (sim.getLoggedInUser().getType() == UserType.CHILD) {
+            permissionsDeleteUser.setText("Delete user: Not Able");
+            permissionsControlWindows.setText("Open/Close Windows: Only when in room");
+            permissionsAwayMode.setText("Set Away Mode: Able");
+        } else if (sim.getLoggedInUser().getType() == UserType.GUEST) {
+            permissionsDeleteUser.setText("Delete user: Not Able");
+            permissionsControlWindows.setText("Open/Close Windows: Only when in room");
+            permissionsAwayMode.setText("Set Away Mode: Not Able");
+        } else if (sim.getLoggedInUser().getType() == UserType.STRANGER) {
+            permissionsDeleteUser.setText("Delete user: Not Able");
+            permissionsControlWindows.setText("Open/Close Windows: Not Able");
+            permissionsAwayMode.setText("Set Away Mode: Not Able");
+        }
 
         // reset list of users
         editUserChoice.getItems().clear();
@@ -438,7 +477,7 @@ public class DashboardController {
                 java.sql.Time.valueOf(LocalTime.now()),
                 25,
                 file,
-                true
+                userInput
         );
         currentUser.setText(sim.getLoggedInUser().getName());
 
