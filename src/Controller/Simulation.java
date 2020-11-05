@@ -467,6 +467,23 @@ public class Simulation {
         this.running = true;
         return "Simulation ON";
     }
+    
+    // Probably illegal to put that like this... [JM]
+    boolean LightAuto = true;
+    
+    /**
+     * Toggles the Auto Mode of the light
+     * 
+     * @return console msg indicating Light Auto mode state.
+     */
+    public String toggleLight() {
+    	if (LightAuto) {
+    		LightAuto = false;
+    		return "Light Auto Mode turned ON";
+    	}
+    	LightAuto = true;
+    	return "Light Auto Mode turned OFF";
+    }
 
     @Override
     public String toString() {
