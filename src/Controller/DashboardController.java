@@ -12,6 +12,9 @@ import java.time.LocalTime;
 import javafx.event.ActionEvent;
 import View.CountriesWindow;
 import View.InputWindow;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import org.json.JSONException;
 
@@ -35,6 +38,12 @@ public class DashboardController {
     private final File userInput = new File("users.json");
     final FileChooser fileChooser = new FileChooser();
 
+    @FXML
+    private Label simRunningLabel;
+    @FXML
+    private ToggleButton simToggleButton;
+    @FXML
+    private VBox leftPaneControls;
     // Left pane
     @FXML
     private Label houseLocationLabel;
@@ -51,6 +60,8 @@ public class DashboardController {
     @FXML
     private Label permissionsAwayMode;
 
+    @FXML
+    private AnchorPane tabsPane;
     // SHS
     @FXML
     private TextField loginName;
@@ -106,8 +117,6 @@ public class DashboardController {
      */
     @FXML
     private void changeTemperature() {
-        if (!sim.getRunning())
-            return;
         String newTemperature = InputWindow.display("Change Temperature", "New Temperature");
         try {
             float newTemperatureInt = Float.parseFloat(newTemperature);
@@ -120,12 +129,38 @@ public class DashboardController {
     }
 
     /**
+     * Adds a user and a user type  to the simulation object.
+     */
+    @FXML
+    private void addUser() {
+        UserType type = null;
+        if (createUserName.getText().length() == 0) {
+            printToConsole("ERROR: Name field must not be empty.");
+            return;
+        } else if (createUserType.getValue() == null) {
+            printToConsole("ERROR: Type field must not be empty.");
+            return;
+        } else if (createUserPassword.getText() == null) {
+            printToConsole("ERROR: Password cannot be null.");
+        } else if (createUserType.getValue() == "Parent") {
+            type = UserType.PARENT;
+        } else if (createUserType.getValue() == "Child") {
+            type = UserType.CHILD;
+        } else if (createUserType.getValue() == "Guest") {
+            type = UserType.GUEST;
+        } else if (createUserType.getValue() == "Stranger") {
+            type = UserType.STRANGER;
+        } else {
+            printToConsole("ERROR: Unhandled add user case. You did something weird.");
+            return;
+        }
+    }
+
+    /**
      * Changes the user location on the simulation object.
      */
     @FXML
     private void changeHouseLocation() {
-        if (!sim.getRunning())
-            return;
         String newCountry = CountriesWindow.display("Choose Country", "Choose Country");
         printToConsole(sim.setHouseLocation(newCountry));
         updateDashboard();
@@ -135,9 +170,7 @@ public class DashboardController {
      * Edits the location of the user in a simulation object.
      */
     @FXML
-    private void editCurrentUserLocation() throws JSONException, IOException {
-        if (!sim.getRunning())
-            return;
+    private void editCurrentUserLocation() {
         printToConsole(sim.setLoggedInUserLocation(currentUserLocationOptions.getValue()));
         updateDashboard();
     }
@@ -147,8 +180,6 @@ public class DashboardController {
      */
     @FXML
     private void login() {
-        if (!sim.getRunning())
-            return;
         printToConsole(sim.login(loginName.getText(), loginPassword.getText()));
         updateDashboard();
     }
@@ -157,9 +188,7 @@ public class DashboardController {
      * Creates a new user and adds it to the simulation object.
      */
     @FXML
-    private void createUser() throws JSONException, IOException {
-        if (!sim.getRunning())
-            return;
+    private void createUser() {
         printToConsole(
                 sim.addUser(
                         createUserName.getText(),
@@ -177,9 +206,7 @@ public class DashboardController {
      * Edit the information of a user.
      */
     @FXML
-    private void editUser() throws JSONException, IOException {
-        if (!sim.getRunning())
-            return;
+    private void editUser() {
         String choice = editUserChoice.getValue();
         printToConsole(
                 sim.editUser(
@@ -198,9 +225,7 @@ public class DashboardController {
      * the simulation.
      */
     @FXML
-    private void deleteUser() throws JSONException, IOException {
-        if (!sim.getRunning())
-            return;
+    private void deleteUser() {
         printToConsole(sim.removeUser(deleteUserChoice.getValue()));
         updateDashboard();
     }
@@ -210,8 +235,6 @@ public class DashboardController {
      */
     @FXML
     private void shcChangeRooms() {
-        if (!sim.getRunning())
-            return;
         // SHC stuff
         if (shcRoomSelect.getValue() != null) {
             for (Room r : sim.getHouse().getRooms()) {
@@ -234,8 +257,6 @@ public class DashboardController {
      */
     @FXML
     private void shcChangeWindows() {
-        if (!sim.getRunning())
-            return;
         if (shcWindowSelect.getValue() != null) {
             updateSHCbuttons();
             printToConsole("Successfully changed windows.");
@@ -249,8 +270,6 @@ public class DashboardController {
      */
     @FXML
     private void shcChangeOpen() {
-        if (!sim.getRunning())
-            return;
         if ((shcRoomSelect.getValue() == null) || (shcWindowSelect.getValue() == null)) {
             printToConsole("ERROR: Not all fields were filled in before clicking the button");
             return;
@@ -281,8 +300,6 @@ public class DashboardController {
      */
     @FXML
     private void shcChangeBlocked() {
-        if (!sim.getRunning())
-            return;
         if ((shcRoomSelect.getValue() == null) || (shcWindowSelect.getValue() == null)) {
             printToConsole("ERROR: Not all fields were filled in before clicking the button");
             return;
@@ -310,8 +327,6 @@ public class DashboardController {
      * Updates the control buttons that show the current state of the selected window
      */
     private void updateSHCbuttons() {
-        if (!sim.getRunning())
-            return;
         String chosenWindowName = shcWindowSelect.getValue();
         int chosenWindowIndex = Integer.parseInt(chosenWindowName.substring(7)) - 1;
         for (Room r : sim.getHouse().getRooms()) {
@@ -349,7 +364,6 @@ public class DashboardController {
         }
 
         try {
-            System.out.println(file.toPath());
             afterLoadInitialize(file);
         } catch (JSONException | IOException e) {
             printToConsole("ERROR LOADING FILE");
@@ -363,8 +377,6 @@ public class DashboardController {
      * @param output prints on the console of the simulation the output
      */
     private void printToConsole(String output) {
-        if (!sim.getRunning())
-            return;
         console.appendText(output + "\n");
     }
 
@@ -373,8 +385,6 @@ public class DashboardController {
      * has occurred in simulation object sim.
      */
     private void updateDashboard() {
-        if (!sim.getRunning())
-            return;
         // reset name of logged in user
         // reset simulation house location
         houseLocationLabel.setText(sim.getHouseLocation());
@@ -429,6 +439,17 @@ public class DashboardController {
         editUserCurrentPassword.setText("");
         editUserNewPassword.setText("");
 
+        // updating simToggleButton and UI control disable status based on
+        // whether simulation is running or not
+        boolean running = sim.getRunning();
+        //console.setVisible(running);
+        leftPaneControls.setDisable(! running);
+        tabsPane.setDisable(! running);
+        if (running)
+            simRunningLabel.setText("Simulation: ON");
+        else
+            simRunningLabel.setText("Simulation: OFF");
+
     }
 
     /**
@@ -480,8 +501,10 @@ public class DashboardController {
         shcWindowOpenState.setText("Pick a window");
         shcWindowBlockedState.setText("Pick a window");
 
-        // Set dropdown options for dropdowns with users
-        updateDashboard();
+        // enabling ON/OFF button
+        simToggleButton.setDisable(false);
+        // Set simulation to ON and updating the dashboard
+        toggleSim();
         renderLayout(sim.getHouse());
     }
 
@@ -494,8 +517,6 @@ public class DashboardController {
      */
     @FXML
     public void renderLayout(Model.House h) throws JSONException, IOException {
-        if (!sim.getRunning())
-            return;
         gc = render.getGraphicsContext2D();
 
         gc.setFill(Color.WHITE);
@@ -568,8 +589,6 @@ public class DashboardController {
      */
     @FXML
     public void drawWindows(int x, int y, int size, int countWindows) {
-        if (!sim.getRunning())
-            return;
         for (int i = 0; i < countWindows; i++) {
             gc.setStroke(Color.LIGHTBLUE);
             gc.setLineWidth(3);
@@ -593,8 +612,6 @@ public class DashboardController {
      */
     @FXML
     public void drawLights(Room room, int x, int y, int size) {
-        if (!sim.getRunning())
-            return;
         for (int i = 0; i < room.getLights(); i++) {
             gc.setFill(Color.GOLD);
             int offset = (size - 35);
@@ -615,8 +632,6 @@ public class DashboardController {
      */
     @FXML
     public void drawRoom(Room room, int x, int y, boolean sideDoor) {
-        if (!sim.getRunning())
-            return;
         int size = 50 * room.getDoors().size();
         gc.strokeRoundRect(x, y, size, size, 0, 0);
         drawLights(room, x, y, size);
@@ -639,8 +654,6 @@ public class DashboardController {
      */
     //shows entered date in label box
     public void displayDate(javafx.event.ActionEvent actionEvent) {
-        if (!sim.getRunning())
-            return;
         printToConsole(sim.setDate(datePicker.getValue().toString()));
         updateDashboard();
     }
@@ -652,8 +665,6 @@ public class DashboardController {
      */
     //shows the time
     public void updateTime(ActionEvent actionEvent) {
-        if (!sim.getRunning())
-            return;
         printToConsole(sim.setTime(java.sql.Time.valueOf(LocalTime.now())));
         updateDashboard();
     }
@@ -663,10 +674,10 @@ public class DashboardController {
      * not accept any input until turned back on.
      */
     @FXML
-    public void endSim() {
+    public void toggleSim() {
         printToConsole(sim.toggleRunning());
-        console.setVisible(this.sim.getRunning());
 
+        updateDashboard();
     }
 
 

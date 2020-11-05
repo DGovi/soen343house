@@ -47,7 +47,7 @@ public class Simulation {
         this.loggedInUser = new User(UserType.PARENT, house.getRooms().get(0), "Admin", "123456");
         this.users = new ArrayList<>();
         addUser(this.loggedInUser);
-        this.running = true;
+        this.running = false;
     }
 
     /**
