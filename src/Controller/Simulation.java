@@ -418,8 +418,7 @@ public class Simulation {
         if (location != null) {
             if (location.equalsIgnoreCase("outside")) {
                 toChange.setLocation(null);
-            }
-            else {
+            } else {
                 for (Room r : house.getRooms()) {
                     if (r.getName().equals(location)) {
                         toChange.setLocation(r);

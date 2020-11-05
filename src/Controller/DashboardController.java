@@ -170,7 +170,7 @@ public class DashboardController {
      * Edits the location of the user in a simulation object.
      */
     @FXML
-    private void editCurrentUserLocation() {
+    private void editCurrentUserLocation() throws JSONException, IOException {
         printToConsole(sim.setLoggedInUserLocation(currentUserLocationOptions.getValue()));
         updateDashboard();
     }
@@ -188,7 +188,7 @@ public class DashboardController {
      * Creates a new user and adds it to the simulation object.
      */
     @FXML
-    private void createUser() {
+    private void createUser() throws JSONException, IOException {
         printToConsole(
                 sim.addUser(
                         createUserName.getText(),
@@ -206,7 +206,7 @@ public class DashboardController {
      * Edit the information of a user.
      */
     @FXML
-    private void editUser() {
+    private void editUser() throws JSONException, IOException {
         String choice = editUserChoice.getValue();
         printToConsole(
                 sim.editUser(
@@ -225,7 +225,7 @@ public class DashboardController {
      * the simulation.
      */
     @FXML
-    private void deleteUser() {
+    private void deleteUser() throws JSONException, IOException {
         printToConsole(sim.removeUser(deleteUserChoice.getValue()));
         updateDashboard();
     }

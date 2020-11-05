@@ -104,31 +104,20 @@
                 <Button fx:id="updateTimeButton" mnemonicParsing="false" onAction="#updateTime" prefHeight="27.0"
                         prefWidth="282.0" text="Show Current Time"/>
                 <Text strokeType="OUTSIDE" strokeWidth="0.0"/>
-
+                <Separator prefWidth="200.0">
+                  <VBox.margin>
+                    <Insets left="-5.0" right="-5.0" top="10.0"/>
+                  </VBox.margin>
+                </Separator>
+                <Label text="Current Permissions:"></Label>
+                <Label text="SHS:"></Label>
+                <Label text="Delete User:" fx:id="permissionsDeleteUser"></Label>
+                <Label text="SHC:"></Label>
+                <Label text="Open/Close Windows:" fx:id="permissionsControlWindows"></Label>
+                <Label text="SHP:"></Label>
+                <Label text="Set Away Mode:" fx:id="permissionsAwayMode"></Label>
               </children>
-            </HBox>
-            <DatePicker fx:id="datePicker" onAction="#displayDate" prefHeight="27.0" prefWidth="240.0"
-                        promptText="Edit date"/>
-            <Label fx:id="timeLabel" prefHeight="26.0" prefWidth="241.0" text="Time is not set">
-              <VBox.margin>
-                <Insets bottom="5.0" top="15.0"/>
-              </VBox.margin>
-            </Label>
-            <Button fx:id="updateTimeButton" mnemonicParsing="false" onAction="#updateTime" prefHeight="27.0"
-                    prefWidth="282.0" text="Show Current Time"/>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0"/>
-            <Separator prefWidth="200.0">
-              <VBox.margin>
-                <Insets left="-5.0" right="-5.0" top="10.0"/>
-              </VBox.margin>
-            </Separator>
-            <Label text="Current Permissions:"></Label>
-            <Label text="SHS:"></Label>
-            <Label text="Delete User:" fx:id="permissionsDeleteUser"></Label>
-            <Label text="SHC:"></Label>
-            <Label text="Open/Close Windows:" fx:id="permissionsControlWindows"></Label>
-            <Label text="SHP:"></Label>
-            <Label text="Set Away Mode:" fx:id="permissionsAwayMode"></Label>
+            </VBox>
           </children>
           <padding>
             <Insets bottom="10.0" left="20.0" right="20.0" top="10.0"/>
