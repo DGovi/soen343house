@@ -525,12 +525,16 @@ public class Simulation {
                 switch (object.getJSONObject(key).getString("type")) {
                     case "parent":
                         type = UserType.PARENT;
+                        break;
                     case "child":
                         type = UserType.CHILD;
+                        break;
                     case "guest":
                         type = UserType.GUEST;
+                        break;
                     case "stranger":
                         type = UserType.STRANGER;
+                        break;
                     default:
                         type = UserType.STRANGER;
                 }
