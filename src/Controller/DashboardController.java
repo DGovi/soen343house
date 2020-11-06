@@ -39,8 +39,8 @@ public class DashboardController {
     private final File userInput = new File("users.json");
     final FileChooser fileChooser = new FileChooser();
 
-    private static final int PERSON_HEIGHT = 100;
-    private static final int PERSON_WIDTH = 50;
+    private static final int PERSON_HEIGHT = 25;
+    private static final int PERSON_WIDTH = 25;
 
     @FXML
     private Label simRunningLabel;
@@ -587,8 +587,6 @@ public class DashboardController {
                 else if (door == doorsTop.get(0) || doorsTop.size() > 1 && door == doorsTop.get(1))
                     this.drawWindows(x - size, y, size, room.getWindows());
 
-                this.drawPeople(room, x, y);
-
                 coordinates.put(room, new javafx.util.Pair<Integer, Integer>(Integer.valueOf(x), Integer.valueOf(y)));
 
                 xParent = size;
@@ -665,6 +663,7 @@ public class DashboardController {
         int size = 50 * room.getDoors().size();
         gc.strokeRoundRect(x, y, size, size, 0, 0);
         drawLights(room, x, y, size);
+        drawPeople(room, x, y, size);
 
         gc.setLineWidth(3);
         gc.strokeLine(x + 15, y, x + 30, y);
@@ -676,15 +675,24 @@ public class DashboardController {
         gc.fillText(room.getName(), x + 5, y + 17);
     }
 
-    public void drawPeople(Room room, int x, int y) {
-        final int spacing = 15;
-        int offset = 0;
+    public void drawPeople(Room room, int x, int y, int size) {
+        final int spacingX = PERSON_WIDTH;
+        final int spacingY = PERSON_WIDTH;
+        int posX = 0;
+        int posY = 0;
 
         // drawing people
         Image personImage = new Image("file:stick_person.png");
         for (User user: sim.getUsersInRoom(room)) {
-            gc.drawImage(personImage, x + offset, y, PERSON_HEIGHT, PERSON_WIDTH);
-            offset += spacing;
+            if (posX > size) {
+                posX = 0;
+                posY += spacingY;
+            }
+            int finalX = x + posX;
+            int finalY = y + posY;
+
+            gc.drawImage(personImage, finalX , finalY, PERSON_HEIGHT, PERSON_WIDTH);
+            posX += spacingX;
         }
     }
 
