@@ -97,6 +97,8 @@ public class DashboardController {
     private Button shcWindowOpenState;
     @FXML
     private Button shcWindowBlockedState;
+    @FXML
+    private ToggleButton shcLightAuto;
 
     @FXML
     private TextArea console;
@@ -261,6 +263,14 @@ public class DashboardController {
             updateSHCbuttons();
             printToConsole("Successfully changed windows.");
         }
+    }
+    
+    /**
+     * Toggles the Auto Mode
+     */
+    @FXML
+    private void shcLightAuto() {
+    	printToConsole(sim.toggleLight());
     }
 
     /**
