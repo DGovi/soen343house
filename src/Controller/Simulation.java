@@ -475,7 +475,8 @@ public class Simulation implements Subject{
         for (Room room : house.getRooms()){
             room.getRoomMotionSensor().update(isAway);
             if(isAway)
-                message += "MotionSensor " + room.getRoomMotionSensor().getMotionSensorID() + " is ON\n";
+                message += "MotionSensor in " + room.getName() + "(" +
+                        room.getRoomMotionSensor().getMotionSensorID() + ")" + " is ON\n";
         }
         return message;
     }
@@ -497,7 +498,9 @@ public class Simulation implements Subject{
         }
         else {
             isAway = false;
-            message = "\nUser has returned home in room " + house.getRooms().get(0).getName() + ", Away Mode disabled.";
+            message = "\nUser has returned home in " + house.getRooms().get(0).getName() +
+                    ".\nAway Mode disabled." +
+                    "\nAll sensors OFF";
             loggedInUser.setLocation(house.getRooms().get(0));
 
 
