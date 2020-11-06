@@ -266,7 +266,7 @@ public class DashboardController {
      * changeOpen() function is then printed
      */
     @FXML
-    private void shcChangeOpen() {
+    private void shcChangeOpen() throws IOException, JSONException {
         if ((shcRoomSelect.getValue() == null) || (shcWindowSelect.getValue() == null)) {
             printToConsole("ERROR: Not all fields were filled in before clicking the button");
             return;
@@ -277,17 +277,20 @@ public class DashboardController {
         }
         String chosenWindowName = shcWindowSelect.getValue();
         int chosenWindowIndex = Integer.parseInt(chosenWindowName.substring(7)) - 1;
-        for (Room r : sim.getHouse().getRooms()) {
-            if (r.getName().equals(shcRoomSelect.getValue())) {
-                if ((sim.getLoggedInUser().getType() == UserType.CHILD || sim.getLoggedInUser().getType() == UserType.GUEST) && sim.getLoggedInUser().getLocation() != r) {
-                    printToConsole("ERROR: Children need to be in the room to change open/close windows.");
-                    return;
-                }
-                printToConsole(r.getWindows().get(chosenWindowIndex).changeOpen());
-                updateSHCbuttons();
-                return;
-            }
+
+        Room room = sim.getHouse().getRoomFromName(shcRoomSelect.getValue());
+        if (room == null) {
+            return;
         }
+
+        if ((sim.getLoggedInUser().getType() == UserType.CHILD || sim.getLoggedInUser().getType() == UserType.GUEST) && sim.getLoggedInUser().getLocation() != room) {
+            printToConsole("ERROR: Children need to be in the room to change open/close windows.");
+            return;
+        }
+
+        printToConsole(room.getWindows().get(chosenWindowIndex).changeOpen());
+        updateSHCbuttons();
+        this.renderLayout(sim.getHouse());
     }
 
     /**
@@ -600,7 +603,7 @@ public class DashboardController {
             gc.setLineWidth(3);
             int gap = 15;
             int offset = (size - windowLength * countWindows - gap * (countWindows - 1)) / 2;
-            gc.strokeLine(x + size, y + offset + i * (windowLength + gap), x + size, y + offset + windowLength + i * (windowLength + gap));
+            gc.strokeLine(x + size, y + offset + i * (windowLength + gap), x + size + (window.getOpen() ? offset : 0), y + offset + windowLength + i * (windowLength + gap));
         }
         gc.setLineWidth(1);
         gc.setStroke(Color.BLACK);
