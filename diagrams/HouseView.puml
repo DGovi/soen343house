@@ -2,6 +2,7 @@
 [*] --> NoLayout
 NoLayout --> LayoutLoaded: Load Layout File
 LayoutLoaded --> NoLayout: Load Bad File
+LayoutLoaded --> [*]: Exit Simulation
 
 state LayoutLoaded {
     [*] --> SimOFF
