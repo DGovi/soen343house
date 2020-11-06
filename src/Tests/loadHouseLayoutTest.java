@@ -1,6 +1,7 @@
 package Tests;
 
 import Controller.Simulation;
+import Model.Door;
 import Model.House;
 import Model.Room;
 import Model.Window;
@@ -25,11 +26,11 @@ class loadHouseLayoutTest {
         ArrayList<Room> rooms =  new ArrayList<>();
         ArrayList<Window> windows =  new ArrayList<>();
 
-        ArrayList<String> roomsGarage = new ArrayList<>();
-        ArrayList<String> roomsKitchen = new ArrayList<>();
+        ArrayList<Door> roomsGarage = new ArrayList<Door>();
+        ArrayList<Door> roomsKitchen = new ArrayList<Door>();
 
-        roomsGarage.add("Kitchen");
-        roomsKitchen.add("Garage");
+        roomsGarage.add(new Door("Kitchen"));
+        roomsKitchen.add(new Door("Garage"));
 
         windows.add(new Window());
         rooms.add(new Room("Garage", windows, 1, roomsGarage));

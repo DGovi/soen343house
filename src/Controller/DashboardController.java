@@ -577,9 +577,11 @@ public class DashboardController {
             Room top = stack.pop();
             int xParent = 0;
 
-            ArrayList<String> doorsTop = top.getDoors();
+            ArrayList<Door> doorsTop = top.getDoors();
 
-            for (String door : doorsTop) {
+            for (Door doorObj : doorsTop) {
+                String door = doorObj.getName();
+
                 if (traversed.contains(door))
                     continue;
 
@@ -591,11 +593,11 @@ public class DashboardController {
                 int y = coordinates.get(top).getValue().intValue() + ROOM_SIZE * top.getDoors().size();
                 int size = room.getDoors().size() * ROOM_SIZE;
 
-                this.drawRoom(room, x, y, door != doorsTop.get(doorsTop.size() - 1) && doorsTop.size() > 1);
+                this.drawRoom(room, x, y, (! doorObj.equals(doorsTop.get(doorsTop.size() - 1))) && doorsTop.size() > 1);
 
-                if (door == doorsTop.get(doorsTop.size() - 1))
+                if (doorObj.equals(doorsTop.get(doorsTop.size() - 1)))
                     this.drawWindows(x, y, size, room.getWindows());
-                else if (door == doorsTop.get(0) || doorsTop.size() > 1 && door == doorsTop.get(1))
+                else if (door.equals(doorsTop.get(0)) || doorsTop.size() > 1 && door.equals(doorsTop.get(1)))
                     this.drawWindows(x - size, y, size, room.getWindows());
 
                 coordinates.put(room, new javafx.util.Pair<Integer, Integer>(Integer.valueOf(x), Integer.valueOf(y)));
