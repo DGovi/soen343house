@@ -644,6 +644,11 @@ public class DashboardController {
         updateDashboard();
     }
 
+    /**
+     * sets the isAway boolean to whatever it is on the
+     * checkbox field in the SHP. It also notifies the observers.
+     * @param actionEvent event that triggers this method
+     */
     public void setAwayMode(ActionEvent actionEvent){
         printToConsole(sim.setSimulationAway(awayButton.isSelected()));
         printToConsole(sim.notifyMotionSensors());
