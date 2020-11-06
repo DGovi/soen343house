@@ -511,7 +511,14 @@ public class Simulation {
     private ArrayList<User> usersFromJSON(File srcFile) throws org.json.JSONException, IOException {
         if (srcFile == null) return null;
 
-        String wholeFile = new String(Files.readAllBytes(srcFile.toPath()));
+        String wholeFile;
+        if (srcFile.exists()) {
+            wholeFile = new String(Files.readAllBytes(srcFile.toPath()));
+        }
+        else {
+            wholeFile = "{\"Admin\":{\"password\":\"123456\",\"location\":null,\"type\":\"parent\"}}";
+        }
+
         JSONTokener tokener = new JSONTokener(wholeFile);
         JSONObject object = new JSONObject(tokener);
         Iterator<String> keys = object.keys();
