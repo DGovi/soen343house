@@ -12,6 +12,7 @@ import java.time.LocalTime;
 import javafx.event.ActionEvent;
 import View.CountriesWindow;
 import View.InputWindow;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -37,6 +38,9 @@ public class DashboardController {
     private final int ROOM_SIZE = 50;
     private final File userInput = new File("users.json");
     final FileChooser fileChooser = new FileChooser();
+
+    private static final int PERSON_HEIGHT = 100;
+    private static final int PERSON_WIDTH = 50;
 
     @FXML
     private Label simRunningLabel;
@@ -579,15 +583,18 @@ public class DashboardController {
                 this.drawRoom(room, x, y, door != doorsTop.get(doorsTop.size() - 1) && doorsTop.size() > 1);
 
                 if (door == doorsTop.get(doorsTop.size() - 1))
-                    drawWindows(x, y, size, room.getWindows());
+                    this.drawWindows(x, y, size, room.getWindows());
                 else if (door == doorsTop.get(0) || doorsTop.size() > 1 && door == doorsTop.get(1))
-                    drawWindows(x - size, y, size, room.getWindows());
+                    this.drawWindows(x - size, y, size, room.getWindows());
+
+                this.drawPeople(room, x, y);
 
                 coordinates.put(room, new javafx.util.Pair<Integer, Integer>(Integer.valueOf(x), Integer.valueOf(y)));
 
                 xParent = size;
             }
         }
+
     }
 
     /**
@@ -667,6 +674,18 @@ public class DashboardController {
         gc.setLineWidth(1);
         gc.setStroke(Color.BLACK);
         gc.fillText(room.getName(), x + 5, y + 17);
+    }
+
+    public void drawPeople(Room room, int x, int y) {
+        final int spacing = 15;
+        int offset = 0;
+
+        // drawing people
+        Image personImage = new Image("file:stick_person.png");
+        for (User user: sim.getUsersInRoom(room)) {
+            gc.drawImage(personImage, x + offset, y, PERSON_HEIGHT, PERSON_WIDTH);
+            offset += spacing;
+        }
     }
 
     /**

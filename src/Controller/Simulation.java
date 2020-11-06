@@ -590,6 +590,16 @@ public class Simulation {
         Files.write(usersFile.getAbsoluteFile().toPath(), obj.toString().getBytes());
     }
 
+    public ArrayList<User> getUsersInRoom(Room room) {
+        ArrayList<User> people = new ArrayList<User>();
+
+        for (User user: this.getUsers()) {
+           if (user.getLocation() != null && user.getLocation().equals(room))
+               people.add(user);
+        }
+
+        return people;
+    }
 
     @Override
     public String toString() {
