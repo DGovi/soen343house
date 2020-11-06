@@ -113,6 +113,10 @@ public class Room {
         this.lightsOn = lightsOn;
     }
 
+    public void toggleLightsON() {
+       this.setLightsOn(! this.isLightsOn());
+    }
+
     /**
      * Creates room objects from a inputted JSON file.
      *

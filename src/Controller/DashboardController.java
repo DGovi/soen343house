@@ -683,8 +683,14 @@ public class DashboardController {
 
 
     @FXML
-    public void toggleRoomLights() {
+    public void toggleRoomLights() throws IOException, JSONException {
         Room room = sim.getHouse().getRoomFromName(shcRoomSelect.getValue());
+        if (room == null) {
+            return;
+        }
+
+        room.toggleLightsON();
+        this.renderLayout(sim.getHouse());
 
     }
 
