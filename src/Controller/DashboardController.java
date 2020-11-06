@@ -273,8 +273,6 @@ public class DashboardController {
      */
     @FXML
     private void shcLightAuto() {
-    	if (!sim.getRunning())
-    		return;
     	printToConsole(sim.toggleLight());
     }
 

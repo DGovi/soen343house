@@ -23,6 +23,7 @@ public class Simulation {
     private final ArrayList<User> users;
     private final House house;
     private boolean running;
+    private boolean LightAuto;
 
     /**
      * Creates a simulation object with date, time, temperature, houseinput as input.
@@ -468,15 +469,13 @@ public class Simulation {
         return "Simulation ON";
     }
     
-    // Probably illegal to put that like this... [JM]
-    boolean LightAuto = true;
-    
     /**
      * Toggles the Auto Mode of the light
      * 
      * @return console msg indicating Light Auto mode state.
      */
     public String toggleLight() {
+    	LightAuto = true;
     	if (LightAuto) {
     		LightAuto = false;
     		return "Light Auto Mode turned ON";
