@@ -471,33 +471,40 @@ public class Simulation implements Subject{
      * @return message of which motion sensor is active
      */
     public String notifyMotionSensors() {
-        String message = "temp boi\n";
-        for (Room room : house.getRooms()){ //need to be changed
+        String message = "";
+        for (Room room : house.getRooms()){
             room.getRoomMotionSensor().update(isAway);
-            message += "MotionSensor " + room.getRoomMotionSensor().getMotionSensorID() + " is ON\n";
+            if(isAway)
+                message += "MotionSensor " + room.getRoomMotionSensor().getMotionSensorID() + " is ON\n";
         }
         return message;
     }
 
-    //NOTE: when away mode on, kick all users out of house
+    /**
+     * If the simulation is set on away mode, then it kicks all users of the house
+     * else it sets sets the current user to the garage (initial Room).
+     * @param checked boolean that shows if the Away mode box in SHP is checked
+     * @return a string that describes what happened
+     */
     public String setSimulationAway(boolean checked){
         String message;
         if(checked){
             isAway = true;
             message = "Away Mode has been set";
-
+            for(User aUser: users){
+                aUser.setLocation(null);
+            }
         }
         else {
             isAway = false;
-            message = "User has returned Home, Away Mode disabled.";
+            message = "\nUser has returned home in room " + house.getRooms().get(1).getName() + ", Away Mode disabled.";
+            loggedInUser.setLocation(house.getRooms().get(1));
+
+
         }
         return message;
     }
 
-
-
-
-    
     @Override
     public String toString() {
         return "Simulation [date=" + date + ", time=" + time + ", temperature=" + temperature + ", loggedInUser="
