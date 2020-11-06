@@ -179,6 +179,7 @@ public class DashboardController {
     private void editCurrentUserLocation() throws JSONException, IOException {
         printToConsole(sim.setLoggedInUserLocation(currentUserLocationOptions.getValue()));
         updateDashboard();
+        this.renderLayout(sim.getHouse());
     }
 
     /**
@@ -224,6 +225,7 @@ public class DashboardController {
                 )
         );
         updateDashboard();
+        this.renderLayout(sim.getHouse());
     }
 
     /**
