@@ -22,6 +22,7 @@ public class Room {
     protected ArrayList<Window> windows;
     protected int lights;
     protected ArrayList<String> doors;
+    protected MotionSensor roomMotionSensor;
 
     /**
      * Creates a room object with a name, windows,
@@ -37,6 +38,7 @@ public class Room {
         this.windows = windows;
         this.lights = lights;
         this.doors = doors;
+        roomMotionSensor = new MotionSensor(false);
     }
 
 
@@ -103,6 +105,9 @@ public class Room {
         this.lights = lights;
     }
 
+    public MotionSensor getRoomMotionSensor(){
+        return roomMotionSensor;
+    }
     /**
      * Creates room objects from a inputted JSON file.
      *
