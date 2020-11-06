@@ -1,7 +1,6 @@
 package Tests;
 
 import Controller.Simulation;
-import Model.User;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +15,7 @@ class BlockUnBlockWindowTest {
 
     @Test
     void blockWindow() throws IOException, JSONException {
-        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE, true);
+        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE);
         assertEquals(
                 false,
                 simulation.getHouse().getRooms().get(0).getWindows().get(0).getOpen(),
@@ -41,7 +40,7 @@ class BlockUnBlockWindowTest {
 
     @Test
     void unBlockWindow() throws IOException, JSONException {
-        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE, true);
+        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE);
         assertEquals(
                 false,
                 simulation.getHouse().getRooms().get(0).getWindows().get(0).getOpen(),

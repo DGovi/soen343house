@@ -1,5 +1,14 @@
 package Model;
 
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  * Represents a user actor in a simulation.
  * A user is someone who can interact with

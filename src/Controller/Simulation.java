@@ -2,11 +2,15 @@ package Controller;
 
 import Model.*;
 import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
+import java.nio.file.Files;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 
 /**
  * The primary controller of the smart home simulation.
@@ -19,7 +23,9 @@ public class Simulation implements Subject{
     private User loggedInUser;
     private final ArrayList<User> users;
     private final House house;
+    private File usersFile;
     private boolean running;
+    private boolean LightAuto;
 
     private boolean isAway;
     /**
@@ -32,16 +38,38 @@ public class Simulation implements Subject{
      * @throws JSONException if runtime exception occurs
      * @throws IOException   if the file is not found
      */
-    public Simulation(String date, Time time, float temperature, File houseInput, boolean running) throws JSONException, IOException {
+    public Simulation(String date, Time time, float temperature, File houseInput) throws JSONException, IOException {
         this.house = new House(houseInput);
         this.date = date;
         this.time = time;
         this.temperature = temperature;
         this.loggedInUser = new User(UserType.PARENT, house.getRooms().get(0), "Admin", "123456");
-        this.users = new ArrayList<User>();
+        this.users = new ArrayList<>();
         addUser(this.loggedInUser);
         this.running = false;
         this.isAway = false;
+    }
+
+    /**
+     * Constructor that includes the JSON file with user information in it
+     * @param date current date
+     * @param time current time
+     * @param temperature current temperature
+     * @param houseInput house input JSON file
+     * @param usersFile users JSON file
+     * @throws JSONException
+     * @throws IOException
+     */
+    public Simulation(String date, Time time, float temperature, File houseInput, File usersFile) throws JSONException, IOException {
+        this.house = new House(houseInput);
+        this.date = date;
+        this.time = time;
+        this.temperature = temperature;
+        this.usersFile = usersFile;
+        this.users = usersFromJSON(usersFile);
+        this.loggedInUser = users.get(users.size() - 1);
+        this.running = true;
+        this.LightAuto = true;
     }
 
     /**
@@ -49,7 +77,7 @@ public class Simulation implements Subject{
      *
      * @param user user object
      */
-    public void addUser(User user) {
+    public void addUser(User user) throws JSONException, IOException {
         // user is null
         if (user == null) return;
 
@@ -65,6 +93,7 @@ public class Simulation implements Subject{
         }
 
         users.add(user);
+        updateUsersJSON();
     }
 
     /**
@@ -76,8 +105,8 @@ public class Simulation implements Subject{
      * @param location room name as string
      * @return message String conveying what action occurred during the function
      */
-    public String addUser(String username, String password, String type, String location) {
-        UserType userType = null;
+    public String addUser(String username, String password, String type, String location) throws JSONException, IOException {
+        UserType userType;
         if (username.length() == 0) {
             return "ERROR: Name field must not be empty.";
         } else if (type == null) {
@@ -138,7 +167,7 @@ public class Simulation implements Subject{
      * @param choice String of form "Name (ID)"
      * @return message String saying what action was taken given the choice.
      */
-    public String removeUser(String choice) {
+    public String removeUser(String choice) throws JSONException, IOException {
 
         if (choice == null) {
             return "ERROR: Please choose a user to delete";
@@ -156,6 +185,7 @@ public class Simulation implements Subject{
                     return "ERROR: Cannot delete logged in user.";
                 }
                 removeUser(u);
+                updateUsersJSON();
                 return "Successfully removed user.";
             }
         }
@@ -279,15 +309,17 @@ public class Simulation implements Subject{
      * @param location String: room the user wants to switch to as a string
      * @return String: message stating what occurred (success or error)
      */
-    public String setLoggedInUserLocation(String location) {
+    public String setLoggedInUserLocation(String location) throws JSONException, IOException {
         if (location == null) return "ERROR: Need to pick a location.";
         if (location.equals("Outside")) {
             loggedInUser.setLocation(null);
+            updateUsersJSON();
             return "Moved user outside.";
         }
         for (Room r : house.getRooms()) {
             if (r.getName().equals(location)) {
                 loggedInUser.setLocation(r);
+                updateUsersJSON();
                 return "Successfully changed logged in user's location.";
             }
         }
@@ -330,15 +362,16 @@ public class Simulation implements Subject{
      * @param location        String name of room user wants to change to as a string (can be empty/null)
      * @return String: message stating successful completion or error and why
      */
-    public String editUser(String username, String currentPassword, String newPassword, String type, String location) {
+    public String editUser(String username, String currentPassword, String newPassword, String type, String location) throws JSONException, IOException {
         if (username == null) {
             return "ERROR: Did not choose a user to edit.";
-        } else if (currentPassword.length() == 0) {
+        }
+        else if (currentPassword.length() == 0) {
             return "ERROR: Need to enter the chosen user's password to make changes.";
-        } else if (type == null &&
+        }
+        else if (type == null &&
                 newPassword.length() == 0 &&
-                location == null
-        ) {
+                location == null) {
             return "ERROR: Need to give changes to make.";
         }
 
@@ -382,18 +415,20 @@ public class Simulation implements Subject{
             toChange.setPassword(newPassword);
         }
 
-        // Change location if that had input
-        if (location.equals("Outside")) {
-            loggedInUser.setLocation(null);
-        } else if (location != null) {
-            for (Room r : house.getRooms()) {
-                if (r.getName().equals(location)) {
-                    loggedInUser.setLocation(r);
-                    break;
+        //Change location if that had input
+        if (location != null) {
+            if (location.equalsIgnoreCase("outside")) {
+                toChange.setLocation(null);
+            } else {
+                for (Room r : house.getRooms()) {
+                    if (r.getName().equals(location)) {
+                        toChange.setLocation(r);
+                        break;
+                    }
                 }
             }
         }
-
+        updateUsersJSON();
         return "Successfully made requested changes to user.";
     }
 
@@ -465,6 +500,93 @@ public class Simulation implements Subject{
         }
         this.running = true;
         return "Simulation ON";
+    }
+    
+    /**
+     * Toggles the Auto Mode of the light
+     * 
+     * @return console msg indicating Light Auto mode state.
+     */
+    public String toggleLight() {
+    	if (LightAuto) {
+    		LightAuto = false;
+    		return "Light Auto Mode turned ON";
+    	}
+    	LightAuto = true;
+    	return "Light Auto Mode turned OFF";
+    }
+
+    /**
+     * Function that loads the users from the previous session through the JSON file
+     * @param srcFile JSON file containing the user information
+     * @return arraylist of users from the JSON file
+     * @throws org.json.JSONException
+     * @throws IOException
+     */
+    private ArrayList<User> usersFromJSON(File srcFile) throws org.json.JSONException, IOException {
+        if (srcFile == null) return null;
+
+        String wholeFile = new String(Files.readAllBytes(srcFile.toPath()));
+        JSONTokener tokener = new JSONTokener(wholeFile);
+        JSONObject object = new JSONObject(tokener);
+        Iterator<String> keys = object.keys();
+        ArrayList<User> users = new ArrayList<User>();
+
+        while (keys.hasNext()) {
+            String key = keys.next();
+            if (object.get(key) instanceof JSONObject) {
+                UserType type;
+                Room location = null;
+                switch (object.getJSONObject(key).getString("type")) {
+                    case "parent":
+                        type = UserType.PARENT;
+                        break;
+                    case "child":
+                        type = UserType.CHILD;
+                        break;
+                    case "guest":
+                        type = UserType.GUEST;
+                        break;
+                    case "stranger":
+                        type = UserType.STRANGER;
+                        break;
+                    default:
+                        type = UserType.STRANGER;
+                }
+                try {
+                    String locationName = object.getJSONObject(key).getString("location");
+                    if (locationName != null) {
+                        for (Room r : this.house.getRooms()) {
+                            if (r.getName().equalsIgnoreCase(locationName)) {
+                                location = r;
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    // This occurs when location is null --> location is already null by default
+                }
+                users.add(new User(
+                        type,
+                        location,
+                        key,
+                        object.getJSONObject(key).getString("password")
+                ));
+            }
+        }
+
+        return users;
+    }
+
+    private void updateUsersJSON() throws JSONException, IOException {
+        JSONObject obj = new JSONObject();
+        for (User u : this.users) {
+            JSONObject userInfo = new JSONObject();
+            userInfo.put("type", u.getType().toString().toLowerCase());
+            userInfo.put("location", u.getLocation() == null ? JSONObject.NULL : u.getLocation().getName());
+            userInfo.put("password", u.getPassword());
+            obj.put(u.getName(), userInfo);
+        }
+        Files.write(usersFile.getAbsoluteFile().toPath(), obj.toString().getBytes());
     }
 
     /**
