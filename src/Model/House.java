@@ -59,4 +59,17 @@ public class House {
     public void setLocation(String location) {
         this.location = location;
     }
+
+    public Room getRoomFromName(String name) {
+        if (name == null)
+            return null;
+
+        for (Room r : this.getRooms()) {
+            if (name.equals(r.getName())) {
+                return r;
+            }
+        }
+
+        return null;
+    }
 }

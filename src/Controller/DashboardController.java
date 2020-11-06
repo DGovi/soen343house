@@ -235,20 +235,17 @@ public class DashboardController {
      */
     @FXML
     private void shcChangeRooms() {
-        // SHC stuff
-        if (shcRoomSelect.getValue() != null) {
-            for (Room r : sim.getHouse().getRooms()) {
-                if (shcRoomSelect.getValue().equals(r.getName())) {
-                    shcWindowSelect.getItems().clear();
-                    for (int i = 1; i <= r.getWindows().size(); i++) {
-                        shcWindowSelect.getItems().add("Window " + i);
-                    }
-                    shcWindowOpenState.setText("Pick a window");
-                    shcWindowBlockedState.setText("Pick a window");
-                    break;
-                }
-            }
+        Room room = sim.getHouse().getRoomFromName(shcRoomSelect.getValue());
+        if (room == null)
+            return;
+
+        shcWindowSelect.getItems().clear();
+        for (int i = 1; i <= room.getWindows().size(); i++) {
+            shcWindowSelect.getItems().add("Window " + i);
         }
+        shcWindowOpenState.setText("Pick a window");
+        shcWindowBlockedState.setText("Pick a window");
+
         printToConsole("Now pick a window to view the state of.");
     }
 
@@ -613,7 +610,11 @@ public class DashboardController {
     @FXML
     public void drawLights(Room room, int x, int y, int size) {
         for (int i = 0; i < room.getLights(); i++) {
-            gc.setFill(Color.GOLD);
+            // change light color to show if lights are ON or OFF
+            if (room.isLightsOn())
+                gc.setFill(Color.GOLD);
+            else
+                gc.setFill(Color.SILVER);
             int offset = (size - 35);
             int xC = x + 10 + (i * 20) % offset;
             int yC = (i * 20) / offset * 20 + y + 25;
@@ -680,5 +681,11 @@ public class DashboardController {
         updateDashboard();
     }
 
+
+    @FXML
+    public void toggleRoomLights() {
+        Room room = sim.getHouse().getRoomFromName(shcRoomSelect.getValue());
+
+    }
 
 }

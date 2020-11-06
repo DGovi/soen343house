@@ -283,6 +283,13 @@
                                       <Insets bottom="5.0" top="5.0"/>
                                     </VBox.margin>
                                   </ComboBox>
+
+                                  <Separator prefWidth="200.0">
+                                    <VBox.margin>
+                                      <Insets bottom="10.0"/>
+                                    </VBox.margin>
+                                  </Separator>
+
                                   <Label text="Window:">
                                     <VBox.margin>
                                       <Insets bottom="5.0" top="5.0"/>
@@ -302,6 +309,15 @@
                                   <padding>
                                     <Insets left="10.0" right="10.0" top="10.0"/>
                                   </padding>
+
+                                  <Separator prefWidth="200.0">
+                                    <VBox.margin>
+                                      <Insets bottom="10.0"/>
+                                    </VBox.margin>
+                                  </Separator>
+
+                                  <Button mnemonicParsing="false" onAction="#toggleRoomLights" prefHeight="27.0" text="Turn Lights ON/OFF"></Button>
+
                                 </VBox>
                               </content>
                             </Tab>

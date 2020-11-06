@@ -574,6 +574,7 @@ public class Simulation {
         Files.write(usersFile.getAbsoluteFile().toPath(), obj.toString().getBytes());
     }
 
+
     @Override
     public String toString() {
         return "Simulation [date=" + date + ", time=" + time + ", temperature=" + temperature + ", loggedInUser="

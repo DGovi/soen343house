@@ -22,6 +22,7 @@ public class Room {
     protected ArrayList<Window> windows;
     protected int lights;
     protected ArrayList<String> doors;
+    private boolean lightsOn;
 
     /**
      * Creates a room object with a name, windows,
@@ -37,6 +38,7 @@ public class Room {
         this.windows = windows;
         this.lights = lights;
         this.doors = doors;
+        this.lightsOn = true;
     }
 
 
@@ -101,6 +103,14 @@ public class Room {
      */
     public void setLights(int lights) {
         this.lights = lights;
+    }
+
+    public boolean isLightsOn() {
+        return lightsOn;
+    }
+
+    public void setLightsOn(boolean lightsOn) {
+        this.lightsOn = lightsOn;
     }
 
     /**
