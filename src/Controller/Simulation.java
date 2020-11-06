@@ -28,6 +28,7 @@ public class Simulation {
     private final House house;
     private File usersFile;
     private boolean running;
+    private boolean LightAuto;
 
     /**
      * Creates a simulation object with date, time, temperature, houseinput as input.
@@ -69,6 +70,7 @@ public class Simulation {
         this.users = usersFromJSON(usersFile);
         this.loggedInUser = users.get(users.size() - 1);
         this.running = true;
+        this.LightAuto = true;
     }
 
     /**
@@ -499,6 +501,20 @@ public class Simulation {
         }
         this.running = true;
         return "Simulation ON";
+    }
+    
+    /**
+     * Toggles the Auto Mode of the light
+     * 
+     * @return console msg indicating Light Auto mode state.
+     */
+    public String toggleLight() {
+    	if (LightAuto) {
+    		LightAuto = false;
+    		return "Light Auto Mode turned ON";
+    	}
+    	LightAuto = true;
+    	return "Light Auto Mode turned OFF";
     }
 
     /**
