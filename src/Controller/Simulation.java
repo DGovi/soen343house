@@ -21,7 +21,6 @@ public class Simulation implements Subject{
     private final House house;
     private boolean running;
 
-    private ArrayList<Observer> motionSensors;
     private boolean isAway;
     /**
      * Creates a simulation object with date, time, temperature, houseinput as input.
@@ -42,8 +41,6 @@ public class Simulation implements Subject{
         this.users = new ArrayList<User>();
         addUser(this.loggedInUser);
         this.running = false;
-        this.motionSensors = new ArrayList<Observer>();
-
     }
 
     /**
@@ -469,34 +466,26 @@ public class Simulation implements Subject{
         return "Simulation ON";
     }
 
-    //OBSERVER PATTERN START
-
-    @Override
-    public void addMotionSensor(Observer newMotionSensor) {
-        motionSensors.add(newMotionSensor);
-    }
-
-    @Override
-    public void removeMotionSensor(Observer motionSensorToBeDeleted) {
-        int anIndex = motionSensors.indexOf(motionSensorToBeDeleted);
-        motionSensors.remove(anIndex);
-    }
-
-    @Override
+    /**
+     * observer pattern method to notify all observers
+     * @return message of which motion sensor is active
+     */
     public String notifyMotionSensors() {
         String message = "temp boi\n";
-        for (Observer motionSensor: motionSensors){
-            motionSensor.update(isAway);
-            message += "MotionSensor " + motionSensor.getMotionSensorID() + "is ON\n";
+        for (Room room : house.getRooms()){ //need to be changed
+            room.getRoomMotionSensor().update(isAway);
+            message += "MotionSensor " + room.getRoomMotionSensor().getMotionSensorID() + " is ON\n";
         }
         return message;
     }
 
+    //NOTE: when away mode on, kick all users out of house
     public String setSimulationAway(boolean checked){
         String message;
         if(checked){
             isAway = true;
             message = "Away Mode has been set";
+
         }
         else {
             isAway = false;
@@ -506,7 +495,6 @@ public class Simulation implements Subject{
     }
 
 
-    //OBSERVER PATTERN END
 
 
     

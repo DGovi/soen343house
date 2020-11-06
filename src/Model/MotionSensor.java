@@ -9,10 +9,8 @@ public class MotionSensor implements Observer {
 
     private Subject sim;
 
-    public MotionSensor(Subject sim){
-        this.sim = sim;
-        this.motionSensorID = motionSensorIDcount + 1;
-        sim.addMotionSensor(this);
+    public MotionSensor(boolean isAway){
+        this.motionSensorID = motionSensorIDcount++;
     }
 
     public int getMotionSensorID(){
