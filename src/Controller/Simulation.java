@@ -497,8 +497,8 @@ public class Simulation implements Subject{
         }
         else {
             isAway = false;
-            message = "\nUser has returned home in room " + house.getRooms().get(1).getName() + ", Away Mode disabled.";
-            loggedInUser.setLocation(house.getRooms().get(1));
+            message = "\nUser has returned home in room " + house.getRooms().get(0).getName() + ", Away Mode disabled.";
+            loggedInUser.setLocation(house.getRooms().get(0));
 
 
         }
