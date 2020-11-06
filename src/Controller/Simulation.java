@@ -44,6 +44,7 @@ public class Simulation {
         this.users = new ArrayList<User>();
         addUser(this.loggedInUser);
         this.running = true;
+        this.LightAuto = true;
     }
 
     /**
@@ -475,7 +476,6 @@ public class Simulation {
      * @return console msg indicating Light Auto mode state.
      */
     public String toggleLight() {
-    	LightAuto = true;
     	if (LightAuto) {
     		LightAuto = false;
     		return "Light Auto Mode turned ON";
