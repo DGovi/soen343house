@@ -296,7 +296,7 @@ public class DashboardController {
      * changeObstructed() function is then printed
      */
     @FXML
-    private void shcChangeBlocked() {
+    private void shcChangeBlocked() throws IOException, JSONException {
         if ((shcRoomSelect.getValue() == null) || (shcWindowSelect.getValue() == null)) {
             printToConsole("ERROR: Not all fields were filled in before clicking the button");
             return;
@@ -307,17 +307,19 @@ public class DashboardController {
         }
         String chosenWindowName = shcWindowSelect.getValue();
         int chosenWindowIndex = Integer.parseInt(chosenWindowName.substring(7)) - 1;
-        for (Room r : sim.getHouse().getRooms()) {
-            if (r.getName().equals(shcRoomSelect.getValue())) {
-                if ((sim.getLoggedInUser().getType() == UserType.CHILD || sim.getLoggedInUser().getType() == UserType.GUEST) && sim.getLoggedInUser().getLocation() != r) {
-                    printToConsole("ERROR: Children and guests need to be in the room to change the state of the windows.");
-                    return;
-                }
-                printToConsole(r.getWindows().get(chosenWindowIndex).changeObstructed());
-                updateSHCbuttons();
-                return;
-            }
+
+        Room room = sim.getHouse().getRoomFromName(shcRoomSelect.getValue());
+        if (room == null) {
+            return;
         }
+
+        if ((sim.getLoggedInUser().getType() == UserType.CHILD || sim.getLoggedInUser().getType() == UserType.GUEST) && sim.getLoggedInUser().getLocation() != room) {
+            printToConsole("ERROR: Children and guests need to be in the room to change the state of the windows.");
+            return;
+        }
+        printToConsole(room.getWindows().get(chosenWindowIndex).changeObstructed());
+        updateSHCbuttons();
+        this.renderLayout(sim.getHouse());
     }
 
     /**
@@ -541,7 +543,7 @@ public class DashboardController {
         coordinates.put(firstRoom, new javafx.util.Pair<Integer, Integer>(Integer.valueOf(startX), Integer.valueOf(startY)));
 
         drawRoom(firstRoom, startX, startY, false);
-        drawWindows(startX, startY, firstRoom.getDoors().size() * ROOM_SIZE, firstRoom.getWindows().size());
+        drawWindows(startX, startY, firstRoom.getDoors().size() * ROOM_SIZE, firstRoom.getWindows());
 
         while (!stack.empty()) {
             Room top = stack.pop();
@@ -560,14 +562,13 @@ public class DashboardController {
                 int x = coordinates.get(top).getKey().intValue() + xParent;
                 int y = coordinates.get(top).getValue().intValue() + ROOM_SIZE * top.getDoors().size();
                 int size = room.getDoors().size() * ROOM_SIZE;
-                int countWindows = room.getWindows().size();
 
                 this.drawRoom(room, x, y, door != doorsTop.get(doorsTop.size() - 1) && doorsTop.size() > 1);
 
                 if (door == doorsTop.get(doorsTop.size() - 1))
-                    drawWindows(x, y, size, countWindows);
+                    drawWindows(x, y, size, room.getWindows());
                 else if (door == doorsTop.get(0) || doorsTop.size() > 1 && door == doorsTop.get(1))
-                    drawWindows(x - size, y, size, countWindows);
+                    drawWindows(x - size, y, size, room.getWindows());
 
                 coordinates.put(room, new javafx.util.Pair<Integer, Integer>(Integer.valueOf(x), Integer.valueOf(y)));
 
@@ -582,12 +583,20 @@ public class DashboardController {
      * @param x            position on the x coordinate of window
      * @param y            position of y coordinate of window
      * @param size         length of a window
-     * @param countWindows number of windows on  a house layout
+     * @param windows      a list of windows to draw
      */
     @FXML
-    public void drawWindows(int x, int y, int size, int countWindows) {
+    public void drawWindows(int x, int y, int size, ArrayList<Window> windows) {
+        int countWindows = windows.size();
+
         for (int i = 0; i < countWindows; i++) {
-            gc.setStroke(Color.LIGHTBLUE);
+            // setting window color based on if obstructed or not
+            Window window = windows.get(i);
+            if (window.getObstructed())
+                gc.setStroke(Color.RED);
+            else
+                gc.setStroke(Color.LIGHTBLUE);
+
             gc.setLineWidth(3);
             int gap = 15;
             int offset = (size - windowLength * countWindows - gap * (countWindows - 1)) / 2;
