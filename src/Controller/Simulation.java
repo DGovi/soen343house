@@ -41,6 +41,7 @@ public class Simulation implements Subject{
         this.users = new ArrayList<User>();
         addUser(this.loggedInUser);
         this.running = false;
+        this.isAway = false;
     }
 
     /**
