@@ -103,6 +103,8 @@ public class DashboardController {
     private Button shcWindowBlockedState;
     @FXML
     private ToggleButton shcLightAuto;
+    @FXML
+    private ComboBox<String> shcDoorSelect;
 
     @FXML
     private TextArea console;
@@ -254,7 +256,14 @@ public class DashboardController {
         shcWindowOpenState.setText("Pick a window");
         shcWindowBlockedState.setText("Pick a window");
 
-        printToConsole("Now pick a window to view the state of.");
+        shcDoorSelect.getItems().clear();
+        for (int i = 1; i <= room.getDoors().size(); i++) {
+            shcWindowSelect.getItems().add("Door " + i);
+        }
+        // shcWindowOpenState.setText("Pick a window");
+        // shcWindowBlockedState.setText("Pick a window");
+
+        printToConsole("Now pick a window/door to view the state of.");
     }
 
     /**
@@ -730,6 +739,11 @@ public class DashboardController {
         printToConsole(sim.toggleRunning());
 
         updateDashboard();
+    }
+
+    @FXML
+    public void shcChangeDoor() {
+
     }
 
 
