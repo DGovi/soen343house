@@ -41,6 +41,16 @@ public class Door {
    }
 
    public String toggleOpen() {
+      // toggling the opposite door
+      Door oppositeDoor = this.getOppositeDoor();
+      if (oppositeDoor != null) {
+         if (oppositeDoor.isOpen())
+             oppositeDoor.setOpen(false);
+         else
+             oppositeDoor.setOpen(true);
+      }
+
+      // toggling this door
       if (this.open) {
          this.open = false;
          return "Door is now closed!";
@@ -50,22 +60,22 @@ public class Door {
       }
    }
 
+   /*
    @Override
    public boolean equals(Object o) {
       if (o == null || getClass() != o.getClass()) return false;
       Door door = (Door) o;
       return (Objects.equals(this.from, door.from) && Objects.equals(this.to, door.to)) || (Objects.equals(this.from, door.to) && Objects.equals(this.to, door.from)) ;
    }
+    */
 
-   /**
-   public static Door getExistingDoor(Door newDoor) {
-
+   // opposite is a door where from is to and to is from
+   public Door getOppositeDoor() {
       for (Door existingDoor: existingDoors) {
-         if (existingDoor.equals(newDoor))
+         if (this.getFrom().equals(existingDoor.getTo()) && this.getTo().equals(existingDoor.getFrom()))
             return existingDoor;
       }
-      return newDoor;
+      return null;
    }
-    */
 
 }
