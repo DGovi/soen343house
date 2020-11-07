@@ -721,8 +721,20 @@ public class DashboardController {
         else
             gc.strokeLine(x + 15, y, x + 30, y);
 
-        if (sideDoor)
-            gc.strokeLine(x + size, y + 20, x + size, y + 40);
+        if (sideDoor) {
+            boolean sideDoorOpen = false;
+            for (Door d : room.getDoors()) {
+                if (! d.getTo().equals(roomAbove.getName()) && d.isOpen())
+                    sideDoorOpen = true;
+            }
+
+            if (sideDoorOpen)
+                gc.strokeLine(x + size, y + 20, x + size + 15, y + 40);
+            else
+                gc.strokeLine(x + size, y + 20, x + size, y + 40);
+
+        }
+
 
         // drawing room name
         gc.setLineWidth(1);
