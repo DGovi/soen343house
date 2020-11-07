@@ -1,9 +1,6 @@
 package Controller;
 
-import Model.House;
-import Model.Room;
-import Model.User;
-import Model.UserType;
+import Model.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -19,7 +16,7 @@ import java.util.Iterator;
  * The primary controller of the smart home simulation.
  * Stores many important simulation variables.
  */
-public class Simulation {
+public class Simulation implements Subject{
     private String date;
     private Time time;
     private float temperature;
@@ -28,7 +25,9 @@ public class Simulation {
     private final House house;
     private File usersFile;
     private boolean running;
+    private boolean LightAuto;
 
+    private boolean isAway;
     /**
      * Creates a simulation object with date, time, temperature, houseinput as input.
      *
@@ -48,6 +47,7 @@ public class Simulation {
         this.users = new ArrayList<>();
         addUser(this.loggedInUser);
         this.running = false;
+        this.isAway = false;
     }
 
     /**
@@ -69,6 +69,7 @@ public class Simulation {
         this.users = usersFromJSON(usersFile);
         this.loggedInUser = users.get(users.size() - 1);
         this.running = true;
+        this.LightAuto = true;
     }
 
     /**
@@ -500,6 +501,20 @@ public class Simulation {
         this.running = true;
         return "Simulation ON";
     }
+    
+    /**
+     * Toggles the Auto Mode of the light
+     * 
+     * @return console msg indicating Light Auto mode state.
+     */
+    public String toggleLight() {
+    	if (LightAuto) {
+    		LightAuto = false;
+    		return "Light Auto Mode turned ON";
+    	}
+    	LightAuto = true;
+    	return "Light Auto Mode turned OFF";
+    }
 
     /**
      * Function that loads the users from the previous session through the JSON file
@@ -569,6 +584,7 @@ public class Simulation {
         return users;
     }
 
+    // TODO:  Mahad Javadocs this
     private void updateUsersJSON() throws JSONException, IOException {
         JSONObject obj = new JSONObject();
         for (User u : this.users) {
@@ -581,6 +597,68 @@ public class Simulation {
         Files.write(usersFile.getAbsoluteFile().toPath(), obj.toString().getBytes());
     }
 
+    /**
+     * Gets a list of all users in the current room.
+     * @param room the room to search for users
+     * @return an ArrayList of users
+     */
+    public ArrayList<User> getUsersInRoom(Room room) {
+        ArrayList<User> people = new ArrayList<User>();
+
+        for (User user: this.getUsers()) {
+           if (user.getLocation() != null && user.getLocation().equals(room))
+               people.add(user);
+        }
+
+        return people;
+    }
+
+    /**
+     * observer pattern method to notify all observers
+     * @return message of which motion sensor is active
+     */
+    public String notifyMotionSensors() {
+        String message = "";
+        for (Room room : house.getRooms()){
+            room.getRoomMotionSensor().update(isAway);
+            if(isAway)
+                message += "MotionSensor in " + room.getName() + "(" +
+                        room.getRoomMotionSensor().getMotionSensorID() + ")" + " is ON\n";
+        }
+        return message;
+    }
+
+    /**
+     * If the simulation is set on away mode, then it kicks all users of the house
+     * else it sets sets the current user to the garage (initial Room).
+     * @param checked boolean that shows if the Away mode box in SHP is checked
+     * @return a string that describes what happened
+     */
+    public String setSimulationAway(boolean checked){
+        String message;
+        if(checked){
+            isAway = true;
+            message = "Away Mode has been set";
+            for(User aUser: users){
+                aUser.setLocation(null);
+            }
+        }
+        else {
+            isAway = false;
+            message = "\nUser has returned home in " + house.getRooms().get(0).getName() +
+                    ".\nAway Mode disabled." +
+                    "\nAll sensors OFF";
+            loggedInUser.setLocation(house.getRooms().get(0));
+
+
+        }
+        return message;
+    }
+
+    /**
+     * Converts the Simulation into a String representation.
+     * @return the String representation of the Simulation
+     */
     @Override
     public String toString() {
         return "Simulation [date=" + date + ", time=" + time + ", temperature=" + temperature + ", loggedInUser="

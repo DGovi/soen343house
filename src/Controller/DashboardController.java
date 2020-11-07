@@ -12,6 +12,7 @@ import java.time.LocalTime;
 import javafx.event.ActionEvent;
 import View.CountriesWindow;
 import View.InputWindow;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -37,6 +38,9 @@ public class DashboardController {
     private final int ROOM_SIZE = 50;
     private final File userInput = new File("users.json");
     final FileChooser fileChooser = new FileChooser();
+
+    private static final int PERSON_HEIGHT = 25;
+    private static final int PERSON_WIDTH = 25;
 
     @FXML
     private Label simRunningLabel;
@@ -97,6 +101,12 @@ public class DashboardController {
     private Button shcWindowOpenState;
     @FXML
     private Button shcWindowBlockedState;
+    @FXML
+    private ToggleButton shcLightAuto;
+    @FXML
+    private ComboBox<String> shcDoorSelect;
+    @FXML
+    private Button shcDoorOpenState;
 
     @FXML
     private TextArea console;
@@ -111,6 +121,9 @@ public class DashboardController {
     @FXML
     private Label timeLabel;
     GraphicsContext gc;
+
+    @FXML
+    private CheckBox awayButton;
 
     /**
      * Changes the simulation temperature.
@@ -173,6 +186,7 @@ public class DashboardController {
     private void editCurrentUserLocation() throws JSONException, IOException {
         printToConsole(sim.setLoggedInUserLocation(currentUserLocationOptions.getValue()));
         updateDashboard();
+        this.renderLayout(sim.getHouse());
     }
 
     /**
@@ -218,6 +232,7 @@ public class DashboardController {
                 )
         );
         updateDashboard();
+        this.renderLayout(sim.getHouse());
     }
 
     /**
@@ -235,21 +250,24 @@ public class DashboardController {
      */
     @FXML
     private void shcChangeRooms() {
-        // SHC stuff
-        if (shcRoomSelect.getValue() != null) {
-            for (Room r : sim.getHouse().getRooms()) {
-                if (shcRoomSelect.getValue().equals(r.getName())) {
-                    shcWindowSelect.getItems().clear();
-                    for (int i = 1; i <= r.getWindows().size(); i++) {
-                        shcWindowSelect.getItems().add("Window " + i);
-                    }
-                    shcWindowOpenState.setText("Pick a window");
-                    shcWindowBlockedState.setText("Pick a window");
-                    break;
-                }
-            }
+        Room room = sim.getHouse().getRoomFromName(shcRoomSelect.getValue());
+        if (room == null)
+            return;
+
+        shcWindowSelect.getItems().clear();
+        for (int i = 1; i <= room.getWindows().size(); i++) {
+            shcWindowSelect.getItems().add("Window " + i);
         }
-        printToConsole("Now pick a window to view the state of.");
+        shcWindowOpenState.setText("Pick a window");
+        shcWindowBlockedState.setText("Pick a window");
+
+        shcDoorSelect.getItems().clear();
+        for (int i = 1; i <= room.getDoors().size(); i++) {
+            shcDoorSelect.getItems().add("Door " + i);
+        }
+        shcDoorOpenState.setText("Pick a door");
+
+        printToConsole("Now pick a window/door to view the state of.");
     }
 
     /**
@@ -258,9 +276,17 @@ public class DashboardController {
     @FXML
     private void shcChangeWindows() {
         if (shcWindowSelect.getValue() != null) {
-            updateSHCbuttons();
+            updateSHCWindowButtons();
             printToConsole("Successfully changed windows.");
         }
+    }
+
+    /**
+     * Toggles the Auto Mode
+     */
+    @FXML
+    private void shcLightAuto() {
+    	printToConsole(sim.toggleLight());
     }
 
     /**
@@ -269,7 +295,7 @@ public class DashboardController {
      * changeOpen() function is then printed
      */
     @FXML
-    private void shcChangeOpen() {
+    private void shcChangeOpen() throws IOException, JSONException {
         if ((shcRoomSelect.getValue() == null) || (shcWindowSelect.getValue() == null)) {
             printToConsole("ERROR: Not all fields were filled in before clicking the button");
             return;
@@ -280,17 +306,20 @@ public class DashboardController {
         }
         String chosenWindowName = shcWindowSelect.getValue();
         int chosenWindowIndex = Integer.parseInt(chosenWindowName.substring(7)) - 1;
-        for (Room r : sim.getHouse().getRooms()) {
-            if (r.getName().equals(shcRoomSelect.getValue())) {
-                if ((sim.getLoggedInUser().getType() == UserType.CHILD || sim.getLoggedInUser().getType() == UserType.GUEST) && sim.getLoggedInUser().getLocation() != r) {
-                    printToConsole("ERROR: Children need to be in the room to change open/close windows.");
-                    return;
-                }
-                printToConsole(r.getWindows().get(chosenWindowIndex).changeOpen());
-                updateSHCbuttons();
-                return;
-            }
+
+        Room room = sim.getHouse().getRoomFromName(shcRoomSelect.getValue());
+        if (room == null) {
+            return;
         }
+
+        if ((sim.getLoggedInUser().getType() == UserType.CHILD || sim.getLoggedInUser().getType() == UserType.GUEST) && sim.getLoggedInUser().getLocation() != room) {
+            printToConsole("ERROR: Children need to be in the room to change open/close windows.");
+            return;
+        }
+
+        printToConsole(room.getWindows().get(chosenWindowIndex).changeOpen());
+        updateSHCWindowButtons();
+        this.renderLayout(sim.getHouse());
     }
 
     /**
@@ -299,7 +328,7 @@ public class DashboardController {
      * changeObstructed() function is then printed
      */
     @FXML
-    private void shcChangeBlocked() {
+    private void shcChangeBlocked() throws IOException, JSONException {
         if ((shcRoomSelect.getValue() == null) || (shcWindowSelect.getValue() == null)) {
             printToConsole("ERROR: Not all fields were filled in before clicking the button");
             return;
@@ -310,41 +339,67 @@ public class DashboardController {
         }
         String chosenWindowName = shcWindowSelect.getValue();
         int chosenWindowIndex = Integer.parseInt(chosenWindowName.substring(7)) - 1;
-        for (Room r : sim.getHouse().getRooms()) {
-            if (r.getName().equals(shcRoomSelect.getValue())) {
-                if ((sim.getLoggedInUser().getType() == UserType.CHILD || sim.getLoggedInUser().getType() == UserType.GUEST) && sim.getLoggedInUser().getLocation() != r) {
-                    printToConsole("ERROR: Children and guests need to be in the room to change the state of the windows.");
-                    return;
-                }
-                printToConsole(r.getWindows().get(chosenWindowIndex).changeObstructed());
-                updateSHCbuttons();
-                return;
-            }
+
+        Room room = sim.getHouse().getRoomFromName(shcRoomSelect.getValue());
+        if (room == null) {
+            return;
         }
+
+        if ((sim.getLoggedInUser().getType() == UserType.CHILD || sim.getLoggedInUser().getType() == UserType.GUEST) && sim.getLoggedInUser().getLocation() != room) {
+            printToConsole("ERROR: Children and guests need to be in the room to change the state of the windows.");
+            return;
+        }
+        printToConsole(room.getWindows().get(chosenWindowIndex).changeObstructed());
+        updateSHCWindowButtons();
+        this.renderLayout(sim.getHouse());
     }
 
     /**
-     * Updates the control buttons that show the current state of the selected window
+     * Updates the control buttons that show the current state of the selected window.
      */
-    private void updateSHCbuttons() {
+    private void updateSHCWindowButtons() {
+        // updating window buttons
         String chosenWindowName = shcWindowSelect.getValue();
+        if (chosenWindowName == null)
+            return;
+
         int chosenWindowIndex = Integer.parseInt(chosenWindowName.substring(7)) - 1;
-        for (Room r : sim.getHouse().getRooms()) {
-            if (r.getName().equals(shcRoomSelect.getValue())) {
-                Window w = r.getWindows().get(chosenWindowIndex);
-                if (w.getObstructed()) {
-                    shcWindowOpenState.setText("Open");
-                    shcWindowBlockedState.setText("Obstructed");
-                } else if (w.getOpen()) {
-                    shcWindowOpenState.setText("Open");
-                    shcWindowBlockedState.setText("Not Obstructed");
-                } else {
-                    shcWindowOpenState.setText("Closed");
-                    shcWindowBlockedState.setText("Not Obstructed");
-                }
-            }
+        Room room = sim.getHouse().getRoomFromName(shcRoomSelect.getValue());
+        if (room == null)
+            return;
+
+        Window w = room.getWindows().get(chosenWindowIndex);
+        if (w.getObstructed()) {
+            shcWindowOpenState.setText("Open");
+            shcWindowBlockedState.setText("Obstructed");
+        } else if (w.getOpen()) {
+            shcWindowOpenState.setText("Open");
+            shcWindowBlockedState.setText("Not Obstructed");
+        } else {
+            shcWindowOpenState.setText("Closed");
+            shcWindowBlockedState.setText("Not Obstructed");
         }
 
+    }
+
+    /**
+     * Updates the control buttons that show the current state of the selected door.
+     */
+    public void updateSHCDoorButtons() {
+        String chosenDoorName = shcDoorSelect.getValue();
+        if (chosenDoorName == null)
+            return;;
+
+        int chosenDoorIndex = Integer.parseInt(chosenDoorName.substring(5)) - 1;
+        Room room = sim.getHouse().getRoomFromName(shcRoomSelect.getValue());
+        if (room == null)
+            return;
+
+        Door d = room.getDoors().get(chosenDoorIndex);
+        if (d.isOpen())
+            shcDoorOpenState.setText("Door Open");
+        else
+            shcDoorOpenState.setText("Door Closed");
     }
 
     /**
@@ -543,40 +598,43 @@ public class DashboardController {
         traversed.add(firstRoom.getName());
         coordinates.put(firstRoom, new javafx.util.Pair<Integer, Integer>(Integer.valueOf(startX), Integer.valueOf(startY)));
 
-        drawRoom(firstRoom, startX, startY, false);
-        drawWindows(startX, startY, firstRoom.getDoors().size() * ROOM_SIZE, firstRoom.getWindows().size());
+        drawRoom(firstRoom, startX, startY, false, null);
+        drawWindows(startX, startY, firstRoom.getDoors().size() * ROOM_SIZE, firstRoom.getWindows());
 
         while (!stack.empty()) {
             Room top = stack.pop();
             int xParent = 0;
 
-            ArrayList<String> doorsTop = top.getDoors();
+            ArrayList<Door> doorsTop = top.getDoors();
 
-            for (String door : doorsTop) {
+            for (Door doorObj : doorsTop) {
+                String door = doorObj.getTo();
+
                 if (traversed.contains(door))
                     continue;
 
                 Room room = doors.get(door);
                 stack.add(doors.get(door));
                 traversed.add(door);
+                Room roomAbove = doors.get(doorObj.getFrom());
 
                 int x = coordinates.get(top).getKey().intValue() + xParent;
                 int y = coordinates.get(top).getValue().intValue() + ROOM_SIZE * top.getDoors().size();
                 int size = room.getDoors().size() * ROOM_SIZE;
-                int countWindows = room.getWindows().size();
 
-                this.drawRoom(room, x, y, door != doorsTop.get(doorsTop.size() - 1) && doorsTop.size() > 1);
+                this.drawRoom(room, x, y, (! doorObj.equals(doorsTop.get(doorsTop.size() - 1))) && doorsTop.size() > 1, roomAbove);
 
-                if (door == doorsTop.get(doorsTop.size() - 1))
-                    drawWindows(x, y, size, countWindows);
-                else if (door == doorsTop.get(0) || doorsTop.size() > 1 && door == doorsTop.get(1))
-                    drawWindows(x - size, y, size, countWindows);
+                if (doorObj.equals(doorsTop.get(doorsTop.size() - 1)))
+                    this.drawWindows(x, y, size, room.getWindows());
+                else if (door.equals(doorsTop.get(0)) || doorsTop.size() > 1 && door.equals(doorsTop.get(1)))
+                    this.drawWindows(x - size, y, size, room.getWindows());
 
                 coordinates.put(room, new javafx.util.Pair<Integer, Integer>(Integer.valueOf(x), Integer.valueOf(y)));
 
                 xParent = size;
             }
         }
+
     }
 
     /**
@@ -585,16 +643,24 @@ public class DashboardController {
      * @param x            position on the x coordinate of window
      * @param y            position of y coordinate of window
      * @param size         length of a window
-     * @param countWindows number of windows on  a house layout
+     * @param windows      a list of windows to draw
      */
     @FXML
-    public void drawWindows(int x, int y, int size, int countWindows) {
+    public void drawWindows(int x, int y, int size, ArrayList<Window> windows) {
+        int countWindows = windows.size();
+
         for (int i = 0; i < countWindows; i++) {
-            gc.setStroke(Color.LIGHTBLUE);
+            // setting window color based on if obstructed or not
+            Window window = windows.get(i);
+            if (window.getObstructed())
+                gc.setStroke(Color.RED);
+            else
+                gc.setStroke(Color.LIGHTBLUE);
+
             gc.setLineWidth(3);
             int gap = 15;
             int offset = (size - windowLength * countWindows - gap * (countWindows - 1)) / 2;
-            gc.strokeLine(x + size, y + offset + i * (windowLength + gap), x + size, y + offset + windowLength + i * (windowLength + gap));
+            gc.strokeLine(x + size, y + offset + i * (windowLength + gap), x + size + (window.getOpen() ? offset : 0), y + offset + windowLength + i * (windowLength + gap));
         }
         gc.setLineWidth(1);
         gc.setStroke(Color.BLACK);
@@ -613,7 +679,11 @@ public class DashboardController {
     @FXML
     public void drawLights(Room room, int x, int y, int size) {
         for (int i = 0; i < room.getLights(); i++) {
-            gc.setFill(Color.GOLD);
+            // change light color to show if lights are ON or OFF
+            if (room.isLightsOn())
+                gc.setFill(Color.GOLD);
+            else
+                gc.setFill(Color.SILVER);
             int offset = (size - 35);
             int xC = x + 10 + (i * 20) % offset;
             int yC = (i * 20) / offset * 20 + y + 25;
@@ -631,19 +701,79 @@ public class DashboardController {
      * @param sideDoor true if the door is on the side (vertical on the house layout), false if not (horizontal)
      */
     @FXML
-    public void drawRoom(Room room, int x, int y, boolean sideDoor) {
+    public void drawRoom(Room room, int x, int y, boolean sideDoor, Room roomAbove) {
+        // drawing room rectangle
         int size = 50 * room.getDoors().size();
         gc.strokeRoundRect(x, y, size, size, 0, 0);
+
+        // drawing lights
         drawLights(room, x, y, size);
 
-        gc.setLineWidth(3);
-        gc.strokeLine(x + 15, y, x + 30, y);
-        if (sideDoor)
-            gc.strokeLine(x + size, y + 20, x + size, y + 40);
+        // drawing people
+        drawPeople(room, x, y, size);
 
+        // drawing doors
+        gc.setLineWidth(3);
+        boolean topDoorOpen = false;
+        if (roomAbove != null)
+            for (Door d : room.getDoors()) {
+               if (d.getTo().equals(roomAbove.getName()) && d.isOpen())
+                   topDoorOpen = true;
+
+            }
+
+        if (topDoorOpen)
+            gc.strokeLine(x + 15, y, x + 30, y - 15);
+        else
+            gc.strokeLine(x + 15, y, x + 30, y);
+
+        if (sideDoor) {
+            boolean sideDoorOpen = false;
+            for (Door d : room.getDoors()) {
+                if (! d.getTo().equals(roomAbove.getName()) && d.isOpen())
+                    sideDoorOpen = true;
+            }
+
+            if (sideDoorOpen)
+                gc.strokeLine(x + size, y + 20, x + size + 15, y + 40);
+            else
+                gc.strokeLine(x + size, y + 20, x + size, y + 40);
+
+        }
+
+
+        // drawing room name
         gc.setLineWidth(1);
         gc.setStroke(Color.BLACK);
         gc.fillText(room.getName(), x + 5, y + 17);
+    }
+
+    /**
+     * Draws the people who are currently present in a given room
+     * @param room the room in question
+     * @param x the x position of the room
+     * @param y the y position of the room
+     * @param size the size of the room
+     */
+    public void drawPeople(Room room, int x, int y, int size) {
+        final int spacingX = PERSON_WIDTH;
+        final int spacingY = PERSON_WIDTH;
+        int posX = 0;
+        int posY = 0;
+
+        // drawing people
+        Image personImage = new Image("file:stick_person.png");
+        for (User user: sim.getUsersInRoom(room)) {
+            if (posX > size) {
+                posX = 0;
+                posY += spacingY;
+            }
+            int finalX = x + posX;
+            int finalY = y + posY;
+
+            gc.drawImage(personImage, finalX , finalY, PERSON_HEIGHT, PERSON_WIDTH);
+            posX += spacingX;
+        }
     }
 
     /**
@@ -677,6 +807,77 @@ public class DashboardController {
     public void toggleSim() {
         printToConsole(sim.toggleRunning());
 
+        updateDashboard();
+    }
+
+    /**
+     * Change the value for the SHC door selector combo-box.
+     */
+    @FXML
+    public void shcChangeDoor() {
+        if (shcDoorSelect.getValue() != null) {
+            updateSHCDoorButtons();
+            printToConsole("Successfully changed door.");
+        }
+    }
+
+    /**
+     * Opens or closes the door selected by the SHC module.
+     * @throws IOException
+     * @throws JSONException
+     */
+    @FXML
+    public void shcChangeDoorOpen() throws IOException, JSONException {
+        if ((shcRoomSelect.getValue() == null) || (shcDoorSelect.getValue() == null)) {
+            printToConsole("ERROR: Not all fields were filled in before clicking the button");
+            return;
+        }
+        if (sim.getLoggedInUser().getType() == UserType.STRANGER) {
+            printToConsole("ERROR: Strangers are not allowed to change the state of the doors.");
+            return;
+        }
+
+        String chosenDoorName = shcDoorSelect.getValue();
+        if (chosenDoorName == null)
+            return;;
+
+        int chosenDoorIndex = Integer.parseInt(chosenDoorName.substring(5)) - 1;
+        Room room = sim.getHouse().getRoomFromName(shcRoomSelect.getValue());
+        if (room == null)
+            return;
+
+        Door d = room.getDoors().get(chosenDoorIndex);
+        printToConsole(d.toggleOpen());
+        updateSHCDoorButtons();
+        this.renderLayout(sim.getHouse());
+    }
+
+    /**
+     * Toggles the lightsOn property of the room selected by the
+     * SHC module, and updates the visualization to reflect this new
+     * value.
+     * @throws IOException
+     * @throws JSONException
+     */
+    @FXML
+    public void toggleRoomLights() throws IOException, JSONException {
+        Room room = sim.getHouse().getRoomFromName(shcRoomSelect.getValue());
+        if (room == null) {
+            return;
+        }
+
+        room.toggleLightsON();
+        this.renderLayout(sim.getHouse());
+    }
+  
+    /**
+     * sets the isAway boolean to whatever it is on the
+     * checkbox field in the SHP. It also notifies the observers.
+     * @param actionEvent event that triggers this method
+     */
+    public void setAwayMode(ActionEvent actionEvent){
+        printToConsole(sim.setSimulationAway(awayButton.isSelected()));
+        printToConsole(sim.notifyMotionSensors());
         updateDashboard();
     }
 
