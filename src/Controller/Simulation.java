@@ -480,6 +480,15 @@ public class Simulation implements Subject{
     }
 
     /**
+     * Gets the current state of the auto mode as a boolean.
+     *
+     * @return bool: true if running, false otherwise
+     */
+    public boolean getLightAuto() {
+        return this.LightAuto;
+    }
+
+    /**
      * Sets the running state of the simulation.
      *
      * @param running boolean true if running, false otherwise

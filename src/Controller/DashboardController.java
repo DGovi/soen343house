@@ -155,13 +155,13 @@ public class DashboardController {
             return;
         } else if (createUserPassword.getText() == null) {
             printToConsole("ERROR: Password cannot be null.");
-        } else if (createUserType.getValue() == "Parent") {
+        } else if (createUserType.getValue().equals("Parent")) {
             type = UserType.PARENT;
-        } else if (createUserType.getValue() == "Child") {
+        } else if (createUserType.getValue().equals("Child")) {
             type = UserType.CHILD;
-        } else if (createUserType.getValue() == "Guest") {
+        } else if (createUserType.getValue().equals("Guest")) {
             type = UserType.GUEST;
-        } else if (createUserType.getValue() == "Stranger") {
+        } else if (createUserType.getValue().equals("Stranger")) {
             type = UserType.STRANGER;
         } else {
             printToConsole("ERROR: Unhandled add user case. You did something weird.");
@@ -184,7 +184,13 @@ public class DashboardController {
      */
     @FXML
     private void editCurrentUserLocation() throws JSONException, IOException {
-        printToConsole(sim.setLoggedInUserLocation(currentUserLocationOptions.getValue()));
+        String locationName = currentUserLocationOptions.getValue();
+        printToConsole(sim.setLoggedInUserLocation(locationName));
+        if(sim.getLightAuto() && !locationName.equals("Outside")){
+            printToConsole("Automatically turning lights on.");
+            sim.getHouse().getRoomFromName(locationName).setLightsOn(true);
+        }
+
         updateDashboard();
         this.renderLayout(sim.getHouse());
     }
