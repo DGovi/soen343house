@@ -295,18 +295,25 @@ public class DashboardController {
     }
 
     /**
+     * Turns off all the lights in the house that don't have a person in it.
+     */
+    private void shcTurnOffAllLights() throws IOException, JSONException {
+        for(Room r : sim.getHouse().getRooms()){
+            if(sim.getUsersInRoom(r).isEmpty()){
+                r.setLightsOn(false);
+            }
+        }
+        this.renderLayout(sim.getHouse());
+    }
+
+    /**
      * Toggles the Auto Mode
      */
     @FXML
     private void shcLightAuto() throws IOException, JSONException {
     	printToConsole(sim.toggleLight());
-        if(sim.getLightAuto()){
-            for(Room r : sim.getHouse().getRooms()){
-                if(sim.getUsersInRoom(r).isEmpty()){
-                    r.setLightsOn(false);
-                }
-            }
-            this.renderLayout(sim.getHouse());
+        if(sim.getLightAuto()) {
+            shcTurnOffAllLights();
         }
     }
 
@@ -576,6 +583,9 @@ public class DashboardController {
 
         shcWindowOpenState.setText("Pick a window");
         shcWindowBlockedState.setText("Pick a window");
+
+        //Turn all lights in house off that don't have people in them
+        shcTurnOffAllLights();
 
         // enabling ON/OFF button
         simToggleButton.setDisable(false);

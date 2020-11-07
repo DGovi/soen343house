@@ -518,7 +518,6 @@ public class Simulation implements Subject{
      */
     public String toggleLight() {
     	LightAuto = !LightAuto;
-
     	return LightAuto ? "Light Auto Mode turned ON" : "Light Auto Mode turned OFF";
     }
 
