@@ -138,7 +138,12 @@ public class Room {
                 JSONArray array = object.getJSONObject(key).getJSONArray("doorsTo");
                 ArrayList<Door> list = new ArrayList<Door>();
                 for (int i = 0; i < array.length(); i++) {
-                    list.add(new Door(array.get(i).toString()));
+                    String doorName = array.get(i).toString();
+                    Door doorToAdd = Door.getExistingDoor(doorName);
+                    if (doorToAdd == null)
+                       doorToAdd = new Door(doorName);
+
+                    list.add(doorToAdd);
                 }
                 ArrayList<Window> windows = new ArrayList<Window>();
                 for (int i = 0; i < object.getJSONObject(key).getInt("windows"); i++) {

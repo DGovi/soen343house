@@ -695,16 +695,31 @@ public class DashboardController {
      */
     @FXML
     public void drawRoom(Room room, int x, int y, boolean sideDoor) {
+        // drawing room rectangle
         int size = 50 * room.getDoors().size();
         gc.strokeRoundRect(x, y, size, size, 0, 0);
+
+        // drawing lights
         drawLights(room, x, y, size);
+
+        // drawing people
         drawPeople(room, x, y, size);
 
+        // drawing doors
+        System.out.println("[" + room.getName() + "]");
+        for (Door d : room.getDoors()) {
+            System.out.println(d.getName());
+        }
         gc.setLineWidth(3);
-        gc.strokeLine(x + 15, y, x + 30, y);
+        if (room.getDoors().get(0).isOpen()) {
+            gc.strokeLine(x + 15, y, x + 30, y - 15);
+        } else {
+            gc.strokeLine(x + 15, y, x + 30, y);
+        }
         if (sideDoor)
             gc.strokeLine(x + size, y + 20, x + size, y + 40);
 
+        // drawing room name
         gc.setLineWidth(1);
         gc.setStroke(Color.BLACK);
         gc.fillText(room.getName(), x + 5, y + 17);
@@ -774,7 +789,7 @@ public class DashboardController {
     }
 
     @FXML
-    public void shcChangeDoorOpen() {
+    public void shcChangeDoorOpen() throws IOException, JSONException {
         if ((shcRoomSelect.getValue() == null) || (shcDoorSelect.getValue() == null)) {
             printToConsole("ERROR: Not all fields were filled in before clicking the button");
             return;
@@ -796,6 +811,7 @@ public class DashboardController {
         Door d = room.getDoors().get(chosenDoorIndex);
         printToConsole(d.toggleOpen());
         updateSHCDoorButtons();
+        this.renderLayout(sim.getHouse());
     }
 
 

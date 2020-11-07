@@ -1,14 +1,17 @@
 package Model;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Door {
    private boolean open;
    private String name;
+   private static ArrayList<Door> existingDoors = new ArrayList<Door>();
 
    public Door(String name) {
       this.name = name;
       this.open = false;
+      existingDoors.add(this);
    }
 
    public boolean isOpen() {
@@ -42,6 +45,14 @@ public class Door {
       if (o == null || getClass() != o.getClass()) return false;
       Door door = (Door) o;
       return Objects.equals(name, door.name);
+   }
+
+   public static Door getExistingDoor(String name) {
+      for (Door door : existingDoors) {
+         if (door.getName().equals(name))
+            return door;
+      }
+      return null;
    }
 
 }
