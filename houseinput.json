@@ -1,4 +1,11 @@
 {
+  "Entrance": {
+    "windows": 1,
+    "lights": 1,
+    "doorsTo": [
+      "Kitchen"
+    ]
+  },
   "Garage": {
     "windows": 1,
     "lights": 1,
@@ -10,6 +17,7 @@
     "windows": 2,
     "lights": 3,
     "doorsTo": [
+      "Entrance",
       "Garage",
       "Living Room",
       "Bedroom"
@@ -29,10 +37,10 @@
     "doorsTo": [
       "Kitchen",
       "Living Room",
-      "Closet"
+      "Backyard"
     ]
   },
-  "Closet": {
+  "Backyard": {
     "windows": 1,
     "lights": 1,
     "doorsTo": [
