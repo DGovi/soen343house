@@ -652,7 +652,6 @@ public class DashboardController {
             int xParent = 0;
 
             ArrayList<Door> doorsTop = top.getDoors();
-
             for (Door doorObj : doorsTop) {
                 String door = doorObj.getTo();
 
@@ -664,8 +663,8 @@ public class DashboardController {
                 traversed.add(door);
                 Room roomAbove = doors.get(doorObj.getFrom());
 
-                int x = coordinates.get(top).getKey().intValue() + xParent;
-                int y = coordinates.get(top).getValue().intValue() + ROOM_SIZE * top.getDoors().size();
+                int x = coordinates.get(top).getKey() + xParent;
+                int y = coordinates.get(top).getValue() + ROOM_SIZE * top.getDoors().size();
                 int size = room.getDoors().size() * ROOM_SIZE;
 
                 this.drawRoom(room, x, y, (! doorObj.equals(doorsTop.get(doorsTop.size() - 1))) && doorsTop.size() > 1, roomAbove);
@@ -676,8 +675,7 @@ public class DashboardController {
                     this.drawWindows(x - size, y, size, room.getWindows());
 
                 coordinates.put(room, new javafx.util.Pair<Integer, Integer>(Integer.valueOf(x), Integer.valueOf(y)));
-
-                xParent = size;
+                xParent = x + size - coordinates.get(top).getKey();
             }
         }
 

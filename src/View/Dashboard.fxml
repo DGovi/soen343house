@@ -391,7 +391,7 @@
                         <Image url="@../Model/iOS-OS-X-Style-Pure-CSS-Loading-Spinner.jpg" />
                       </image>
                     </ImageView>
-                    <Canvas fx:id="render" height="451.0" layoutX="9.0" width="329.0" />
+                    <Canvas fx:id="render" height="550.0" layoutX="9.0" width="329.0" />
                   </children>
                 </AnchorPane>
               </children>
