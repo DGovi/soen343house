@@ -346,6 +346,11 @@
                                     </VBox.margin>
                                   </Label>
                                   <ComboBox fx:id="shcDoorSelect" onAction="#shcChangeDoor"/>
+                                  <Button fx:id="shcDoorOpenState" onAction="#shcChangeDoorOpen" text="Please Select a Room">
+                                    <VBox.margin>
+                                      <Insets top="5.0"/>
+                                    </VBox.margin>
+                                  </Button>
 
                                 </VBox>
                               </content>

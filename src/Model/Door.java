@@ -19,11 +19,14 @@ public class Door {
       this.open = open;
    }
 
-   public void toggleOpen() {
-      if (this.open)
+   public String toggleOpen() {
+      if (this.open) {
          this.open = false;
-      else
+         return "Door is now closed!";
+      } else {
          this.open = true;
+         return "Door is now open!";
+      }
    }
 
    public String getName() {

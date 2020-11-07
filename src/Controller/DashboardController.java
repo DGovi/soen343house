@@ -105,6 +105,8 @@ public class DashboardController {
     private ToggleButton shcLightAuto;
     @FXML
     private ComboBox<String> shcDoorSelect;
+    @FXML
+    private Button shcDoorOpenState;
 
     @FXML
     private TextArea console;
@@ -258,10 +260,9 @@ public class DashboardController {
 
         shcDoorSelect.getItems().clear();
         for (int i = 1; i <= room.getDoors().size(); i++) {
-            shcWindowSelect.getItems().add("Door " + i);
+            shcDoorSelect.getItems().add("Door " + i);
         }
-        // shcWindowOpenState.setText("Pick a window");
-        // shcWindowBlockedState.setText("Pick a window");
+        shcDoorOpenState.setText("Pick a door");
 
         printToConsole("Now pick a window/door to view the state of.");
     }
@@ -272,11 +273,11 @@ public class DashboardController {
     @FXML
     private void shcChangeWindows() {
         if (shcWindowSelect.getValue() != null) {
-            updateSHCbuttons();
+            updateSHCWindowButtons();
             printToConsole("Successfully changed windows.");
         }
     }
-    
+
     /**
      * Toggles the Auto Mode
      */
@@ -314,7 +315,7 @@ public class DashboardController {
         }
 
         printToConsole(room.getWindows().get(chosenWindowIndex).changeOpen());
-        updateSHCbuttons();
+        updateSHCWindowButtons();
         this.renderLayout(sim.getHouse());
     }
 
@@ -346,32 +347,53 @@ public class DashboardController {
             return;
         }
         printToConsole(room.getWindows().get(chosenWindowIndex).changeObstructed());
-        updateSHCbuttons();
+        updateSHCWindowButtons();
         this.renderLayout(sim.getHouse());
     }
 
     /**
      * Updates the control buttons that show the current state of the selected window
      */
-    private void updateSHCbuttons() {
+    private void updateSHCWindowButtons() {
+        // updating window buttons
         String chosenWindowName = shcWindowSelect.getValue();
+        if (chosenWindowName == null)
+            return;
+
         int chosenWindowIndex = Integer.parseInt(chosenWindowName.substring(7)) - 1;
-        for (Room r : sim.getHouse().getRooms()) {
-            if (r.getName().equals(shcRoomSelect.getValue())) {
-                Window w = r.getWindows().get(chosenWindowIndex);
-                if (w.getObstructed()) {
-                    shcWindowOpenState.setText("Open");
-                    shcWindowBlockedState.setText("Obstructed");
-                } else if (w.getOpen()) {
-                    shcWindowOpenState.setText("Open");
-                    shcWindowBlockedState.setText("Not Obstructed");
-                } else {
-                    shcWindowOpenState.setText("Closed");
-                    shcWindowBlockedState.setText("Not Obstructed");
-                }
-            }
+        Room room = sim.getHouse().getRoomFromName(shcRoomSelect.getValue());
+        if (room == null)
+            return;
+
+        Window w = room.getWindows().get(chosenWindowIndex);
+        if (w.getObstructed()) {
+            shcWindowOpenState.setText("Open");
+            shcWindowBlockedState.setText("Obstructed");
+        } else if (w.getOpen()) {
+            shcWindowOpenState.setText("Open");
+            shcWindowBlockedState.setText("Not Obstructed");
+        } else {
+            shcWindowOpenState.setText("Closed");
+            shcWindowBlockedState.setText("Not Obstructed");
         }
 
+    }
+
+    public void updateSHCDoorButtons() {
+        String chosenDoorName = shcDoorSelect.getValue();
+        if (chosenDoorName == null)
+            return;;
+
+        int chosenDoorIndex = Integer.parseInt(chosenDoorName.substring(5)) - 1;
+        Room room = sim.getHouse().getRoomFromName(shcRoomSelect.getValue());
+        if (room == null)
+            return;
+
+        Door d = room.getDoors().get(chosenDoorIndex);
+        if (d.isOpen())
+            shcDoorOpenState.setText("Door Open");
+        else
+            shcDoorOpenState.setText("Door Closed");
     }
 
     /**
@@ -745,7 +767,35 @@ public class DashboardController {
 
     @FXML
     public void shcChangeDoor() {
+        if (shcDoorSelect.getValue() != null) {
+            updateSHCDoorButtons();
+            printToConsole("Successfully changed door.");
+        }
+    }
 
+    @FXML
+    public void shcChangeDoorOpen() {
+        if ((shcRoomSelect.getValue() == null) || (shcDoorSelect.getValue() == null)) {
+            printToConsole("ERROR: Not all fields were filled in before clicking the button");
+            return;
+        }
+        if (sim.getLoggedInUser().getType() == UserType.STRANGER) {
+            printToConsole("ERROR: Strangers are not allowed to change the state of the doors.");
+            return;
+        }
+
+        String chosenDoorName = shcDoorSelect.getValue();
+        if (chosenDoorName == null)
+            return;;
+
+        int chosenDoorIndex = Integer.parseInt(chosenDoorName.substring(5)) - 1;
+        Room room = sim.getHouse().getRoomFromName(shcRoomSelect.getValue());
+        if (room == null)
+            return;
+
+        Door d = room.getDoors().get(chosenDoorIndex);
+        printToConsole(d.toggleOpen());
+        updateSHCDoorButtons();
     }
 
 
