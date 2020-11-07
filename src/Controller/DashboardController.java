@@ -185,10 +185,17 @@ public class DashboardController {
     @FXML
     private void editCurrentUserLocation() throws JSONException, IOException {
         String locationName = currentUserLocationOptions.getValue();
+        Room previousLocation = sim.getLoggedInUser().getLocation();
+
         printToConsole(sim.setLoggedInUserLocation(locationName));
-        if(sim.getLightAuto() && !locationName.equals("Outside")){
-            printToConsole("Automatically turning lights on.");
-            sim.getHouse().getRoomFromName(locationName).setLightsOn(true);
+        if(sim.getLightAuto()){
+            if(!locationName.equals("Outside")){
+                printToConsole("Automatically turning lights on.");
+                sim.getHouse().getRoomFromName(locationName).setLightsOn(true);
+            }
+            if(previousLocation != null && sim.getUsersInRoom(previousLocation).isEmpty()){
+                previousLocation.setLightsOn(false);
+            }
         }
 
         updateDashboard();
