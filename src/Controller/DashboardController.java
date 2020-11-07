@@ -298,8 +298,16 @@ public class DashboardController {
      * Toggles the Auto Mode
      */
     @FXML
-    private void shcLightAuto() {
+    private void shcLightAuto() throws IOException, JSONException {
     	printToConsole(sim.toggleLight());
+        if(sim.getLightAuto()){
+            for(Room r : sim.getHouse().getRooms()){
+                if(sim.getUsersInRoom(r).isEmpty()){
+                    r.setLightsOn(false);
+                }
+            }
+            this.renderLayout(sim.getHouse());
+        }
     }
 
     /**
