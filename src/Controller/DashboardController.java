@@ -607,6 +607,8 @@ public class DashboardController {
         drawRoom(firstRoom, startX, startY, false, null);
         drawWindows(startX, startY, firstRoom.getDoors().size() * ROOM_SIZE, firstRoom.getWindows());
 
+        drawPeopleOutside();
+
         while (!stack.empty()) {
             Room top = stack.pop();
             int xParent = 0;
@@ -755,6 +757,28 @@ public class DashboardController {
     }
 
     /**
+     * Draws the people who are currently outside the house
+     */
+    public void drawPeopleOutside(){
+        int baseLineX = 200;
+        int outsideX = baseLineX;
+        int outsideY = 15;
+        int usersDrawn = 0;
+        for (User u : sim.getUsers()){
+            if(u.getLocation() == null) {
+                drawPerson(outsideX, outsideY);
+                usersDrawn++;
+                if(usersDrawn % 3 == 0) {
+                    outsideX = baseLineX;
+                    outsideY += PERSON_HEIGHT + 5;
+                }else{
+                    outsideX += PERSON_WIDTH + 5;
+                }
+            }
+        }
+    }
+
+    /**
      * Draws the people who are currently present in a given room
      * @param room the room in question
      * @param x the x position of the room
@@ -780,6 +804,16 @@ public class DashboardController {
             gc.drawImage(personImage, finalX , finalY, PERSON_HEIGHT, PERSON_WIDTH);
             posX += spacingX;
         }
+    }
+
+    /**
+     * Draws one person
+     * @param x the x position of where to draw
+     * @param y the y position of where to draw
+     */
+    public void drawPerson(int x, int y) {
+        Image personImage = new Image("file:stick_person.png");
+        gc.drawImage(personImage, x , y, PERSON_HEIGHT, PERSON_WIDTH);
     }
 
     /**
