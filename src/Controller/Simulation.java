@@ -607,9 +607,6 @@ public class Simulation implements Subject{
     }
 
     /**
-     * Converts the Simulation into a String representation.
-     * @return the String representation of the Simulation
-     */
      * observer pattern method to notify all observers
      * @return message of which motion sensor is active
      */
@@ -651,6 +648,10 @@ public class Simulation implements Subject{
         return message;
     }
 
+    /**
+     * Converts the Simulation into a String representation.
+     * @return the String representation of the Simulation
+     */
     @Override
     public String toString() {
         return "Simulation [date=" + date + ", time=" + time + ", temperature=" + temperature + ", loggedInUser="
