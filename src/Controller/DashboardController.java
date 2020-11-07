@@ -566,7 +566,6 @@ public class DashboardController {
      */
     @FXML
     public void renderLayout(Model.House h) throws JSONException, IOException {
-        System.out.println("REN");
         gc = render.getGraphicsContext2D();
 
         gc.setFill(Color.WHITE);
@@ -593,7 +592,7 @@ public class DashboardController {
         traversed.add(firstRoom.getName());
         coordinates.put(firstRoom, new javafx.util.Pair<Integer, Integer>(Integer.valueOf(startX), Integer.valueOf(startY)));
 
-        drawRoom(firstRoom, startX, startY, false);
+        drawRoom(firstRoom, startX, startY, false, null);
         drawWindows(startX, startY, firstRoom.getDoors().size() * ROOM_SIZE, firstRoom.getWindows());
 
         while (!stack.empty()) {
@@ -602,10 +601,8 @@ public class DashboardController {
 
             ArrayList<Door> doorsTop = top.getDoors();
 
-            System.out.println("Room: " + top.getName());
             for (Door doorObj : doorsTop) {
                 String door = doorObj.getTo();
-                System.out.println(door);
 
                 if (traversed.contains(door))
                     continue;
@@ -613,12 +610,13 @@ public class DashboardController {
                 Room room = doors.get(door);
                 stack.add(doors.get(door));
                 traversed.add(door);
+                Room roomAbove = doors.get(doorObj.getFrom());
 
                 int x = coordinates.get(top).getKey().intValue() + xParent;
                 int y = coordinates.get(top).getValue().intValue() + ROOM_SIZE * top.getDoors().size();
                 int size = room.getDoors().size() * ROOM_SIZE;
 
-                this.drawRoom(room, x, y, (! doorObj.equals(doorsTop.get(doorsTop.size() - 1))) && doorsTop.size() > 1);
+                this.drawRoom(room, x, y, (! doorObj.equals(doorsTop.get(doorsTop.size() - 1))) && doorsTop.size() > 1, roomAbove);
 
                 if (doorObj.equals(doorsTop.get(doorsTop.size() - 1)))
                     this.drawWindows(x, y, size, room.getWindows());
@@ -697,7 +695,7 @@ public class DashboardController {
      * @param sideDoor true if the door is on the side (vertical on the house layout), false if not (horizontal)
      */
     @FXML
-    public void drawRoom(Room room, int x, int y, boolean sideDoor) {
+    public void drawRoom(Room room, int x, int y, boolean sideDoor, Room roomAbove) {
         // drawing room rectangle
         int size = 50 * room.getDoors().size();
         gc.strokeRoundRect(x, y, size, size, 0, 0);
@@ -710,11 +708,19 @@ public class DashboardController {
 
         // drawing doors
         gc.setLineWidth(3);
-        if (room.getDoors().get(0).isOpen()) {
+        boolean topDoorOpen = false;
+        if (roomAbove != null)
+            for (Door d : room.getDoors()) {
+               if (d.getTo().equals(roomAbove.getName()) && d.isOpen())
+                   topDoorOpen = true;
+
+            }
+
+        if (topDoorOpen)
             gc.strokeLine(x + 15, y, x + 30, y - 15);
-        } else {
+        else
             gc.strokeLine(x + 15, y, x + 30, y);
-        }
+
         if (sideDoor)
             gc.strokeLine(x + size, y + 20, x + size, y + 40);
 
