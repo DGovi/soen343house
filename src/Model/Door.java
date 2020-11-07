@@ -5,13 +5,15 @@ import java.util.Objects;
 
 public class Door {
    private boolean open;
-   private String name;
+   private String from;
+   private String to;
    private static ArrayList<Door> existingDoors = new ArrayList<Door>();
 
-   public Door(String name) {
-      this.name = name;
-      this.open = false;
-      existingDoors.add(this);
+   public Door(String from, String to) {
+       this.from = from;
+       this.to = to;
+       this.open = false;
+       existingDoors.add(this);
    }
 
    public boolean isOpen() {
@@ -20,6 +22,22 @@ public class Door {
 
    public void setOpen(boolean open) {
       this.open = open;
+   }
+
+   public String getFrom() {
+      return from;
+   }
+
+   public void setFrom(String from) {
+      this.from = from;
+   }
+
+   public String getTo() {
+      return to;
+   }
+
+   public void setTo(String to) {
+      this.to = to;
    }
 
    public String toggleOpen() {
@@ -32,27 +50,22 @@ public class Door {
       }
    }
 
-   public String getName() {
-      return name;
-   }
-
-   public void setName(String name) {
-      this.name = name;
-   }
-
    @Override
    public boolean equals(Object o) {
       if (o == null || getClass() != o.getClass()) return false;
       Door door = (Door) o;
-      return Objects.equals(name, door.name);
+      return (Objects.equals(this.from, door.from) && Objects.equals(this.to, door.to)) || (Objects.equals(this.from, door.to) && Objects.equals(this.to, door.from)) ;
    }
 
-   public static Door getExistingDoor(String name) {
-      for (Door door : existingDoors) {
-         if (door.getName().equals(name))
-            return door;
+   /**
+   public static Door getExistingDoor(Door newDoor) {
+
+      for (Door existingDoor: existingDoors) {
+         if (existingDoor.equals(newDoor))
+            return existingDoor;
       }
-      return null;
+      return newDoor;
    }
+    */
 
 }

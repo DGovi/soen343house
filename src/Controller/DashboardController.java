@@ -566,6 +566,7 @@ public class DashboardController {
      */
     @FXML
     public void renderLayout(Model.House h) throws JSONException, IOException {
+        System.out.println("REN");
         gc = render.getGraphicsContext2D();
 
         gc.setFill(Color.WHITE);
@@ -601,8 +602,10 @@ public class DashboardController {
 
             ArrayList<Door> doorsTop = top.getDoors();
 
+            System.out.println("Room: " + top.getName());
             for (Door doorObj : doorsTop) {
-                String door = doorObj.getName();
+                String door = doorObj.getTo();
+                System.out.println(door);
 
                 if (traversed.contains(door))
                     continue;
@@ -706,10 +709,6 @@ public class DashboardController {
         drawPeople(room, x, y, size);
 
         // drawing doors
-        System.out.println("[" + room.getName() + "]");
-        for (Door d : room.getDoors()) {
-            System.out.println(d.getName());
-        }
         gc.setLineWidth(3);
         if (room.getDoors().get(0).isOpen()) {
             gc.strokeLine(x + 15, y, x + 30, y - 15);

@@ -139,9 +139,7 @@ public class Room {
                 ArrayList<Door> list = new ArrayList<Door>();
                 for (int i = 0; i < array.length(); i++) {
                     String doorName = array.get(i).toString();
-                    Door doorToAdd = Door.getExistingDoor(doorName);
-                    if (doorToAdd == null)
-                       doorToAdd = new Door(doorName);
+                    Door doorToAdd = new Door(key, doorName);
 
                     list.add(doorToAdd);
                 }

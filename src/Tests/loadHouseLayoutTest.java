@@ -29,8 +29,8 @@ class loadHouseLayoutTest {
         ArrayList<Door> roomsGarage = new ArrayList<Door>();
         ArrayList<Door> roomsKitchen = new ArrayList<Door>();
 
-        roomsGarage.add(new Door("Kitchen"));
-        roomsKitchen.add(new Door("Garage"));
+        roomsGarage.add(new Door("Garage", "Kitchen"));
+        roomsKitchen.add(new Door("Kitchen", "Garage"));
 
         windows.add(new Window());
         rooms.add(new Room("Garage", windows, 1, roomsGarage));
