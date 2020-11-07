@@ -16,6 +16,12 @@ public class House {
     private final ArrayList<Room> rooms;
     private String location;
 
+    /**
+     * Creates a House object given a List of Rooms
+     * and a locating String.
+     * @param r a list of Rooms
+     * @param l a String representing the country location of the house
+     */
     public House(ArrayList<Room> r, String l) {
         rooms = r;
         location = l;
@@ -58,5 +64,24 @@ public class House {
      */
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    /**
+     * Gets the Room object from a String
+     * representing it's name.
+     * @param name the name of the Room to find
+     * @return the Room object if it exists, null otherwise
+     */
+    public Room getRoomFromName(String name) {
+        if (name == null)
+            return null;
+
+        for (Room r : this.getRooms()) {
+            if (name.equals(r.getName())) {
+                return r;
+            }
+        }
+
+        return null;
     }
 }

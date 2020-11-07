@@ -21,7 +21,8 @@ public class Room {
     protected String name;
     protected ArrayList<Window> windows;
     protected int lights;
-    protected ArrayList<String> doors;
+    protected ArrayList<Door> doors;
+    private boolean lightsOn;
     protected MotionSensor roomMotionSensor;
 
     /**
@@ -31,13 +32,14 @@ public class Room {
      * @param name    the name of the room
      * @param windows an arraylist of windows
      * @param lights  number of windows
-     * @param doors   number of doors
+     * @param doors   on ArrayList of Door objects
      */
-    public Room(String name, ArrayList<Window> windows, int lights, ArrayList<String> doors) {
+    public Room(String name, ArrayList<Window> windows, int lights, ArrayList<Door> doors) {
         this.name = name;
         this.windows = windows;
         this.lights = lights;
         this.doors = doors;
+        this.lightsOn = true;
         roomMotionSensor = new MotionSensor(false);
     }
 
@@ -47,7 +49,7 @@ public class Room {
      *
      * @return an arraylist of doors
      */
-    public ArrayList<String> getDoors() {
+    public ArrayList<Door> getDoors() {
         return doors;
     }
 
@@ -56,7 +58,7 @@ public class Room {
      *
      * @param doors a list of doors
      */
-    public void setDoors(ArrayList<String> doors) {
+    public void setDoors(ArrayList<Door> doors) {
         this.doors = doors;
     }
 
@@ -109,6 +111,29 @@ public class Room {
         return roomMotionSensor;
     }
     /**
+     * Gets the boolean value of the lightsOn attribute
+     * @return the value of the lightsOn attribute
+     */
+    public boolean isLightsOn() {
+        return lightsOn;
+    }
+
+    /**
+     * Sets the value of the lightsOn attribute.
+     * @param lightsOn the new value to set
+     */
+    public void setLightsOn(boolean lightsOn) {
+        this.lightsOn = lightsOn;
+    }
+
+    /**
+     * toggles the lightsOn attribute.
+     */
+    public void toggleLightsON() {
+       this.setLightsOn(! this.isLightsOn());
+    }
+
+    /**
      * Creates room objects from a inputted JSON file.
      *
      * @param srcJSONPath a file that is needed as input
@@ -127,9 +152,12 @@ public class Room {
             String key = keys.next();
             if (object.get(key) instanceof JSONObject) {
                 JSONArray array = object.getJSONObject(key).getJSONArray("doorsTo");
-                ArrayList<String> list = new ArrayList<String>();
+                ArrayList<Door> list = new ArrayList<Door>();
                 for (int i = 0; i < array.length(); i++) {
-                    list.add(array.get(i).toString());
+                    String doorName = array.get(i).toString();
+                    Door doorToAdd = new Door(key, doorName);
+
+                    list.add(doorToAdd);
                 }
                 ArrayList<Window> windows = new ArrayList<Window>();
                 for (int i = 0; i < object.getJSONObject(key).getInt("windows"); i++) {
@@ -146,4 +174,5 @@ public class Room {
         }
         return rooms;
     }
+
 }

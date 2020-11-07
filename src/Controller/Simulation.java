@@ -577,6 +577,7 @@ public class Simulation implements Subject{
         return users;
     }
 
+    // TODO:  Mahad Javadocs this
     private void updateUsersJSON() throws JSONException, IOException {
         JSONObject obj = new JSONObject();
         for (User u : this.users) {
@@ -587,6 +588,22 @@ public class Simulation implements Subject{
             obj.put(u.getName(), userInfo);
         }
         Files.write(usersFile.getAbsoluteFile().toPath(), obj.toString().getBytes());
+    }
+
+    /**
+     * Gets a list of all users in the current room.
+     * @param room the room to search for users
+     * @return an ArrayList of users
+     */
+    public ArrayList<User> getUsersInRoom(Room room) {
+        ArrayList<User> people = new ArrayList<User>();
+
+        for (User user: this.getUsers()) {
+           if (user.getLocation() != null && user.getLocation().equals(room))
+               people.add(user);
+        }
+
+        return people;
     }
 
     /**
@@ -631,6 +648,10 @@ public class Simulation implements Subject{
         return message;
     }
 
+    /**
+     * Converts the Simulation into a String representation.
+     * @return the String representation of the Simulation
+     */
     @Override
     public String toString() {
         return "Simulation [date=" + date + ", time=" + time + ", temperature=" + temperature + ", loggedInUser="
