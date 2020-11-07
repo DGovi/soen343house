@@ -23,6 +23,7 @@ public class Room {
     protected int lights;
     protected ArrayList<Door> doors;
     private boolean lightsOn;
+    protected MotionSensor roomMotionSensor;
 
     /**
      * Creates a room object with a name, windows,
@@ -39,6 +40,7 @@ public class Room {
         this.lights = lights;
         this.doors = doors;
         this.lightsOn = true;
+        roomMotionSensor = new MotionSensor(false);
     }
 
 
@@ -105,6 +107,9 @@ public class Room {
         this.lights = lights;
     }
 
+    public MotionSensor getRoomMotionSensor(){
+        return roomMotionSensor;
+    }
     /**
      * Gets the boolean value of the lightsOn attribute
      * @return the value of the lightsOn attribute

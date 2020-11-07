@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.*?>
@@ -7,9 +11,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
 
-<SplitPane dividerPositions="0.2855491329479769" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-           minWidth="-Infinity" prefHeight="720.0" prefWidth="867.0" xmlns="http://javafx.com/javafx/11.0.1"
-           xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.DashboardController">
+<SplitPane dividerPositions="0.2855491329479769" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="867.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.DashboardController">
   <items>
     <AnchorPane fx:id="leftPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="255.0">
       <children>
@@ -17,92 +19,86 @@
           <children>
             <Label fx:id="simRunningLabel" text="Simulation: OFF">
               <VBox.margin>
-                <Insets bottom="10.0"/>
+                <Insets bottom="10.0" />
               </VBox.margin>
             </Label>
-            <ToggleButton fx:id="simToggleButton" mnemonicParsing="false" onAction="#toggleSim" prefHeight="27.0" prefWidth="256.0" text="ON/OFF" disable="true">
+            <ToggleButton fx:id="simToggleButton" disable="true" mnemonicParsing="false" onAction="#toggleSim" prefHeight="27.0" prefWidth="256.0" text="ON/OFF">
               <VBox.margin>
-                <Insets bottom="5.0"/>
+                <Insets bottom="5.0" />
               </VBox.margin>
             </ToggleButton>
-            <ToggleButton fx:id="filePicker" mnemonicParsing="false" onAction="#loadHouseLayout" prefHeight="27.0"
-                          prefWidth="256.0" text="Upload Layout"/>
+            <ToggleButton fx:id="filePicker" mnemonicParsing="false" onAction="#loadHouseLayout" prefHeight="27.0" prefWidth="256.0" text="Upload Layout" />
             <Separator prefWidth="200.0">
               <VBox.margin>
-                <Insets left="-5.0" right="-5.0" top="10.0"/>
+                <Insets left="-5.0" right="-5.0" top="10.0" />
               </VBox.margin>
             </Separator>
             <VBox fx:id="leftPaneControls" disable="true">
               <children>
                 <Label fx:id="currentUser" text="Username (or login)">
                   <VBox.margin>
-                    <Insets top="10.0"/>
+                    <Insets top="10.0" />
                   </VBox.margin>
                 </Label>
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Current Location:">
                   <VBox.margin>
-                    <Insets top="10.0"/>
+                    <Insets top="10.0" />
                   </VBox.margin>
                 </Text>
-                <ComboBox fx:id="currentUserLocationOptions" onAction="#editCurrentUserLocation" prefHeight="27.0"
-                          prefWidth="262.0">
+                <ComboBox fx:id="currentUserLocationOptions" onAction="#editCurrentUserLocation" prefHeight="27.0" prefWidth="262.0">
                   <VBox.margin>
-                    <Insets top="5.0"/>
+                    <Insets top="5.0" />
                   </VBox.margin>
                 </ComboBox>
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Temperature:">
                   <VBox.margin>
-                    <Insets bottom="5.0" top="10.0"/>
+                    <Insets bottom="5.0" top="10.0" />
                   </VBox.margin>
                 </Text>
-                <Button mnemonicParsing="false" onAction="#changeTemperature" prefHeight="27.0" prefWidth="260.0"
-                        text="Change Temp">
+                <Button mnemonicParsing="false" onAction="#changeTemperature" prefHeight="27.0" prefWidth="260.0" text="Change Temp">
                   <VBox.margin>
-                    <Insets bottom="5.0"/>
+                    <Insets bottom="5.0" />
                   </VBox.margin>
                 </Button>
-                <Label fx:id="temperatureLabel"/>
+                <Label fx:id="temperatureLabel" />
                 <Separator prefWidth="200.0">
                   <VBox.margin>
-                    <Insets left="-5.0" right="-5.0" top="5.0"/>
+                    <Insets left="-5.0" right="-5.0" top="5.0" />
                   </VBox.margin>
                 </Separator>
                 <Label fx:id="dateLabel1" prefHeight="17.0" prefWidth="251.0" text="Location:">
                   <padding>
-                    <Insets bottom="5.0"/>
+                    <Insets bottom="5.0" />
                   </padding>
                   <VBox.margin>
-                    <Insets top="10.0"/>
+                    <Insets top="10.0" />
                   </VBox.margin>
                 </Label>
-                <Button mnemonicParsing="false" onAction="#changeHouseLocation" prefHeight="27.0" prefWidth="282.0"
-                        text="Change House Location">
+                <Button mnemonicParsing="false" onAction="#changeHouseLocation" prefHeight="27.0" prefWidth="282.0" text="Change House Location">
                   <VBox.margin>
-                    <Insets bottom="5.0" top="5.0"/>
+                    <Insets bottom="5.0" top="5.0" />
                   </VBox.margin>
                 </Button>
-                <Label fx:id="houseLocationLabel"/>
+                <Label fx:id="houseLocationLabel" />
                 <HBox prefHeight="18.0" prefWidth="132.0">
                   <children>
                     <Label fx:id="dateLabel" prefHeight="17.0" prefWidth="251.0" text="Date is:">
                       <padding>
-                        <Insets bottom="5.0"/>
+                        <Insets bottom="5.0" />
                       </padding>
                       <HBox.margin>
-                        <Insets top="5.0"/>
+                        <Insets top="5.0" />
                       </HBox.margin>
                     </Label>
                   </children>
                 </HBox>
-                <DatePicker fx:id="datePicker" onAction="#displayDate" prefHeight="27.0" prefWidth="240.0"
-                            promptText="Edit date"/>
+                <DatePicker fx:id="datePicker" onAction="#displayDate" prefHeight="27.0" prefWidth="240.0" promptText="Edit date" />
                 <Label fx:id="timeLabel" prefHeight="26.0" prefWidth="241.0" text="Time is not set">
                   <VBox.margin>
-                    <Insets bottom="5.0" top="15.0"/>
+                    <Insets bottom="5.0" top="15.0" />
                   </VBox.margin>
                 </Label>
-                <Button fx:id="updateTimeButton" mnemonicParsing="false" onAction="#updateTime" prefHeight="27.0"
-                        prefWidth="282.0" text="Show Current Time"/>
+                <Button fx:id="updateTimeButton" mnemonicParsing="false" onAction="#updateTime" prefHeight="27.0" prefWidth="282.0" text="Show Current Time"/>
                 <Text strokeType="OUTSIDE" strokeWidth="0.0"/>
                 <Separator prefWidth="200.0">
                   <VBox.margin>
@@ -120,15 +116,14 @@
             </VBox>
           </children>
           <padding>
-            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0"/>
+            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
           </padding>
         </VBox>
       </children>
     </AnchorPane>
-    <AnchorPane fx:id="tabsPane" minHeight="0.0" minWidth="0.0" prefHeight="718.0" prefWidth="614.0" disable="true">
+    <AnchorPane fx:id="tabsPane" disable="true" minHeight="0.0" minWidth="0.0" prefHeight="718.0" prefWidth="614.0">
       <children>
-        <SplitPane dividerPositions="0.7626262626262627" layoutX="-1.0" layoutY="2.0" orientation="VERTICAL"
-                   prefHeight="717.0" prefWidth="609.0">
+        <SplitPane dividerPositions="0.7626262626262627" layoutX="-1.0" layoutY="2.0" orientation="VERTICAL" prefHeight="717.0" prefWidth="609.0">
           <items>
             <AnchorPane minHeight="0" minWidth="0" prefHeight="100.0" prefWidth="618.0">
               <children>
@@ -148,122 +143,118 @@
                                           <children>
                                             <VBox layoutY="-4.0" prefHeight="800.0" prefWidth="275.0">
                                               <children>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0"/>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" />
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="LOGIN | CHANGE USER">
                                                   <VBox.margin>
-                                                    <Insets bottom="5.0"/>
+                                                    <Insets bottom="5.0" />
                                                   </VBox.margin>
                                                 </Text>
-                                                <Label text="Name:"/>
-                                                <TextField fx:id="loginName"/>
-                                                <Label text="Password:"/>
-                                                <PasswordField fx:id="loginPassword"/>
-                                                <Button mnemonicParsing="false" onAction="#login" prefHeight="27.0"
-                                                        prefWidth="281.0" text="Login">
+                                                <Label text="Name:" />
+                                                <TextField fx:id="loginName" />
+                                                <Label text="Password:" />
+                                                <PasswordField fx:id="loginPassword" />
+                                                <Button mnemonicParsing="false" onAction="#login" prefHeight="27.0" prefWidth="281.0" text="Login">
                                                   <VBox.margin>
-                                                    <Insets bottom="20.0" top="10.0"/>
+                                                    <Insets bottom="20.0" top="10.0" />
                                                   </VBox.margin>
                                                 </Button>
                                                 <Separator prefWidth="200.0">
                                                   <VBox.margin>
-                                                    <Insets bottom="10.0"/>
+                                                    <Insets bottom="10.0" />
                                                   </VBox.margin>
                                                 </Separator>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="CREATING USER">
                                                   <VBox.margin>
-                                                    <Insets bottom="5.0"/>
+                                                    <Insets bottom="5.0" />
                                                   </VBox.margin>
                                                 </Text>
                                                 <Label text="Name:">
                                                   <VBox.margin>
-                                                    <Insets bottom="5.0"/>
+                                                    <Insets bottom="5.0" />
                                                   </VBox.margin>
                                                 </Label>
-                                                <TextField fx:id="createUserName"/>
+                                                <TextField fx:id="createUserName" />
                                                 <Label text="Password">
                                                   <VBox.margin>
-                                                    <Insets bottom="5.0" top="5.0"/>
+                                                    <Insets bottom="5.0" top="5.0" />
                                                   </VBox.margin>
                                                 </Label>
-                                                <PasswordField fx:id="createUserPassword"/>
+                                                <PasswordField fx:id="createUserPassword" />
                                                 <Label text="Type:">
                                                   <VBox.margin>
-                                                    <Insets top="5.0"/>
+                                                    <Insets top="5.0" />
                                                   </VBox.margin>
                                                 </Label>
-                                                <ComboBox fx:id="createUserType"/>
+                                                <ComboBox fx:id="createUserType" />
                                                 <Label text="Location:">
                                                   <VBox.margin>
-                                                    <Insets top="5.0"/>
+                                                    <Insets top="5.0" />
                                                   </VBox.margin>
                                                 </Label>
-                                                <ComboBox fx:id="createUserLocation"/>
-                                                <Button mnemonicParsing="false" onAction="#createUser" prefHeight="27.0"
-                                                        prefWidth="284.0" text="Add User">
+                                                <ComboBox fx:id="createUserLocation" />
+                                                <Button mnemonicParsing="false" onAction="#createUser" prefHeight="27.0" prefWidth="284.0" text="Add User">
                                                   <VBox.margin>
-                                                    <Insets bottom="20.0" top="10.0"/>
+                                                    <Insets bottom="20.0" top="10.0" />
                                                   </VBox.margin>
                                                 </Button>
                                                 <Separator prefWidth="200.0">
                                                   <VBox.margin>
-                                                    <Insets bottom="10.0"/>
+                                                    <Insets bottom="10.0" />
                                                   </VBox.margin>
                                                 </Separator>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="EDITING USER">
                                                   <VBox.margin>
-                                                    <Insets bottom="5.0"/>
+                                                    <Insets bottom="5.0" />
                                                   </VBox.margin>
                                                 </Text>
-                                                <Label text="User:"/>
-                                                <ComboBox fx:id="editUserChoice"/>
+                                                <Label text="User:" />
+                                                <ComboBox fx:id="editUserChoice" />
                                                 <Label text="Current Password: (Required)">
                                                   <VBox.margin>
-                                                    <Insets bottom="5.0" top="5.0"/>
+                                                    <Insets bottom="5.0" top="5.0" />
                                                   </VBox.margin>
                                                 </Label>
-                                                <PasswordField fx:id="editUserCurrentPassword"/>
+                                                <PasswordField fx:id="editUserCurrentPassword" />
                                                 <Label text="New Password:">
                                                   <VBox.margin>
-                                                    <Insets bottom="5.0" top="5.0"/>
+                                                    <Insets bottom="5.0" top="5.0" />
                                                   </VBox.margin>
                                                 </Label>
-                                                <PasswordField fx:id="editUserNewPassword"/>
+                                                <PasswordField fx:id="editUserNewPassword" />
                                                 <Label text="Type:">
                                                   <VBox.margin>
-                                                    <Insets top="5.0"/>
+                                                    <Insets top="5.0" />
                                                   </VBox.margin>
                                                 </Label>
-                                                <ComboBox fx:id="editUserType"/>
+                                                <ComboBox fx:id="editUserType" />
                                                 <Label text="Location:">
                                                   <VBox.margin>
-                                                    <Insets top="5.0"/>
+                                                    <Insets top="5.0" />
                                                   </VBox.margin>
                                                 </Label>
-                                                <ComboBox fx:id="editUserLocation"/>
-                                                <Button mnemonicParsing="false" onAction="#editUser" prefHeight="27.0"
-                                                        prefWidth="293.0" text="Edit User">
+                                                <ComboBox fx:id="editUserLocation" />
+                                                <Button mnemonicParsing="false" onAction="#editUser" prefHeight="27.0" prefWidth="293.0" text="Edit User">
                                                   <VBox.margin>
-                                                    <Insets bottom="20.0" top="10.0"/>
+                                                    <Insets bottom="20.0" top="10.0" />
                                                   </VBox.margin>
                                                 </Button>
                                                 <Separator prefWidth="200.0">
                                                   <VBox.margin>
-                                                    <Insets bottom="10.0"/>
+                                                    <Insets bottom="10.0" />
                                                   </VBox.margin>
                                                 </Separator>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="DELETING USER"/>
-                                                <Label text="User:"/>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="DELETING USER" />
+                                                <Label text="User:" />
                                                 <ComboBox fx:id="deleteUserChoice">
                                                   <VBox.margin>
-                                                    <Insets bottom="5.0"/>
+                                                    <Insets bottom="5.0" />
                                                   </VBox.margin>
                                                 </ComboBox>
-                                                <Button mnemonicParsing="false" onAction="#deleteUser" prefHeight="27.0"
-                                                        prefWidth="293.0" text="Delete User"/>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0"/>
+                                                <Button mnemonicParsing="false" onAction="#deleteUser" prefHeight="27.0" prefWidth="293.0" text="Delete User" />
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" />
                                               </children>
                                               <padding>
-                                                <Insets left="20.0" right="20.0" top="5.0"/>
+                                                <Insets left="20.0" right="20.0" top="5.0" />
                                               </padding>
                                             </VBox>
                                           </children>
@@ -329,7 +320,7 @@
      						       </ToggleButton>
 
                                   <padding>
-                                    <Insets left="10.0" right="10.0" top="10.0"/>
+                                    <Insets left="10.0" right="10.0" top="10.0" />
                                   </padding>
                                   <Separator prefWidth="200.0">
                                     <VBox.margin>
@@ -359,53 +350,51 @@
                               <content>
                                 <HBox prefHeight="81.0" prefWidth="275.0">
                                   <children>
-                                    <CheckBox mnemonicParsing="false" text="Away mode">
+                                    <CheckBox fx:id="awayButton" mnemonicParsing="false" onAction="#setAwayMode" text="Away mode">
                                       <HBox.margin>
-                                        <Insets left="10.0" right="10.0" top="5.0"/>
+                                        <Insets left="10.0" right="10.0" top="5.0" />
                                       </HBox.margin>
                                     </CheckBox>
                                     <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="105.0" text="settings">
                                       <HBox.margin>
-                                        <Insets left="50.0"/>
+                                        <Insets left="50.0" />
                                       </HBox.margin>
                                     </Button>
                                   </children>
                                   <padding>
-                                    <Insets bottom="10.0" right="10.0" top="10.0"/>
+                                    <Insets bottom="10.0" right="10.0" top="10.0" />
                                   </padding>
                                 </HBox>
                               </content>
                             </Tab>
                             <Tab text="SHH">
                               <content>
-                                <Button mnemonicParsing="false" text="Configure Zones" translateX="10.0"
-                                        translateY="20.0"/>
+                                <Button mnemonicParsing="false" text="Configure Zones" translateX="10.0" translateY="20.0" />
                               </content>
                             </Tab>
-                            <Tab text="Other modules"/>
+                            <Tab text="Other modules" />
                           </tabs>
                         </TabPane>
                       </children>
                     </AnchorPane>
                   </items>
                 </SplitPane>
-                <AnchorPane layoutX="276.0" layoutY="6.0" minHeight="0.0" minWidth="0.0" prefHeight="440.0"
-                            prefWidth="327.0" AnchorPane.leftAnchor="276.0">
+                <AnchorPane layoutX="276.0" layoutY="6.0" minHeight="0.0" minWidth="0.0" prefHeight="440.0" prefWidth="327.0" AnchorPane.leftAnchor="276.0">
                   <children>
                     <ImageView fitHeight="451" fitWidth="329" pickOnBounds="true" preserveRatio="true">
                       <image>
-                        <Image url="@../Model/iOS-OS-X-Style-Pure-CSS-Loading-Spinner.jpg"/>
+                        <Image url="@../Model/iOS-OS-X-Style-Pure-CSS-Loading-Spinner.jpg" />
                       </image>
                     </ImageView>
-                    <Canvas fx:id="render" height="451.0" layoutX="9.0" width="329.0"/>
+                    <Canvas fx:id="render" height="451.0" layoutX="9.0" width="329.0" />
                   </children>
                 </AnchorPane>
               </children>
             </AnchorPane>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="273.0" prefWidth="618.0">
               <children>
-                <Text layoutX="279.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Console"/>
-                <TextArea fx:id="console" layoutX="14.0" layoutY="33.0" prefHeight="118.0" prefWidth="589.0"/>
+                <Text layoutX="279.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Console" />
+                <TextArea fx:id="console" layoutX="14.0" layoutY="33.0" prefHeight="118.0" prefWidth="589.0" />
               </children>
             </AnchorPane>
           </items>
