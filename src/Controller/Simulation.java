@@ -517,12 +517,9 @@ public class Simulation implements Subject{
      * @return console msg indicating Light Auto mode state.
      */
     public String toggleLight() {
-    	if (LightAuto) {
-    		LightAuto = false;
-    		return "Light Auto Mode turned ON";
-    	}
-    	LightAuto = true;
-    	return "Light Auto Mode turned OFF";
+    	LightAuto = !LightAuto;
+
+    	return LightAuto ? "Light Auto Mode turned ON" : "Light Auto Mode turned OFF";
     }
 
     /**
