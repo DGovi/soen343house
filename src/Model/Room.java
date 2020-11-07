@@ -31,7 +31,7 @@ public class Room {
      * @param name    the name of the room
      * @param windows an arraylist of windows
      * @param lights  number of windows
-     * @param doors   number of doors
+     * @param doors   on ArrayList of Door objects
      */
     public Room(String name, ArrayList<Window> windows, int lights, ArrayList<Door> doors) {
         this.name = name;
@@ -105,14 +105,25 @@ public class Room {
         this.lights = lights;
     }
 
+    /**
+     * Gets the boolean value of the lightsOn attribute
+     * @return the value of the lightsOn attribute
+     */
     public boolean isLightsOn() {
         return lightsOn;
     }
 
+    /**
+     * Sets the value of the lightsOn attribute.
+     * @param lightsOn the new value to set
+     */
     public void setLightsOn(boolean lightsOn) {
         this.lightsOn = lightsOn;
     }
 
+    /**
+     * toggles the lightsOn attribute.
+     */
     public void toggleLightsON() {
        this.setLightsOn(! this.isLightsOn());
     }

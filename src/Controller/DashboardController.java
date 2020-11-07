@@ -352,7 +352,7 @@ public class DashboardController {
     }
 
     /**
-     * Updates the control buttons that show the current state of the selected window
+     * Updates the control buttons that show the current state of the selected window.
      */
     private void updateSHCWindowButtons() {
         // updating window buttons
@@ -379,6 +379,9 @@ public class DashboardController {
 
     }
 
+    /**
+     * Updates the control buttons that show the current state of the selected door.
+     */
     public void updateSHCDoorButtons() {
         String chosenDoorName = shcDoorSelect.getValue();
         if (chosenDoorName == null)
@@ -742,6 +745,13 @@ public class DashboardController {
         gc.fillText(room.getName(), x + 5, y + 17);
     }
 
+    /**
+     * Draws the people who are currently present in a given room
+     * @param room the room in question
+     * @param x the x position of the room
+     * @param y the y position of the room
+     * @param size the size of the room
+     */
     public void drawPeople(Room room, int x, int y, int size) {
         final int spacingX = PERSON_WIDTH;
         final int spacingY = PERSON_WIDTH;
@@ -797,6 +807,9 @@ public class DashboardController {
         updateDashboard();
     }
 
+    /**
+     * Change the value for the SHC door selector combo-box.
+     */
     @FXML
     public void shcChangeDoor() {
         if (shcDoorSelect.getValue() != null) {
@@ -805,6 +818,11 @@ public class DashboardController {
         }
     }
 
+    /**
+     * Opens or closes the door selected by the SHC module.
+     * @throws IOException
+     * @throws JSONException
+     */
     @FXML
     public void shcChangeDoorOpen() throws IOException, JSONException {
         if ((shcRoomSelect.getValue() == null) || (shcDoorSelect.getValue() == null)) {
@@ -831,7 +849,13 @@ public class DashboardController {
         this.renderLayout(sim.getHouse());
     }
 
-
+    /**
+     * Toggles the lightsOn property of the room selected by the
+     * SHC module, and updates the visualization to reflect this new
+     * value.
+     * @throws IOException
+     * @throws JSONException
+     */
     @FXML
     public void toggleRoomLights() throws IOException, JSONException {
         Room room = sim.getHouse().getRoomFromName(shcRoomSelect.getValue());
@@ -841,7 +865,6 @@ public class DashboardController {
 
         room.toggleLightsON();
         this.renderLayout(sim.getHouse());
-
     }
 
 }
