@@ -2,6 +2,7 @@ package Controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -442,6 +443,16 @@ public class DashboardController {
      */
     private void printToConsole(String output) {
         console.appendText(output + "\n");
+    }
+
+    /**
+     * prints the output to a file
+     * @param pw printwriter object
+     * @param output string output to be printed in the file
+     */
+    public void logText(PrintWriter pw, String output){
+        pw.write(output);
+        pw.close();
     }
 
     /**
@@ -910,9 +921,12 @@ public class DashboardController {
      */
     @FXML
     public void shcChangeDoor() {
+        String message;
         if (shcDoorSelect.getValue() != null) {
             updateSHCDoorButtons();
-            printToConsole("Successfully changed door.");
+            message = "Successfully changed door.";
+            printToConsole(message);
+            logText(sim.pw, message);
         }
     }
 
@@ -923,12 +937,18 @@ public class DashboardController {
      */
     @FXML
     public void shcChangeDoorOpen() throws IOException, JSONException {
+        String message;
+
         if ((shcRoomSelect.getValue() == null) || (shcDoorSelect.getValue() == null)) {
-            printToConsole("ERROR: Not all fields were filled in before clicking the button");
+            message = "ERROR: Not all fields were filled in before clicking the button";
+            printToConsole(message);
+            logText(sim.pw, message);
             return;
         }
         if (sim.getLoggedInUser().getType() == UserType.STRANGER) {
-            printToConsole("ERROR: Strangers are not allowed to change the state of the doors.");
+            message = "ERROR: Strangers are not allowed to change the state of the doors.";
+            printToConsole(message);
+            logText(sim.pw, message);
             return;
         }
 
@@ -942,7 +962,9 @@ public class DashboardController {
             return;
 
         Door d = room.getDoors().get(chosenDoorIndex);
-        printToConsole(d.toggleOpen());
+        message = d.toggleOpen();
+        printToConsole(message);
+        logText(sim.pw, message);
         updateSHCDoorButtons();
         this.renderLayout(sim.getHouse());
     }
@@ -971,8 +993,13 @@ public class DashboardController {
      * @param actionEvent event that triggers this method
      */
     public void setAwayMode(ActionEvent actionEvent){
-        printToConsole(sim.setSimulationAway(awayButton.isSelected()));
-        printToConsole(sim.notifyMotionSensors());
+        String message = sim.setSimulationAway(awayButton.isSelected());
+        printToConsole(message);
+        logText(sim.pw, message);
+
+        message = sim.notifyMotionSensors();
+        printToConsole(message);
+        logText(sim.pw, message);
         updateDashboard();
     }
 

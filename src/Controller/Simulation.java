@@ -5,6 +5,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.sql.Time;
 import java.time.Instant;
@@ -30,6 +32,9 @@ public class Simulation implements Subject{
     private File usersFile;
     private boolean running;
     private boolean LightAuto;
+
+    File logFile = new File("logFile.txt");
+    PrintWriter pw = new PrintWriter(new FileWriter(logFile, true));
 
     private boolean isAway;
     /**
