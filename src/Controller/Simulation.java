@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Random;
 
 /**
  * The primary controller of the smart home simulation.
@@ -682,6 +683,27 @@ public class Simulation implements Subject{
     }
 
     /**
+     * checks the state of the away mode and the intruder to make a decision
+     * @return String describing what is the state of the home invasion
+     */
+    public String invadeSimHome() {
+        String message;
+        if(!isAway){
+            message = "Intruders typically only intrude when there is no one in the house.";
+        }
+        else {
+            Intruder i = new Intruder(house.getRooms().get(new Random().nextInt(5) + 1));
+            message = "There is an intruder in the house ";
+            for(Room room: house.getRooms()){
+                if(i.getRoom().equals(room))
+                    message += " detected by Motion sensor in " + room.getName() +
+                            ", motion sensor " + room.getRoomMotionSensor().getMotionSensorID();
+            }
+        }
+        return message;
+    }
+
+    /**
      * Converts the Simulation into a String representation.
      * @return the String representation of the Simulation
      */
@@ -690,6 +712,7 @@ public class Simulation implements Subject{
         return "Simulation [date=" + date + ", time=" + time + ", temperature=" + temperature + ", loggedInUser="
                 + loggedInUser + "]";
     }
+
 
 
 }

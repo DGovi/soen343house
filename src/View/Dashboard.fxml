@@ -98,25 +98,25 @@
                     <Insets bottom="5.0" top="15.0" />
                   </VBox.margin>
                 </Label>
-                <Label text="H:"></Label><TextField fx:id="timeHourInput"></TextField>
-                <Label text="M:"></Label><TextField fx:id="timeMinuteInput"></TextField>
-                <Label text="S:"></Label><TextField fx:id="timeSecondInput"></TextField>
-                <Label text="Time Speed:"></Label><TextField fx:id="timeSpeedInput"></TextField>
-                <Button text="Set Time Settings" onAction="#setTime"></Button>
-                <Button text="Update Time" onAction="#updateTime"></Button>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0"/>
+                <Label text="H:" /><TextField fx:id="timeHourInput" />
+                <Label text="M:" /><TextField fx:id="timeMinuteInput" />
+                <Label text="S:" /><TextField fx:id="timeSecondInput" />
+                <Label text="Time Speed:" /><TextField fx:id="timeSpeedInput" />
+                <Button onAction="#setTime" text="Set Time Settings" />
+                <Button onAction="#updateTime" text="Update Time" />
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" />
                 <Separator prefWidth="200.0">
                   <VBox.margin>
-                    <Insets left="-5.0" right="-5.0" top="10.0"/>
+                    <Insets left="-5.0" right="-5.0" top="10.0" />
                   </VBox.margin>
                 </Separator>
-                <Label text="Current Permissions:"></Label>
-                <Label text="SHS:"></Label>
-                <Label text="Delete User:" fx:id="permissionsDeleteUser"></Label>
-                <Label text="SHC:"></Label>
-                <Label text="Open/Close Windows:" fx:id="permissionsControlWindows"></Label>
-                <Label text="SHP:"></Label>
-                <Label text="Set Away Mode:" fx:id="permissionsAwayMode"></Label>
+                <Label text="Current Permissions:" />
+                <Label text="SHS:" />
+                <Label fx:id="permissionsDeleteUser" text="Delete User:" />
+                <Label text="SHC:" />
+                <Label fx:id="permissionsControlWindows" text="Open/Close Windows:" />
+                <Label text="SHP:" />
+                <Label fx:id="permissionsAwayMode" text="Set Away Mode:" />
               </children>
             </VBox>
           </children>
@@ -273,104 +273,96 @@
                             <Tab text="SHC">
                               <content>
                                 <VBox prefHeight="200.0" prefWidth="100.0">
-                                  <Label text="Room:"/>
-                                  <ComboBox fx:id="shcRoomSelect" onAction="#shcChangeRooms">
-                                    <VBox.margin>
-                                      <Insets bottom="5.0" top="5.0"/>
-                                    </VBox.margin>
-                                  </ComboBox>
-
-                                  <Separator prefWidth="200.0">
-                                    <VBox.margin>
-                                      <Insets bottom="10.0"/>
-                                    </VBox.margin>
-                                  </Separator>
-
-                                  <Label text="Window:">
-                                    <VBox.margin>
-                                      <Insets bottom="5.0" top="5.0"/>
-                                    </VBox.margin>
-                                  </Label>
-                                  <ComboBox fx:id="shcWindowSelect" onAction="#shcChangeWindows"/>
-                                  <Button fx:id="shcWindowOpenState" onAction="#shcChangeOpen">
-                                    <VBox.margin>
-                                      <Insets top="5.0"/>
-                                    </VBox.margin>
-                                  </Button>
-                                  <Button fx:id="shcWindowBlockedState" onAction="#shcChangeBlocked">
-                                    <VBox.margin>
-                                      <Insets top="5.0"/>
-                                    </VBox.margin>
-                                  </Button>
-
-                                  <Separator prefWidth="200.0">
-                                    <VBox.margin>
-                                      <Insets bottom="10.0"/>
-                                    </VBox.margin>
-                                  </Separator>
-
-                                  <padding>
-                                    <Insets left="10.0" right="10.0" top="10.0"/>
-                                  </padding>
-                                  <Label text="Light:">
-                                    <VBox.margin>
-                                      <Insets bottom="5.0" top="5.0"/>
-                                    </VBox.margin>
-                                  </Label>
-                                  <Button mnemonicParsing="false" onAction="#toggleRoomLights" prefHeight="27.0" text="Turn Lights ON/OFF"></Button>
-                                   <ToggleButton mnemonicParsing="false" onAction="#shcLightAuto" prefHeight="27.0" prefWidth="256.0" text="Auto Mode On/Off">
-              						<VBox.margin>
-             						   <Insets bottom="5.0"/>
-      						        </VBox.margin>
-     						       </ToggleButton>
+                                   <children>
+                                     <Label text="Room:" />
+                                     <ComboBox fx:id="shcRoomSelect" onAction="#shcChangeRooms">
+                                       <VBox.margin>
+                                         <Insets bottom="5.0" top="5.0" />
+                                       </VBox.margin>
+                                     </ComboBox>
+   
+                                     <Separator prefWidth="200.0">
+                                       <VBox.margin>
+                                         <Insets bottom="10.0" />
+                                       </VBox.margin>
+                                     </Separator>
+   
+                                     <Label text="Window:">
+                                       <VBox.margin>
+                                         <Insets bottom="5.0" top="5.0" />
+                                       </VBox.margin>
+                                     </Label>
+                                     <ComboBox fx:id="shcWindowSelect" onAction="#shcChangeWindows" />
+                                     <Button fx:id="shcWindowOpenState" onAction="#shcChangeOpen">
+                                       <VBox.margin>
+                                         <Insets top="5.0" />
+                                       </VBox.margin>
+                                     </Button>
+                                     <Button fx:id="shcWindowBlockedState" onAction="#shcChangeBlocked">
+                                       <VBox.margin>
+                                         <Insets top="5.0" />
+                                       </VBox.margin>
+                                     </Button>
+   
+                                     <Separator prefWidth="200.0">
+                                       <VBox.margin>
+                                         <Insets bottom="10.0" />
+                                       </VBox.margin>
+                                     </Separator>
+                                     <Label text="Light:">
+                                       <VBox.margin>
+                                         <Insets bottom="5.0" top="5.0" />
+                                       </VBox.margin>
+                                     </Label>
+                                     <Button mnemonicParsing="false" onAction="#toggleRoomLights" prefHeight="27.0" text="Turn Lights ON/OFF" />
+                                      <ToggleButton mnemonicParsing="false" onAction="#shcLightAuto" prefHeight="27.0" prefWidth="256.0" text="Auto Mode On/Off">
+                 						<VBox.margin>
+                						   <Insets bottom="5.0" />
+         						        </VBox.margin>
+        						       </ToggleButton>
+                                     <Separator prefWidth="200.0">
+                                       <VBox.margin>
+                                         <Insets bottom="10.0" />
+                                       </VBox.margin>
+                                     </Separator>
+   
+                                     <Label text="Door:">
+                                       <VBox.margin>
+                                         <Insets bottom="5.0" top="5.0" />
+                                       </VBox.margin>
+                                     </Label>
+                                     <ComboBox fx:id="shcDoorSelect" onAction="#shcChangeDoor" />
+                                     <Button fx:id="shcDoorOpenState" onAction="#shcChangeDoorOpen" text="Please Select a Room">
+                                       <VBox.margin>
+                                         <Insets top="5.0" />
+                                       </VBox.margin>
+                                     </Button>
+                                   </children>
 
                                   <padding>
                                     <Insets left="10.0" right="10.0" top="10.0" />
                                   </padding>
-                                  <Separator prefWidth="200.0">
-                                    <VBox.margin>
-                                      <Insets bottom="10.0"/>
-                                    </VBox.margin>
-                                  </Separator>
-                                  <padding>
-                                    <Insets left="10.0" right="10.0" top="10.0"/>
-                                  </padding>
 
-                                  <Label text="Door:">
-                                    <VBox.margin>
-                                      <Insets bottom="5.0" top="5.0"/>
-                                    </VBox.margin>
-                                  </Label>
-                                  <ComboBox fx:id="shcDoorSelect" onAction="#shcChangeDoor"/>
-                                  <Button fx:id="shcDoorOpenState" onAction="#shcChangeDoorOpen" text="Please Select a Room">
-                                    <VBox.margin>
-                                      <Insets top="5.0"/>
-                                    </VBox.margin>
-                                  </Button>
+                                  <padding>
+                                    <Insets left="10.0" right="10.0" top="10.0" />
+                                  </padding>
+                                  <padding>
+                                    <Insets left="10.0" right="10.0" top="10.0" />
+                                  </padding>
 
                                 </VBox>
                               </content>
                             </Tab>
                             <Tab text="SHP">
-                              <content>
-                                <HBox prefHeight="81.0" prefWidth="275.0">
-                                  <children>
-                                    <CheckBox fx:id="awayButton" mnemonicParsing="false" onAction="#setAwayMode" text="Away mode">
-                                      <HBox.margin>
-                                        <Insets left="10.0" right="10.0" top="5.0" />
-                                      </HBox.margin>
-                                    </CheckBox>
-                                    <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="105.0" text="settings">
-                                      <HBox.margin>
-                                        <Insets left="50.0" />
-                                      </HBox.margin>
-                                    </Button>
-                                  </children>
-                                  <padding>
-                                    <Insets bottom="10.0" right="10.0" top="10.0" />
-                                  </padding>
-                                </HBox>
-                              </content>
+                                             <content>
+                                                <VBox prefHeight="200.0" prefWidth="100.0">
+                                                   <children>
+                                    <CheckBox fx:id="awayButton" mnemonicParsing="false" onAction="#setAwayMode" prefHeight="18.0" prefWidth="111.0" text="Away Mode" />
+                                                     <CheckBox fx:id="intruderCheck" mnemonicParsing="false" onAction="#invadeHome" prefHeight="18.0" prefWidth="169.0" text="simulate intruder" />
+                                                      <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="120.0" text="settings" />
+                                                   </children>
+                                                </VBox>
+                                             </content>
                             </Tab>
                             <Tab text="SHH">
                               <content>
