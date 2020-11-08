@@ -98,7 +98,12 @@
                     <Insets bottom="5.0" top="15.0" />
                   </VBox.margin>
                 </Label>
-                <Button fx:id="updateTimeButton" mnemonicParsing="false" onAction="#updateTime" prefHeight="27.0" prefWidth="282.0" text="Show Current Time"/>
+                <Label text="H:"></Label><TextField fx:id="timeHourInput"></TextField>
+                <Label text="M:"></Label><TextField fx:id="timeMinuteInput"></TextField>
+                <Label text="S:"></Label><TextField fx:id="timeSecondInput"></TextField>
+                <Label text="Time Speed:"></Label><TextField fx:id="timeSpeedInput"></TextField>
+                <Button text="Set Time Settings" onAction="#setTime"></Button>
+                <Button text="Update Time" onAction="#updateTime"></Button>
                 <Text strokeType="OUTSIDE" strokeWidth="0.0"/>
                 <Separator prefWidth="200.0">
                   <VBox.margin>
