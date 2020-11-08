@@ -38,7 +38,6 @@ public class Simulation implements Subject{
     private boolean isAway;
     private int copDelay;
     private final ArrayList<Room> awayLightsOn = new ArrayList<>();
-    private ArrayList<Room> awayLightsOn;
 
     File logFile = new File("logFile.txt");
     PrintWriter pw = new PrintWriter(new FileWriter(logFile, true));
@@ -690,14 +689,20 @@ public class Simulation implements Subject{
                     w.setOpen(false);
                 }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> Conflict buttons fxml
                 r.setLightsOn(false);
             }
 
             for(Room r : awayLightsOn){
                 r.setLightsOn(true);
+<<<<<<< HEAD
             }
 
 =======
+=======
+>>>>>>> Conflict buttons fxml
             }
 
 >>>>>>> Fix conflict
