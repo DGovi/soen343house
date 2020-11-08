@@ -35,6 +35,7 @@ import javafx.scene.text.Font;
  * by JavaFX UI elements.
  */
 public class DashboardController {
+
     private Simulation sim;
     private final int windowLength = 30;
     private final int ROOM_SIZE = 50;
@@ -132,8 +133,12 @@ public class DashboardController {
     private TextField timeSpeedInput;
     GraphicsContext gc;
 
+    //SHP
     @FXML
     private CheckBox awayButton;
+    @FXML
+    private CheckBox intruderCheck;
+
 
     /**
      * Changes the simulation temperature.
@@ -1134,6 +1139,15 @@ public class DashboardController {
     public void setAwayMode(ActionEvent actionEvent){
         logText(sim.pw, printToConsole(sim.setSimulationAway(awayButton.isSelected())));
         logText(sim.pw, printToConsole(sim.notifyMotionSensors()));
+        updateDashboard();
+    }
+
+    /**
+     * simulates an intruder invading a home
+     * @param actionEvent event that triggers this method
+     */
+    public void invadeHome(ActionEvent actionEvent){
+        logText(sim.pw, printToConsole(sim.invadeSimHome(intruderCheck.isSelected())));
         updateDashboard();
     }
 
