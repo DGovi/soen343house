@@ -32,6 +32,7 @@ public class Simulation implements Subject{
     private File usersFile;
     private boolean running;
     private boolean LightAuto;
+    private ArrayList<Room> awayLightsOn;
 
     File logFile = new File("logFile.txt");
     PrintWriter pw = new PrintWriter(new FileWriter(logFile, true));
@@ -337,7 +338,7 @@ public class Simulation implements Subject{
      */
     public String setLoggedInUserLocation(String location) throws JSONException, IOException {
         if (location == null) return "ERROR: Need to pick a location.";
-        if (isAway) return "Sorry the doors are locked";
+        if (isAway && !location.equals("Outside")) return "Sorry the doors are locked";
         if (location.equals("Outside")) {
             loggedInUser.setLocation(null);
             updateUsersJSON();
@@ -668,21 +669,33 @@ public class Simulation implements Subject{
      */
     public String setSimulationAway(boolean checked){
         String message;
+
         if(checked){
+            for(User aUser: users)
+                aUser.setLocation(null);
+
+            boolean obstructed = false;
+            for(Room r : house.getRooms()){
+                for (Window w : r.getWindows()) {
+                    if(w.getObstructed()){
+                        obstructed = true;
+                    }
+                    w.setOpen(false);
+                }
+            }
+
             isAway = true;
             message = "Away Mode has been set";
-            for(User aUser: users){
-                aUser.setLocation(null);
-            }
-        }
-        else {
+
+            if(obstructed)
+                message += "\nOne of the windows hasn't been closed because it's obstructed";
+
+        } else {
             isAway = false;
             message = "\nUser has returned home in " + house.getRooms().get(0).getName() +
                     ".\nAway Mode disabled." +
                     "\nAll sensors OFF";
             loggedInUser.setLocation(house.getRooms().get(0));
-
-
         }
         return message;
     }
