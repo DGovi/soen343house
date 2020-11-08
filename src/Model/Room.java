@@ -153,16 +153,23 @@ public class Room {
             if (object.get(key) instanceof JSONObject) {
                 JSONArray array = object.getJSONObject(key).getJSONArray("doorsTo");
                 ArrayList<Door> list = new ArrayList<Door>();
+
+                if(key.equals("Entrance") || key.equals("Garage"))
+                    list.add(new Door(key, "Outside"));
+
                 for (int i = 0; i < array.length(); i++) {
                     String doorName = array.get(i).toString();
                     Door doorToAdd = new Door(key, doorName);
-
                     list.add(doorToAdd);
                 }
+
+                if(key.equals("Backyard"))
+                    list.add(new Door(key, "Outside"));
+
                 ArrayList<Window> windows = new ArrayList<Window>();
-                for (int i = 0; i < object.getJSONObject(key).getInt("windows"); i++) {
+                for (int i = 0; i < object.getJSONObject(key).getInt("windows"); i++)
                     windows.add(new Window());
-                }
+
                 rooms.add(new Room(
                                 key,
                                 windows,
