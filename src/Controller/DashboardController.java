@@ -2,6 +2,7 @@ package Controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -289,7 +290,7 @@ public class DashboardController {
         }
         shcDoorOpenState.setText("Pick a door");
 
-        printToConsole("Now pick a window/door to view the state of.");
+        logText(sim.pw, printToConsole("Now pick a window/door to view the state of."));
     }
 
     /**
@@ -297,9 +298,10 @@ public class DashboardController {
      */
     @FXML
     private void shcChangeWindows() {
+        String message;
         if (shcWindowSelect.getValue() != null) {
             updateSHCWindowButtons();
-            printToConsole("Successfully changed windows.");
+            logText(sim.pw, printToConsole("Successfully changed windows."));
         }
     }
 
@@ -320,7 +322,7 @@ public class DashboardController {
      */
     @FXML
     private void shcLightAuto() throws IOException, JSONException {
-    	printToConsole(sim.toggleLight());
+    	  logText(sim.pw, printToConsole(sim.toggleLight()));
         if(sim.getLightAuto()) {
             shcTurnOffAllLights();
         }
@@ -334,11 +336,11 @@ public class DashboardController {
     @FXML
     private void shcChangeOpen() throws IOException, JSONException {
         if ((shcRoomSelect.getValue() == null) || (shcWindowSelect.getValue() == null)) {
-            printToConsole("ERROR: Not all fields were filled in before clicking the button");
+            logText(sim.pw, printToConsole("ERROR: Not all fields were filled in before clicking the button"));
             return;
         }
         if (sim.getLoggedInUser().getType() == UserType.STRANGER) {
-            printToConsole("ERROR: Strangers are not allowed to change the state of the windows.");
+            logText(sim.pw, printToConsole("ERROR: Strangers are not allowed to change the state of the windows."));
             return;
         }
         String chosenWindowName = shcWindowSelect.getValue();
@@ -350,11 +352,11 @@ public class DashboardController {
         }
 
         if ((sim.getLoggedInUser().getType() == UserType.CHILD || sim.getLoggedInUser().getType() == UserType.GUEST) && sim.getLoggedInUser().getLocation() != room) {
-            printToConsole("ERROR: Children need to be in the room to change open/close windows.");
+            logText(sim.pw, printToConsole("ERROR: Children need to be in the room to change open/close windows."));
             return;
         }
 
-        printToConsole(room.getWindows().get(chosenWindowIndex).changeOpen());
+        logText(sim.pw, printToConsole(room.getWindows().get(chosenWindowIndex).changeOpen()));
         updateSHCWindowButtons();
         this.renderLayout(sim.getHouse());
     }
@@ -367,11 +369,11 @@ public class DashboardController {
     @FXML
     private void shcChangeBlocked() throws IOException, JSONException {
         if ((shcRoomSelect.getValue() == null) || (shcWindowSelect.getValue() == null)) {
-            printToConsole("ERROR: Not all fields were filled in before clicking the button");
+            logText(sim.pw, printToConsole("ERROR: Not all fields were filled in before clicking the button"));
             return;
         }
         if (sim.getLoggedInUser().getType() == UserType.STRANGER) {
-            printToConsole("ERROR: Strangers are not allowed to change the state of the windows.");
+            logText(sim.pw, printToConsole("ERROR: Strangers are not allowed to change the state of the windows."));
             return;
         }
         String chosenWindowName = shcWindowSelect.getValue();
@@ -383,10 +385,10 @@ public class DashboardController {
         }
 
         if ((sim.getLoggedInUser().getType() == UserType.CHILD || sim.getLoggedInUser().getType() == UserType.GUEST) && sim.getLoggedInUser().getLocation() != room) {
-            printToConsole("ERROR: Children and guests need to be in the room to change the state of the windows.");
+            logText(sim.pw, printToConsole("ERROR: Children and guests need to be in the room to change the state of the windows."));
             return;
         }
-        printToConsole(room.getWindows().get(chosenWindowIndex).changeObstructed());
+        logText(sim.pw, printToConsole(room.getWindows().get(chosenWindowIndex).changeObstructed()));
         updateSHCWindowButtons();
         this.renderLayout(sim.getHouse());
     }
@@ -468,8 +470,19 @@ public class DashboardController {
      *
      * @param output prints on the console of the simulation the output
      */
-    private void printToConsole(String output) {
+    private String printToConsole(String output) {
         console.appendText(output + "\n");
+        return output;
+    }
+
+    /**
+     * prints the output to a file
+     * @param pw printwriter object
+     * @param output string output to be printed in the file
+     */
+    public void logText(PrintWriter pw, String output){
+        pw.write(output + "\n");
+        pw.flush();
     }
 
     /**
@@ -975,9 +988,10 @@ public class DashboardController {
      */
     @FXML
     public void shcChangeDoor() {
+        String message;
         if (shcDoorSelect.getValue() != null) {
             updateSHCDoorButtons();
-            printToConsole("Successfully changed door.");
+            logText(sim.pw, printToConsole("Successfully changed door."));
         }
     }
 
@@ -988,12 +1002,13 @@ public class DashboardController {
      */
     @FXML
     public void shcChangeDoorOpen() throws IOException, JSONException {
+
         if ((shcRoomSelect.getValue() == null) || (shcDoorSelect.getValue() == null)) {
-            printToConsole("ERROR: Not all fields were filled in before clicking the button");
+            logText(sim.pw, printToConsole("ERROR: Not all fields were filled in before clicking the button"));
             return;
         }
         if (sim.getLoggedInUser().getType() == UserType.STRANGER) {
-            printToConsole("ERROR: Strangers are not allowed to change the state of the doors.");
+            logText(sim.pw, printToConsole("ERROR: Strangers are not allowed to change the state of the doors."));
             return;
         }
 
@@ -1007,7 +1022,7 @@ public class DashboardController {
             return;
 
         Door d = room.getDoors().get(chosenDoorIndex);
-        printToConsole(d.toggleOpen());
+        logText(sim.pw, printToConsole(d.toggleOpen()));
         updateSHCDoorButtons();
         this.renderLayout(sim.getHouse());
     }
@@ -1026,7 +1041,7 @@ public class DashboardController {
             return;
         }
 
-        room.toggleLightsON();
+        logText(sim.pw, printToConsole(room.toggleLightsON()));
         this.renderLayout(sim.getHouse());
     }
   
@@ -1036,8 +1051,8 @@ public class DashboardController {
      * @param actionEvent event that triggers this method
      */
     public void setAwayMode(ActionEvent actionEvent){
-        printToConsole(sim.setSimulationAway(awayButton.isSelected()));
-        printToConsole(sim.notifyMotionSensors());
+        logText(sim.pw, printToConsole(sim.setSimulationAway(awayButton.isSelected())));
+        logText(sim.pw, printToConsole(sim.notifyMotionSensors()));
         updateDashboard();
     }
 

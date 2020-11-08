@@ -128,9 +128,14 @@ public class Room {
 
     /**
      * toggles the lightsOn attribute.
+     * @return String identifying if the lights in the Room are now on or off
      */
-    public void toggleLightsON() {
+    public String toggleLightsON() {
        this.setLightsOn(! this.isLightsOn());
+       if (this.isLightsOn())
+           return "Lights turned ON!";
+       else
+           return "Lights turned OFF!";
     }
 
     /**

@@ -7,3 +7,4 @@ bin
 .project
 classes
 users.json
+logFile.txt
