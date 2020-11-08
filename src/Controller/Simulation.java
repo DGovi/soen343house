@@ -33,7 +33,10 @@ public class Simulation implements Subject{
     private File usersFile;
     private boolean running;
     private boolean LightAuto;
+<<<<<<< HEAD
     private boolean isAway;
+=======
+>>>>>>> 770651d4e211d85ff4beb44e0d6abfb5d0f3ccc1
     private final ArrayList<Room> awayLightsOn = new ArrayList<>();
 
     File logFile = new File("logFile.txt");
@@ -717,6 +720,7 @@ public class Simulation implements Subject{
                     ".\nAway Mode disabled." +
                     "\nAll sensors OFF";
             loggedInUser.setLocation(house.getRooms().get(0));
+<<<<<<< HEAD
         }
         return message;
     }
@@ -738,6 +742,8 @@ public class Simulation implements Subject{
                     message += " detected by Motion sensor in " + room.getName() +
                             ", motion sensor " + room.getRoomMotionSensor().getMotionSensorID();
             }
+=======
+>>>>>>> 770651d4e211d85ff4beb44e0d6abfb5d0f3ccc1
         }
         else
             message = "no intruders found";

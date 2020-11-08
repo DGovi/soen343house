@@ -147,6 +147,9 @@ public class DashboardController {
     @FXML
     private VBox lightsLeftOnBox;
 
+    @FXML
+    private VBox lightsLeftOnBox;
+
     /**
      * Changes the simulation temperature.
      */

@@ -363,7 +363,10 @@
                                           <Insets left="10.0" right="10.0" top="5.0" bottom="15.0" />
                                         </VBox.margin>
                                       </CheckBox>
+<<<<<<< HEAD
                                       <CheckBox fx:id="intruderCheck" mnemonicParsing="false" onAction="#invadeHome" prefHeight="18.0" prefWidth="169.0" text="simulate intruder" />
+=======
+>>>>>>> 770651d4e211d85ff4beb44e0d6abfb5d0f3ccc1
                                     </VBox>
                                     <VBox>
                                       <Text>What light to leave open</Text>
