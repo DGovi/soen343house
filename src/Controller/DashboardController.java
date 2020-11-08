@@ -517,11 +517,13 @@ public class DashboardController {
 
         // reset info of logged in user
         currentUser.setText(sim.getLoggedInUser().getName());
+
         if (sim.getLoggedInUser().getLocation() == null) {
             currentUserLocationOptions.valueProperty().set("Outside");
         } else {
             currentUserLocationOptions.valueProperty().set(sim.getLoggedInUser().getLocation().getName());
         }
+
         if (sim.getLoggedInUser().getType() == UserType.PARENT) {
             permissionsDeleteUser.setText("Delete user: Able");
             permissionsControlWindows.setText("Open/Close Windows: Able");
@@ -867,39 +869,6 @@ public class DashboardController {
                 gc.strokeLine(x + 15, y + size, x + 30, y + size);
         }
 
-        if(room.getName().equals("Garage")){
-            boolean entranceOpen = false;
-            for (Door d : room.getDoors())
-                if (d.getTo().equals("Outside") && d.isOpen()) {
-                    entranceOpen = true;
-                    break;
-                }
-
-            if (entranceOpen)
-                gc.strokeLine(x, y + 20, x + 15, y + 40);
-            else
-                gc.strokeLine(x, y + 20, x, y + 40);
-        }
-
-        if(room.getName().equals("Backyard")){
-            boolean bottomDoor = false;
-            for (Door d : room.getDoors())
-                if (d.getTo().equals("Outside") && d.isOpen()) {
-                    bottomDoor = true;
-                    break;
-                }
-
-            if (bottomDoor)
-                gc.strokeLine(x + 15, y + size, x + 30, y + size - 15);
-            else
-                gc.strokeLine(x + 15, y + size, x + 30, y + size);
-        }
-
-
-
-
-
-
         // drawing room name
         gc.setLineWidth(1);
         gc.setStroke(Color.BLACK);
@@ -1154,6 +1123,7 @@ public class DashboardController {
         logText(sim.pw, printToConsole(sim.setSimulationAway(awayButton.isSelected())));
         logText(sim.pw, printToConsole(sim.notifyMotionSensors()));
         updateDashboard();
+        this.renderLayout(sim.getHouse());
     }
 
     /**
