@@ -732,7 +732,7 @@ public class Simulation implements Subject{
             message = "Intruders typically only intrude when there is no one in the house.";
         }
         else if(checked && isAway) {
-            Intruder i = new Intruder(house.getRooms().get(new Random().nextInt(5) + 1));
+            Intruder i = new Intruder(house.getRooms().get(new Random().nextInt(house.getRooms().size())));
             message = "There is an intruder in the house ";
             for (Room room : house.getRooms()) {
                 if (i.getRoom().equals(room))
