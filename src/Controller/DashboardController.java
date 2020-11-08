@@ -801,13 +801,10 @@ public class DashboardController {
                 }
             }
 
-
             if (sideDoorOpen)
                 gc.strokeLine(x + size, y + 20, x + size + 15, y + 40);
             else
                 gc.strokeLine(x + size, y + 20, x + size, y + 40);
-
-
         }
 
         if(room.getName().equals("Garage")){
@@ -837,6 +834,36 @@ public class DashboardController {
             else
                 gc.strokeLine(x + 15, y + size, x + 30, y + size);
         }
+
+        if(room.getName().equals("Garage")){
+            boolean entranceOpen = false;
+            for (Door d : room.getDoors())
+                if (d.getTo().equals("Outside") && d.isOpen()) {
+                    entranceOpen = true;
+                    break;
+                }
+
+            if (entranceOpen)
+                gc.strokeLine(x, y + 20, x + 15, y + 40);
+            else
+                gc.strokeLine(x, y + 20, x, y + 40);
+        }
+
+        if(room.getName().equals("Backyard")){
+            boolean bottomDoor = false;
+            for (Door d : room.getDoors())
+                if (d.getTo().equals("Outside") && d.isOpen()) {
+                    bottomDoor = true;
+                    break;
+                }
+
+            if (bottomDoor)
+                gc.strokeLine(x + 15, y + size, x + 30, y + size - 15);
+            else
+                gc.strokeLine(x + 15, y + size, x + 30, y + size);
+        }
+
+
 
 
 
