@@ -54,6 +54,22 @@ public class Room {
     }
 
     /**
+     * Gets an arraylist of doors.
+     *
+     * @return an arraylist of doors
+     */
+    public Door getDoorFromDestination(String to) {
+        for(Door d : doors){
+            if(d.getTo().equals(to)){
+                return d;
+            }
+        }
+        return null;
+    }
+
+
+
+    /**
      * Set the doors in room.
      *
      * @param doors a list of doors

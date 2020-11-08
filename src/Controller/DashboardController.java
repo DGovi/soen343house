@@ -207,6 +207,18 @@ public class DashboardController {
             }
         }
 
+        if(previousLocation != null && sim.getUsersInRoom(previousLocation).isEmpty()){
+            if(previousLocation.getName().equals("Garage") ) {
+                sim.getHouse().getRoomFromName("Garage").getDoorFromDestination("Outside").setOpen(false);
+            }
+            if(previousLocation.getName().equals("Entrance") ){
+                sim.getHouse().getRoomFromName("Entrance").getDoorFromDestination("Outside").setOpen(false);
+            }
+            if(previousLocation.getName().equals("Backyard") ){
+                sim.getHouse().getRoomFromName("Backyard").getDoorFromDestination("Outside").setOpen(false);
+            }
+        }
+
         updateDashboard();
         this.renderLayout(sim.getHouse());
     }
@@ -643,6 +655,7 @@ public class DashboardController {
         coordinates.put(firstRoom, new javafx.util.Pair<>(startX, startY));
 
         drawRoom(firstRoom, startX, startY, false, null);
+        drawPeople(firstRoom, startX + 5, startY + firstRoom.getDoors().size() * ROOM_SIZE - PERSON_HEIGHT - 5);
         drawWindows(startX, startY, firstRoom.getDoors().size() * ROOM_SIZE, firstRoom.getWindows());
 
         drawPeopleOutside();
@@ -779,7 +792,6 @@ public class DashboardController {
         boolean topDoorOpen = false;
 
         String nameTested = roomAbove != null ? roomAbove.getName() : "Outside";
-
 
         for (Door d : room.getDoors())
             if (d.getTo().equals(nameTested) && d.isOpen()) {
