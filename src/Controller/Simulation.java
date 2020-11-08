@@ -32,7 +32,7 @@ public class Simulation implements Subject{
     private File usersFile;
     private boolean running;
     private boolean LightAuto;
-    private ArrayList<Room> awayLightsOn;
+    private final ArrayList<Room> awayLightsOn = new ArrayList<>();
 
     File logFile = new File("logFile.txt");
     PrintWriter pw = new PrintWriter(new FileWriter(logFile, true));
@@ -230,6 +230,20 @@ public class Simulation implements Subject{
      */
     public void logout() {
         if (this.loggedInUser != null) this.loggedInUser = null;
+    }
+
+    /**
+     * Adds a room to leave light on in.
+     *
+     * @param room name of room to leave lights on in.
+     */
+    public void toggleAwayLight(String room) {
+        Room r = house.getRoomFromName(room);
+        if(awayLightsOn.contains(r)){
+            awayLightsOn.remove(r);
+        }else{
+            awayLightsOn.add(r);
+        }
     }
 
     /**
@@ -682,6 +696,11 @@ public class Simulation implements Subject{
                     }
                     w.setOpen(false);
                 }
+                r.setLightsOn(false);
+            }
+
+            for(Room r : awayLightsOn){
+                r.setLightsOn(true);
             }
 
             isAway = true;
