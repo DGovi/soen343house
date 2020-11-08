@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-11-08T02:54:27.193Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.183 Safari/537.36" etag="OCMa58Q933VFo9juQ9yK" version="13.9.2" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2020-11-08T16:23:55.687Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.183 Safari/537.36" etag="qHle63a8G07MkfKThPH3" version="13.9.2" type="github" pages="3">
   <diagram id="dKoDja1B_UEmTesHISM4" name="System allow user to exec commands">
     <mxGraphModel dx="466" dy="613" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
       <root>
@@ -53,6 +53,41 @@
               <mxPoint x="85" y="130" />
             </Array>
             <mxPoint x="60" y="130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="JXjnFcr72ctbYhdSmyfW" name="changeTimeSpeed">
+    <mxGraphModel dx="548" dy="721" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="pFixgrVIrIQQ6HGTLFYr-0" />
+        <mxCell id="pFixgrVIrIQQ6HGTLFYr-1" parent="pFixgrVIrIQQ6HGTLFYr-0" />
+        <mxCell id="nhhykT5l2XmMVsNhFF4G-0" value=":System" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;" vertex="1" parent="pFixgrVIrIQQ6HGTLFYr-1">
+          <mxGeometry x="250" y="170" width="100" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="nhhykT5l2XmMVsNhFF4G-4" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;" vertex="1" parent="nhhykT5l2XmMVsNhFF4G-0">
+          <mxGeometry x="45" y="100" width="10" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="nhhykT5l2XmMVsNhFF4G-8" value="ChangeTimeSpeed" style="edgeStyle=orthogonalEdgeStyle;html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;exitX=1.016;exitY=0.1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1.055;entryY=0.25;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" target="nhhykT5l2XmMVsNhFF4G-4" parent="nhhykT5l2XmMVsNhFF4G-0" source="nhhykT5l2XmMVsNhFF4G-4">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="60" y="120" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="85" y="120" />
+              <mxPoint x="85" y="150" />
+            </Array>
+            <mxPoint x="60" y="140" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nhhykT5l2XmMVsNhFF4G-3" value=":User" style="shape=umlLifeline;participant=umlActor;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;spacingTop=36;outlineConnect=0;size=30;" vertex="1" parent="pFixgrVIrIQQ6HGTLFYr-1">
+          <mxGeometry x="110" y="170" width="20" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="nhhykT5l2XmMVsNhFF4G-1" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;" vertex="1" parent="nhhykT5l2XmMVsNhFF4G-3">
+          <mxGeometry x="5" y="70" width="10" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="nhhykT5l2XmMVsNhFF4G-5" value="ChangeTimeSpeedRequest" style="html=1;verticalAlign=bottom;endArrow=block;entryX=0;entryY=0;exitX=1.035;exitY=0.139;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" target="nhhykT5l2XmMVsNhFF4G-4" parent="pFixgrVIrIQQ6HGTLFYr-1" source="nhhykT5l2XmMVsNhFF4G-1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="140" y="240" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
       </root>
