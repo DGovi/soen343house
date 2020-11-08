@@ -1,1 +1,61 @@
-<mxfile host="app.diagrams.net" modified="2020-11-08T02:30:37.990Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.183 Safari/537.36" etag="J3BXYy7aWl67PvZD9JQJ" version="13.9.2" type="github"><diagram id="dKoDja1B_UEmTesHISM4" name="Page-1">ddHBDsIgDADQr+EOQxfvc+rF0w6eyaiDhK2EYTb9erfAnGR6IeW1UFIIL9rx7IRVV5RgSEblSPiRZNkuz6d1hmeAnPEAjdMyEFuh0i+ISKM+tIQ+KfSIxmubYo1dB7VPTDiHQ1p2R5N2taKBDVS1MFu9aelVVEbpmriAblRsfdjHRCuW4gi9EhKHL+Il4YVD9CFqxwLMPLtlLuHc6U/28zAHnf9xYArWu6dN8kG8fAM=</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2020-11-08T02:54:27.193Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.183 Safari/537.36" etag="OCMa58Q933VFo9juQ9yK" version="13.9.2" type="github" pages="2">
+  <diagram id="dKoDja1B_UEmTesHISM4" name="System allow user to exec commands">
+    <mxGraphModel dx="466" dy="613" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="QYQSUx4oeR0v3a4fiVO8-1" value=":Object" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="450" y="170" width="100" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="QYQSUx4oeR0v3a4fiVO8-2" value=":System" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="450" y="170" width="100" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="QYQSUx4oeR0v3a4fiVO8-8" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;" vertex="1" parent="QYQSUx4oeR0v3a4fiVO8-2">
+          <mxGeometry x="45" y="80" width="10" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="QYQSUx4oeR0v3a4fiVO8-3" value=":Modules" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="590" y="170" width="100" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="QYQSUx4oeR0v3a4fiVO8-4" value="User" style="shape=umlLifeline;participant=umlActor;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;spacingTop=36;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="360" y="170" width="20" height="360" as="geometry" />
+        </mxCell>
+        <mxCell id="QYQSUx4oeR0v3a4fiVO8-5" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;" vertex="1" parent="QYQSUx4oeR0v3a4fiVO8-4">
+          <mxGeometry x="5" y="70" width="10" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="QYQSUx4oeR0v3a4fiVO8-9" value="dispatch" style="html=1;verticalAlign=bottom;endArrow=block;entryX=0;entryY=0;exitX=1;exitY=0.041;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" target="QYQSUx4oeR0v3a4fiVO8-8" parent="1" source="QYQSUx4oeR0v3a4fiVO8-5">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="370" y="280" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QYQSUx4oeR0v3a4fiVO8-11" value="?????" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="275" y="40" width="50" height="20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="YMyZ9CHNg9fs51lb3wJV" name="System saves info">
+    <mxGraphModel dx="388" dy="511" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="9CF9L6OPMk2xWek13vaq-0" />
+        <mxCell id="9CF9L6OPMk2xWek13vaq-1" parent="9CF9L6OPMk2xWek13vaq-0" />
+        <mxCell id="9CF9L6OPMk2xWek13vaq-2" value=":System" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;" vertex="1" parent="9CF9L6OPMk2xWek13vaq-1">
+          <mxGeometry x="170" y="170" width="100" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="9CF9L6OPMk2xWek13vaq-3" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;" vertex="1" parent="9CF9L6OPMk2xWek13vaq-2">
+          <mxGeometry x="45" y="50" width="10" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="9CF9L6OPMk2xWek13vaq-7" value="save user&#39;s profiles" style="edgeStyle=orthogonalEdgeStyle;html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;exitX=1.015;exitY=0.121;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1.065;entryY=0.667;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" target="9CF9L6OPMk2xWek13vaq-3" parent="9CF9L6OPMk2xWek13vaq-2" source="9CF9L6OPMk2xWek13vaq-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="60" y="80" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="55" y="80" />
+              <mxPoint x="85" y="80" />
+              <mxPoint x="85" y="130" />
+            </Array>
+            <mxPoint x="60" y="130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
