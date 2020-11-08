@@ -284,8 +284,7 @@ public class DashboardController {
         shcWindowBlockedState.setText("Pick a window");
 
         shcDoorSelect.getItems().clear();
-        int i = 1;
-        for (;i <= room.getDoors().size(); i++) {
+        for (int i = 1; i <= room.getDoors().size(); i++) {
             shcDoorSelect.getItems().add("Door " + i);
         }
 
