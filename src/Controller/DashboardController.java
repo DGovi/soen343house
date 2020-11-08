@@ -673,7 +673,23 @@ public class DashboardController {
 
                 drawPeople(room, x + 5, y + size - PERSON_HEIGHT - 5);
 
-                this.drawRoom(room, x, y, (! doorObj.equals(doorsTop.get(doorsTop.size() - 1))) && doorsTop.size() > 1, roomAbove);
+                boolean sideDoor = false;
+                for(int i = 0; i < doorsTop.size(); i++){
+                    if(doorsTop.get(i).getTo().equals(door) && i + 1 < doorsTop.size()){
+                        Room n = doors.get(doorsTop.get(i + 1).getTo());
+                        for(Door d : room.getDoors()){
+                            if(d.getTo() == null || n == null)
+                                continue;
+                            Room cr = doors.get(d.getTo());
+                            if(cr != null && cr.equals(n)){
+                                sideDoor = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                this.drawRoom(room, x, y, (! doorObj.equals(doorsTop.get(doorsTop.size() - 1))) && doorsTop.size() > 1 && sideDoor, roomAbove);
 
                 if (doorObj.equals(doorsTop.get(doorsTop.size() - 1)))
                     this.drawWindows(x, y, size, room.getWindows());
@@ -772,7 +788,6 @@ public class DashboardController {
                 break;
             }
 
-
         if (topDoorOpen)
             gc.strokeLine(x + 15, y, x + 30, y - 15);
         else
@@ -781,17 +796,35 @@ public class DashboardController {
         if (sideDoor) {
             boolean sideDoorOpen = false;
             for (Door d : room.getDoors()) {
-                if (!d.getTo().equals(roomAbove.getName()) && d.isOpen()) {
+                if (!d.getTo().equals(roomAbove.getName()) && !d.getTo().equals("Outside") && d.isOpen()) {
                     sideDoorOpen = true;
                     break;
                 }
             }
+
+            gc.setStroke(Color.RED);
 
             if (sideDoorOpen)
                 gc.strokeLine(x + size, y + 20, x + size + 15, y + 40);
             else
                 gc.strokeLine(x + size, y + 20, x + size, y + 40);
 
+            gc.setStroke(Color.BLACK);
+
+        }
+
+        if(room.getName().equals("Garage")){
+            boolean entranceOpen = false;
+            for (Door d : room.getDoors())
+                if (d.getTo().equals("Outside") && d.isOpen()) {
+                    entranceOpen = true;
+                    break;
+                }
+
+            if (entranceOpen)
+                gc.strokeLine(x, y + 20, x + 15, y + 40);
+            else
+                gc.strokeLine(x, y + 20, x, y + 40);
         }
 
         if(room.getName().equals("Backyard")){
