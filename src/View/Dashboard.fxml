@@ -353,16 +353,28 @@
                                 </VBox>
                               </content>
                             </Tab>
-                            <Tab text="SHP">
-                                             <content>
-                                                <VBox prefHeight="200.0" prefWidth="100.0">
-                                                   <children>
-                                    <CheckBox fx:id="awayButton" mnemonicParsing="false" onAction="#setAwayMode" prefHeight="18.0" prefWidth="111.0" text="Away Mode" />
-                                                     <CheckBox fx:id="intruderCheck" mnemonicParsing="false" onAction="#invadeHome" prefHeight="18.0" prefWidth="169.0" text="simulate intruder" />
-                                                      <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="120.0" text="settings" />
-                                                   </children>
-                                                </VBox>
-                                             </content>
+                            <Tab onSelectionChanged="#updateSHP" text="SHP">
+                              <content>
+                                <VBox prefHeight="81.0" prefWidth="275.0">
+                                  <children>
+                                    <VBox>
+                                      <CheckBox fx:id="awayButton" mnemonicParsing="false" onAction="#setAwayMode" text="Away mode">
+                                        <VBox.margin>
+                                          <Insets left="10.0" right="10.0" top="5.0" bottom="15.0" />
+                                        </VBox.margin>
+                                      </CheckBox>
+                                      <CheckBox fx:id="intruderCheck" mnemonicParsing="false" onAction="#invadeHome" prefHeight="18.0" prefWidth="169.0" text="simulate intruder" />
+                                    </VBox>
+                                    <VBox>
+                                      <Text>What light to leave open</Text>
+                                      <VBox fx:id="lightsLeftOnBox"></VBox>
+                                    </VBox>
+                                  </children>
+                                  <padding>
+                                    <Insets bottom="10.0" right="10.0" left="10.0" top="10.0" />
+                                  </padding>
+                                </VBox>
+                              </content>
                             </Tab>
                             <Tab text="SHH">
                               <content>

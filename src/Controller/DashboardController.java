@@ -14,10 +14,14 @@ import java.time.LocalTime;
 import javafx.event.ActionEvent;
 import View.CountriesWindow;
 import View.InputWindow;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import org.json.JSONException;
 
@@ -139,6 +143,9 @@ public class DashboardController {
     @FXML
     private CheckBox intruderCheck;
 
+
+    @FXML
+    private VBox lightsLeftOnBox;
 
     /**
      * Changes the simulation temperature.
@@ -283,6 +290,22 @@ public class DashboardController {
     private void deleteUser() throws JSONException, IOException {
         printToConsole(sim.removeUser(deleteUserChoice.getValue()));
         updateDashboard();
+    }
+
+    @FXML
+    private void updateSHP() {
+        lightsLeftOnBox.getChildren().clear();
+
+        for (Room r : sim.getHouse().getRooms()){
+            HBox h = new HBox();
+            h.setPadding(new Insets(10, 0, 0, 10));
+            CheckBox box = new CheckBox();
+            box.setPadding(new Insets(0, 10, 0, 0));
+            box.setOnAction(actionEvent -> sim.toggleAwayLight(r.getName()));
+            h.getChildren().add(box);
+            h.getChildren().add(new Text(r.getName()));
+            lightsLeftOnBox.getChildren().add(h);
+        }
     }
 
     /**
