@@ -262,9 +262,11 @@ public class DashboardController {
         shcWindowBlockedState.setText("Pick a window");
 
         shcDoorSelect.getItems().clear();
-        for (int i = 1; i <= room.getDoors().size(); i++) {
+        int i = 1;
+        for (;i <= room.getDoors().size(); i++) {
             shcDoorSelect.getItems().add("Door " + i);
         }
+
         shcDoorOpenState.setText("Pick a door");
 
         printToConsole("Now pick a window/door to view the state of.");
@@ -611,6 +613,9 @@ public class DashboardController {
                 if (traversed.contains(door))
                     continue;
 
+                if(door.equals("Outside"))
+                    continue;
+
                 Room room = doors.get(door);
                 stack.add(doors.get(door));
                 traversed.add(door);
@@ -711,12 +716,16 @@ public class DashboardController {
         // drawing doors
         gc.setLineWidth(3);
         boolean topDoorOpen = false;
-        if (roomAbove != null)
-            for (Door d : room.getDoors()) {
-               if (d.getTo().equals(roomAbove.getName()) && d.isOpen())
-                   topDoorOpen = true;
 
+        String nameTested = roomAbove != null ? roomAbove.getName() : "Outside";
+
+
+        for (Door d : room.getDoors())
+            if (d.getTo().equals(nameTested) && d.isOpen()) {
+                topDoorOpen = true;
+                break;
             }
+
 
         if (topDoorOpen)
             gc.strokeLine(x + 15, y, x + 30, y - 15);
@@ -726,8 +735,10 @@ public class DashboardController {
         if (sideDoor) {
             boolean sideDoorOpen = false;
             for (Door d : room.getDoors()) {
-                if (! d.getTo().equals(roomAbove.getName()) && d.isOpen())
+                if (!d.getTo().equals(roomAbove.getName()) && d.isOpen()) {
                     sideDoorOpen = true;
+                    break;
+                }
             }
 
             if (sideDoorOpen)
@@ -736,6 +747,22 @@ public class DashboardController {
                 gc.strokeLine(x + size, y + 20, x + size, y + 40);
 
         }
+
+        if(room.getName().equals("Backyard")){
+            boolean bottomDoor = false;
+            for (Door d : room.getDoors())
+                if (d.getTo().equals("Outside") && d.isOpen()) {
+                    bottomDoor = true;
+                    break;
+                }
+
+            if (bottomDoor)
+                gc.strokeLine(x + 15, y + size, x + 30, y + size - 15);
+            else
+                gc.strokeLine(x + 15, y + size, x + 30, y + size);
+        }
+
+
 
 
         // drawing room name
