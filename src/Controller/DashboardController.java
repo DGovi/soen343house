@@ -144,9 +144,6 @@ public class DashboardController {
     private Button copDelayButton;
 
 
-    @FXML
-    private VBox lightsLeftOnBox;
-
     /**
      * Changes the simulation temperature.
      */
