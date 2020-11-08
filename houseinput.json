@@ -19,8 +19,7 @@
     "doorsTo": [
       "Entrance",
       "Garage",
-      "Living Room",
-      "Bedroom"
+      "Living Room"
     ]
   },
   "Living Room": {
@@ -28,15 +27,6 @@
     "lights": 3,
     "doorsTo": [
       "Kitchen",
-      "Bedroom"
-    ]
-  },
-  "Bedroom": {
-    "windows": 3,
-    "lights": 8,
-    "doorsTo": [
-      "Kitchen",
-      "Living Room",
       "Backyard"
     ]
   },
@@ -44,7 +34,7 @@
     "windows": 1,
     "lights": 1,
     "doorsTo": [
-      "Bedroom"
+      "Living Room"
     ]
   }
 }
