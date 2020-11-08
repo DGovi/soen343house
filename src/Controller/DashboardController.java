@@ -164,13 +164,13 @@ public class DashboardController {
             return;
         } else if (createUserPassword.getText() == null) {
             printToConsole("ERROR: Password cannot be null.");
-        } else if (createUserType.getValue() == "Parent") {
+        } else if (createUserType.getValue().equals("Parent")) {
             type = UserType.PARENT;
-        } else if (createUserType.getValue() == "Child") {
+        } else if (createUserType.getValue().equals("Child")) {
             type = UserType.CHILD;
-        } else if (createUserType.getValue() == "Guest") {
+        } else if (createUserType.getValue().equals("Guest")) {
             type = UserType.GUEST;
-        } else if (createUserType.getValue() == "Stranger") {
+        } else if (createUserType.getValue().equals("Stranger")) {
             type = UserType.STRANGER;
         } else {
             printToConsole("ERROR: Unhandled add user case. You did something weird.");
@@ -193,7 +193,20 @@ public class DashboardController {
      */
     @FXML
     private void editCurrentUserLocation() throws JSONException, IOException {
-        printToConsole(sim.setLoggedInUserLocation(currentUserLocationOptions.getValue()));
+        String locationName = currentUserLocationOptions.getValue();
+        Room previousLocation = sim.getLoggedInUser().getLocation();
+
+        printToConsole(sim.setLoggedInUserLocation(locationName));
+        if(sim.getLightAuto()){
+            if(!locationName.equals("Outside")){
+                printToConsole("Automatically turning lights on.");
+                sim.getHouse().getRoomFromName(locationName).setLightsOn(true);
+            }
+            if(previousLocation != null && sim.getUsersInRoom(previousLocation).isEmpty()){
+                previousLocation.setLightsOn(false);
+            }
+        }
+
         updateDashboard();
         this.renderLayout(sim.getHouse());
     }
@@ -291,11 +304,26 @@ public class DashboardController {
     }
 
     /**
+     * Turns off all the lights in the house that don't have a person in it.
+     */
+    private void shcTurnOffAllLights() throws IOException, JSONException {
+        for(Room r : sim.getHouse().getRooms()){
+            if(sim.getUsersInRoom(r).isEmpty()){
+                r.setLightsOn(false);
+            }
+        }
+        this.renderLayout(sim.getHouse());
+    }
+
+    /**
      * Toggles the Auto Mode
      */
     @FXML
-    private void shcLightAuto() {
+    private void shcLightAuto() throws IOException, JSONException {
     	printToConsole(sim.toggleLight());
+        if(sim.getLightAuto()) {
+            shcTurnOffAllLights();
+        }
     }
 
     /**
@@ -569,6 +597,9 @@ public class DashboardController {
         shcWindowOpenState.setText("Pick a window");
         shcWindowBlockedState.setText("Pick a window");
 
+        //Turn all lights in house off that don't have people in them
+        shcTurnOffAllLights();
+
         // enabling ON/OFF button
         simToggleButton.setDisable(false);
         // Set simulation to ON and updating the dashboard
@@ -613,6 +644,8 @@ public class DashboardController {
 
         drawRoom(firstRoom, startX, startY, false, null);
         drawWindows(startX, startY, firstRoom.getDoors().size() * ROOM_SIZE, firstRoom.getWindows());
+
+        drawPeopleOutside();
 
         while (!stack.empty()) {
             Room top = stack.pop();
@@ -762,6 +795,28 @@ public class DashboardController {
     }
 
     /**
+     * Draws the people who are currently outside the house
+     */
+    public void drawPeopleOutside(){
+        int baseLineX = 200;
+        int outsideX = baseLineX;
+        int outsideY = 15;
+        int usersDrawn = 0;
+        for (User u : sim.getUsers()){
+            if(u.getLocation() == null) {
+                drawPerson(outsideX, outsideY);
+                usersDrawn++;
+                if(usersDrawn % 3 == 0) {
+                    outsideX = baseLineX;
+                    outsideY += PERSON_HEIGHT + 5;
+                }else{
+                    outsideX += PERSON_WIDTH + 5;
+                }
+            }
+        }
+    }
+
+    /**
      * Draws the people who are currently present in a given room
      * @param room the room in question
      * @param x the x position of the room
@@ -787,6 +842,16 @@ public class DashboardController {
             gc.drawImage(personImage, finalX , finalY, PERSON_HEIGHT, PERSON_WIDTH);
             posX += spacingX;
         }
+    }
+
+    /**
+     * Draws one person
+     * @param x the x position of where to draw
+     * @param y the y position of where to draw
+     */
+    public void drawPerson(int x, int y) {
+        Image personImage = new Image("file:stick_person.png");
+        gc.drawImage(personImage, x , y, PERSON_HEIGHT, PERSON_WIDTH);
     }
 
     /**
