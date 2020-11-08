@@ -755,14 +755,12 @@ public class DashboardController {
                 }
             }
 
-            gc.setStroke(Color.RED);
 
             if (sideDoorOpen)
                 gc.strokeLine(x + size, y + 20, x + size + 15, y + 40);
             else
                 gc.strokeLine(x + size, y + 20, x + size, y + 40);
 
-            gc.setStroke(Color.BLACK);
 
         }
 
