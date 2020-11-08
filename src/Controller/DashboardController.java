@@ -571,7 +571,7 @@ public class DashboardController {
      * @throws IOException   file not found
      */
     @FXML
-    public void renderLayout(Model.House h) throws JSONException, IOException {
+    public void renderLayout(Model.House h) {
         gc = render.getGraphicsContext2D();
 
         gc.setFill(Color.WHITE);
@@ -584,11 +584,10 @@ public class DashboardController {
         int startX = 15;
         int startY = 15;
 
-        Stack<Room> stack = new Stack<Room>();
-        Set<String> traversed = new HashSet<String>();
-        HashMap<String, Room> doors = new HashMap<String, Room>();
-        HashMap<Room, javafx.util.Pair<Integer, Integer>> coordinates =
-                new HashMap<Room, javafx.util.Pair<Integer, Integer>>();
+        Stack<Room> stack = new Stack<>();
+        Set<String> traversed = new HashSet<>();
+        HashMap<String, Room> doors = new HashMap<>();
+        HashMap<Room, javafx.util.Pair<Integer, Integer>> coordinates = new HashMap<>();
 
         for (Room r : h.getRooms())
             doors.put(r.getName(), r);
@@ -596,7 +595,7 @@ public class DashboardController {
         Room firstRoom = h.getRooms().get(0);
         stack.add(firstRoom);
         traversed.add(firstRoom.getName());
-        coordinates.put(firstRoom, new javafx.util.Pair<Integer, Integer>(Integer.valueOf(startX), Integer.valueOf(startY)));
+        coordinates.put(firstRoom, new javafx.util.Pair<>(startX, startY));
 
         drawRoom(firstRoom, startX, startY, false, null);
         drawWindows(startX, startY, firstRoom.getDoors().size() * ROOM_SIZE, firstRoom.getWindows());
@@ -621,14 +620,16 @@ public class DashboardController {
                 int y = coordinates.get(top).getValue() + ROOM_SIZE * top.getDoors().size();
                 int size = room.getDoors().size() * ROOM_SIZE;
 
+                drawPeople(room, x + 5, y + size - PERSON_HEIGHT - 5);
+
                 this.drawRoom(room, x, y, (! doorObj.equals(doorsTop.get(doorsTop.size() - 1))) && doorsTop.size() > 1, roomAbove);
 
                 if (doorObj.equals(doorsTop.get(doorsTop.size() - 1)))
                     this.drawWindows(x, y, size, room.getWindows());
-                else if (door.equals(doorsTop.get(0)) || doorsTop.size() > 1 && door.equals(doorsTop.get(1)))
+                else if (doorObj.equals(doorsTop.get(0)) || (doorsTop.size() > 1 && doorObj.equals(doorsTop.get(1))))
                     this.drawWindows(x - size, y, size, room.getWindows());
 
-                coordinates.put(room, new javafx.util.Pair<Integer, Integer>(Integer.valueOf(x), Integer.valueOf(y)));
+                coordinates.put(room, new javafx.util.Pair<>(x, y));
                 xParent = x + size - coordinates.get(top).getKey();
             }
         }
@@ -707,9 +708,6 @@ public class DashboardController {
         // drawing lights
         drawLights(room, x, y, size);
 
-        // drawing people
-        drawPeople(room, x, y, size);
-
         // drawing doors
         gc.setLineWidth(3);
         boolean topDoorOpen = false;
@@ -751,20 +749,21 @@ public class DashboardController {
      * @param room the room in question
      * @param x the x position of the room
      * @param y the y position of the room
-     * @param size the size of the room
      */
-    public void drawPeople(Room room, int x, int y, int size) {
+    public void drawPeople(Room room, int x, int y) {
         final int spacingX = PERSON_WIDTH;
         final int spacingY = PERSON_WIDTH;
         int posX = 0;
         int posY = 0;
 
+        int size = ROOM_SIZE * room.getDoors().size();
+
         // drawing people
         Image personImage = new Image("file:stick_person.png");
         for (User user: sim.getUsersInRoom(room)) {
-            if (posX > size) {
+            if (posX >= size) {
                 posX = 0;
-                posY += spacingY;
+                posY -= spacingY;
             }
             int finalX = x + posX;
             int finalY = y + posY;
