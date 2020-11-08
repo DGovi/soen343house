@@ -7,6 +7,8 @@ import org.json.JSONTokener;
 
 import java.nio.file.Files;
 import java.sql.Time;
+import java.time.Instant;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +21,8 @@ import java.util.Iterator;
 public class Simulation implements Subject{
     private String date;
     private Time time;
+    private long lastRealTime;
+    private float timeSpeed;
     private float temperature;
     private User loggedInUser;
     private final ArrayList<User> users;
@@ -42,6 +46,8 @@ public class Simulation implements Subject{
         this.house = new House(houseInput);
         this.date = date;
         this.time = time;
+        this.lastRealTime = Time.valueOf(LocalTime.now()).getTime();
+        this.timeSpeed = 1;
         this.temperature = temperature;
         this.loggedInUser = new User(UserType.PARENT, house.getRooms().get(0), "Admin", "123456");
         this.users = new ArrayList<>();
@@ -64,6 +70,8 @@ public class Simulation implements Subject{
         this.house = new House(houseInput);
         this.date = date;
         this.time = time;
+        this.lastRealTime = Time.valueOf(LocalTime.now()).getTime();
+        this.timeSpeed = 1;
         this.temperature = temperature;
         this.usersFile = usersFile;
         this.users = usersFromJSON(usersFile);
@@ -238,11 +246,14 @@ public class Simulation implements Subject{
     }
 
     /**
-     * Gets the time of the simulation.
+     * Gets the time of the simulation. Need to update the time first according to timeSpeed and elapsed time.
      *
      * @return Time object
      */
     public Time getTime() {
+        long rightNow = Time.valueOf(LocalTime.now()).getTime();
+        time.setTime(time.getTime() + (long)timeSpeed*(rightNow - lastRealTime));
+        lastRealTime = rightNow;
         return time;
     }
 
@@ -253,8 +264,18 @@ public class Simulation implements Subject{
      * @return a string: "time updated"
      */
     public String setTime(Time time) {
+        lastRealTime = Time.valueOf(LocalTime.now()).getTime();
         this.time = time;
         return "Time set to: " + time + ".";
+    }
+
+    /**
+     * Sets the time speed of the simulation
+     * @param speed multiplier for time speed
+     */
+    public String setTimeSpeed(Float speed) {
+        timeSpeed = speed;
+        return "Set time speed to " + speed.toString() + ".";
     }
 
     /**

@@ -2,6 +2,7 @@ package Controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -120,6 +121,14 @@ public class DashboardController {
     private Label dateLabel;
     @FXML
     private Label timeLabel;
+    @FXML
+    private TextField timeHourInput;
+    @FXML
+    private TextField timeMinuteInput;
+    @FXML
+    private TextField timeSecondInput;
+    @FXML
+    private TextField timeSpeedInput;
     GraphicsContext gc;
 
     @FXML
@@ -482,7 +491,11 @@ public class DashboardController {
 
         // updating date and time
         dateLabel.setText("Date is: " + sim.getDate());
-        timeLabel.setText(java.sql.Time.valueOf(LocalTime.now()).toString());
+        timeLabel.setText(sim.getTime().toString());
+        timeHourInput.setText("");
+        timeMinuteInput.setText("");
+        timeSecondInput.setText("");
+        // Do not reset time speed setting so user knows current time speed at all times
 
         // Reset field content
         loginName.setText("");
@@ -788,14 +801,96 @@ public class DashboardController {
         updateDashboard();
     }
 
+
+
     /**
-     * Updates the time displayed on the simulation.
+     * Sets the time settings filled by user, or sets time speed only.
      *
      * @param actionEvent event that triggers the method
      */
     //shows the time
-    public void updateTime(ActionEvent actionEvent) {
-        printToConsole(sim.setTime(java.sql.Time.valueOf(LocalTime.now())));
+    public void setTime(ActionEvent actionEvent) {
+        int hour;
+        int minute;
+        int second;
+        float speed;
+
+        // if time itself is empty but, options are: timespeed filled, or not filled
+        if (timeHourInput.getText().length() == 0 &&
+                timeMinuteInput.getText().length() == 0 &&
+                timeSecondInput.getText().length() == 0) {
+            if (timeSpeedInput.getText().length() == 0) {
+                printToConsole("Require at least time speed setting.");
+            }
+            else {
+                speed = Float.parseFloat(timeSpeedInput.getText());
+                if (speed <= 0) {
+                    printToConsole("Invalid time speed input.");
+                    return;
+                }
+                sim.setTimeSpeed(speed);
+                printToConsole("Set time speed.");
+            }
+            return;
+        }
+
+        // If it's not the case that all three time settings are empty, have to check all of them individually
+        if (timeHourInput.getText().length() > 0 && timeHourInput.getText().length() < 3) {
+            hour = Integer.parseInt(timeHourInput.getText());
+            if (hour > 24 || hour < 0) {
+                printToConsole("Invalid time input.");
+                return;
+            }
+        }
+        else {
+            printToConsole("Invalid time input.");
+            return;
+        }
+
+        if (timeMinuteInput.getText().length() > 0 && timeMinuteInput.getText().length() < 3) {
+            minute = Integer.parseInt(timeMinuteInput.getText());
+            if (minute > 59 || minute < 0) {
+                printToConsole("Invalid time input.");
+                return;
+            }
+        }
+        else {
+            printToConsole("Invalid time input.");
+            return;
+        }
+        if (timeSecondInput.getText().length() > 0 && timeSecondInput.getText().length() < 3) {
+            second = Integer.parseInt(timeSecondInput.getText());
+            if (second > 59 || second < 0) {
+                printToConsole("Invalid time input.");
+                return;
+            }
+        }
+        else {
+            printToConsole("Invalid time input.");
+            return;
+        }
+        if (timeSpeedInput.getText().length() > 0) {
+            speed = Float.parseFloat(timeSpeedInput.getText());
+            if (speed <= 0) {
+                printToConsole("Invalid time speed input.");
+                return;
+            }
+        }
+        else {
+            printToConsole("Invalid time speed input.");
+            return;
+        }
+        Time t = new Time(hour, minute, second);
+        printToConsole(sim.setTimeSpeed(speed));
+        printToConsole(sim.setTime(t));
+        updateDashboard();
+    }
+
+    /**
+     * Simply updates dashboard, which updates time field
+     */
+    @FXML
+    public void updateTime() {
         updateDashboard();
     }
 
