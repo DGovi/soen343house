@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-11-08T18:31:35.302Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.183 Safari/537.36" etag="Zh0gXaSg60utFf2RDULO" version="13.9.2" type="github" pages="8">
+<mxfile host="app.diagrams.net" modified="2020-11-08T18:34:49.891Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.183 Safari/537.36" etag="zOxbP6q-Gin19yAFfUcB" version="13.9.2" type="github" pages="9">
   <diagram id="dKoDja1B_UEmTesHISM4" name="System allow user to exec commands">
     <mxGraphModel dx="466" dy="613" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
       <root>
@@ -296,7 +296,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="REqfOBZ-VTxiLF9JtUkI" name="SHP seq diagram">
-    <mxGraphModel dx="548" dy="721" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+    <mxGraphModel dx="932" dy="1226" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
       <root>
         <mxCell id="wPgzjCjFjOfra0olnBy9-0" />
         <mxCell id="wPgzjCjFjOfra0olnBy9-1" parent="wPgzjCjFjOfra0olnBy9-0" />
@@ -405,6 +405,34 @@
         </mxCell>
         <mxCell id="wPgzjCjFjOfra0olnBy9-20" value="alt" style="shape=umlFrame;whiteSpace=wrap;html=1;width=40;height=20;" vertex="1" parent="wPgzjCjFjOfra0olnBy9-1">
           <mxGeometry x="10" y="370" width="610" height="310" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="K8nxZKp3qxvJQyrWLA04" name="updateHouseView">
+    <mxGraphModel dx="321" dy="423" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="fhIn0v1RM9LomU6Ubs_0-0" />
+        <mxCell id="fhIn0v1RM9LomU6Ubs_0-1" parent="fhIn0v1RM9LomU6Ubs_0-0" />
+        <mxCell id="fhIn0v1RM9LomU6Ubs_0-2" value=":System" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;" vertex="1" parent="fhIn0v1RM9LomU6Ubs_0-1">
+          <mxGeometry x="170" y="100" width="100" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="fhIn0v1RM9LomU6Ubs_0-8" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;" vertex="1" parent="fhIn0v1RM9LomU6Ubs_0-2">
+          <mxGeometry x="45" y="70" width="10" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="fhIn0v1RM9LomU6Ubs_0-6" value="updateHouseView" style="edgeStyle=orthogonalEdgeStyle;html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;entryX=1;entryY=0;dashed=1;" edge="1" parent="fhIn0v1RM9LomU6Ubs_0-1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="225" y="190" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="245" y="190" />
+            </Array>
+            <mxPoint x="225" y="210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fhIn0v1RM9LomU6Ubs_0-9" value="SimActivated" style="html=1;verticalAlign=bottom;startArrow=oval;endArrow=block;startSize=8;dashed=1;" edge="1" target="fhIn0v1RM9LomU6Ubs_0-8" parent="fhIn0v1RM9LomU6Ubs_0-1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="140" y="170" as="sourcePoint" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
