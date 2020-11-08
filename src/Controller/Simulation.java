@@ -337,6 +337,7 @@ public class Simulation implements Subject{
      */
     public String setLoggedInUserLocation(String location) throws JSONException, IOException {
         if (location == null) return "ERROR: Need to pick a location.";
+        if (isAway) return "Sorry the doors are locked";
         if (location.equals("Outside")) {
             loggedInUser.setLocation(null);
             updateUsersJSON();

@@ -197,7 +197,19 @@ public class DashboardController {
         String locationName = currentUserLocationOptions.getValue();
         Room previousLocation = sim.getLoggedInUser().getLocation();
 
-        printToConsole(sim.setLoggedInUserLocation(locationName));
+        String message = sim.setLoggedInUserLocation(locationName);
+        printToConsole(message);
+
+        if(message.equals("Sorry the doors are locked")){
+            String name = previousLocation == null ? "Outside" : previousLocation.getName();
+            currentUserLocationOptions.setValue(name);
+            return;
+        }
+
+        if(previousLocation != null && previousLocation.getName().equals(locationName)){
+            return;
+        }
+
         if(sim.getLightAuto()){
             if(!locationName.equals("Outside")){
                 printToConsole("Automatically turning lights on.");
@@ -655,8 +667,10 @@ public class DashboardController {
         traversed.add(firstRoom.getName());
         coordinates.put(firstRoom, new javafx.util.Pair<>(startX, startY));
 
+        int frSize = firstRoom.getDoors().size() * ROOM_SIZE;
         drawRoom(firstRoom, startX, startY, false, null);
-        drawWindows(startX, startY, firstRoom.getDoors().size() * ROOM_SIZE, firstRoom.getWindows());
+        drawPeople(firstRoom, startX + 5, startY + frSize - PERSON_HEIGHT - 5);
+        drawWindows(startX, startY, frSize, firstRoom.getWindows());
 
         drawPeopleOutside();
 
