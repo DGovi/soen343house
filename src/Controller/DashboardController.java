@@ -288,6 +288,7 @@ public class DashboardController {
         for (int i = 1; i <= room.getDoors().size(); i++) {
             shcDoorSelect.getItems().add("Door " + i);
         }
+
         shcDoorOpenState.setText("Pick a door");
 
         logText(sim.pw, printToConsole("Now pick a window/door to view the state of."));
@@ -628,7 +629,7 @@ public class DashboardController {
      * @throws IOException   file not found
      */
     @FXML
-    public void renderLayout(Model.House h) throws JSONException, IOException {
+    public void renderLayout(Model.House h) {
         gc = render.getGraphicsContext2D();
 
         gc.setFill(Color.WHITE);
@@ -641,11 +642,10 @@ public class DashboardController {
         int startX = 15;
         int startY = 15;
 
-        Stack<Room> stack = new Stack<Room>();
-        Set<String> traversed = new HashSet<String>();
-        HashMap<String, Room> doors = new HashMap<String, Room>();
-        HashMap<Room, javafx.util.Pair<Integer, Integer>> coordinates =
-                new HashMap<Room, javafx.util.Pair<Integer, Integer>>();
+        Stack<Room> stack = new Stack<>();
+        Set<String> traversed = new HashSet<>();
+        HashMap<String, Room> doors = new HashMap<>();
+        HashMap<Room, javafx.util.Pair<Integer, Integer>> coordinates = new HashMap<>();
 
         for (Room r : h.getRooms())
             doors.put(r.getName(), r);
@@ -653,7 +653,7 @@ public class DashboardController {
         Room firstRoom = h.getRooms().get(0);
         stack.add(firstRoom);
         traversed.add(firstRoom.getName());
-        coordinates.put(firstRoom, new javafx.util.Pair<Integer, Integer>(Integer.valueOf(startX), Integer.valueOf(startY)));
+        coordinates.put(firstRoom, new javafx.util.Pair<>(startX, startY));
 
         drawRoom(firstRoom, startX, startY, false, null);
         drawWindows(startX, startY, firstRoom.getDoors().size() * ROOM_SIZE, firstRoom.getWindows());
@@ -665,11 +665,13 @@ public class DashboardController {
             int xParent = 0;
 
             ArrayList<Door> doorsTop = top.getDoors();
-
             for (Door doorObj : doorsTop) {
                 String door = doorObj.getTo();
 
                 if (traversed.contains(door))
+                    continue;
+
+                if(door.equals("Outside"))
                     continue;
 
                 Room room = doors.get(door);
@@ -677,20 +679,37 @@ public class DashboardController {
                 traversed.add(door);
                 Room roomAbove = doors.get(doorObj.getFrom());
 
-                int x = coordinates.get(top).getKey().intValue() + xParent;
-                int y = coordinates.get(top).getValue().intValue() + ROOM_SIZE * top.getDoors().size();
+                int x = coordinates.get(top).getKey() + xParent;
+                int y = coordinates.get(top).getValue() + ROOM_SIZE * top.getDoors().size();
                 int size = room.getDoors().size() * ROOM_SIZE;
 
-                this.drawRoom(room, x, y, (! doorObj.equals(doorsTop.get(doorsTop.size() - 1))) && doorsTop.size() > 1, roomAbove);
+                drawPeople(room, x + 5, y + size - PERSON_HEIGHT - 5);
+
+                boolean sideDoor = false;
+                for(int i = 0; i < doorsTop.size(); i++){
+                    if(doorsTop.get(i).getTo().equals(door) && i + 1 < doorsTop.size()){
+                        Room n = doors.get(doorsTop.get(i + 1).getTo());
+                        for(Door d : room.getDoors()){
+                            if(d.getTo() == null || n == null)
+                                continue;
+                            Room cr = doors.get(d.getTo());
+                            if(cr != null && cr.equals(n)){
+                                sideDoor = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                this.drawRoom(room, x, y, (! doorObj.equals(doorsTop.get(doorsTop.size() - 1))) && doorsTop.size() > 1 && sideDoor, roomAbove);
 
                 if (doorObj.equals(doorsTop.get(doorsTop.size() - 1)))
                     this.drawWindows(x, y, size, room.getWindows());
-                else if (door.equals(doorsTop.get(0)) || doorsTop.size() > 1 && door.equals(doorsTop.get(1)))
+                else if (doorObj.equals(doorsTop.get(0)) || (doorsTop.size() > 1 && doorObj.equals(doorsTop.get(1))))
                     this.drawWindows(x - size, y, size, room.getWindows());
 
-                coordinates.put(room, new javafx.util.Pair<Integer, Integer>(Integer.valueOf(x), Integer.valueOf(y)));
-
-                xParent = size;
+                coordinates.put(room, new javafx.util.Pair<>(x, y));
+                xParent = x + size - coordinates.get(top).getKey();
             }
         }
 
@@ -768,17 +787,17 @@ public class DashboardController {
         // drawing lights
         drawLights(room, x, y, size);
 
-        // drawing people
-        drawPeople(room, x, y, size);
-
         // drawing doors
         gc.setLineWidth(3);
         boolean topDoorOpen = false;
-        if (roomAbove != null)
-            for (Door d : room.getDoors()) {
-               if (d.getTo().equals(roomAbove.getName()) && d.isOpen())
-                   topDoorOpen = true;
 
+        String nameTested = roomAbove != null ? roomAbove.getName() : "Outside";
+
+
+        for (Door d : room.getDoors())
+            if (d.getTo().equals(nameTested) && d.isOpen()) {
+                topDoorOpen = true;
+                break;
             }
 
         if (topDoorOpen)
@@ -789,16 +808,77 @@ public class DashboardController {
         if (sideDoor) {
             boolean sideDoorOpen = false;
             for (Door d : room.getDoors()) {
-                if (! d.getTo().equals(roomAbove.getName()) && d.isOpen())
+                if (!d.getTo().equals(roomAbove.getName()) && !d.getTo().equals("Outside") && d.isOpen()) {
                     sideDoorOpen = true;
+                    break;
+                }
             }
 
             if (sideDoorOpen)
                 gc.strokeLine(x + size, y + 20, x + size + 15, y + 40);
             else
                 gc.strokeLine(x + size, y + 20, x + size, y + 40);
-
         }
+
+        if(room.getName().equals("Garage")){
+            boolean entranceOpen = false;
+            for (Door d : room.getDoors())
+                if (d.getTo().equals("Outside") && d.isOpen()) {
+                    entranceOpen = true;
+                    break;
+                }
+
+            if (entranceOpen)
+                gc.strokeLine(x, y + 20, x + 15, y + 40);
+            else
+                gc.strokeLine(x, y + 20, x, y + 40);
+        }
+
+        if(room.getName().equals("Backyard")){
+            boolean bottomDoor = false;
+            for (Door d : room.getDoors())
+                if (d.getTo().equals("Outside") && d.isOpen()) {
+                    bottomDoor = true;
+                    break;
+                }
+
+            if (bottomDoor)
+                gc.strokeLine(x + 15, y + size, x + 30, y + size - 15);
+            else
+                gc.strokeLine(x + 15, y + size, x + 30, y + size);
+        }
+
+        if(room.getName().equals("Garage")){
+            boolean entranceOpen = false;
+            for (Door d : room.getDoors())
+                if (d.getTo().equals("Outside") && d.isOpen()) {
+                    entranceOpen = true;
+                    break;
+                }
+
+            if (entranceOpen)
+                gc.strokeLine(x, y + 20, x + 15, y + 40);
+            else
+                gc.strokeLine(x, y + 20, x, y + 40);
+        }
+
+        if(room.getName().equals("Backyard")){
+            boolean bottomDoor = false;
+            for (Door d : room.getDoors())
+                if (d.getTo().equals("Outside") && d.isOpen()) {
+                    bottomDoor = true;
+                    break;
+                }
+
+            if (bottomDoor)
+                gc.strokeLine(x + 15, y + size, x + 30, y + size - 15);
+            else
+                gc.strokeLine(x + 15, y + size, x + 30, y + size);
+        }
+
+
+
+
 
 
         // drawing room name
@@ -834,20 +914,21 @@ public class DashboardController {
      * @param room the room in question
      * @param x the x position of the room
      * @param y the y position of the room
-     * @param size the size of the room
      */
-    public void drawPeople(Room room, int x, int y, int size) {
+    public void drawPeople(Room room, int x, int y) {
         final int spacingX = PERSON_WIDTH;
         final int spacingY = PERSON_WIDTH;
         int posX = 0;
         int posY = 0;
 
+        int size = ROOM_SIZE * room.getDoors().size();
+
         // drawing people
         Image personImage = new Image("file:stick_person.png");
         for (User user: sim.getUsersInRoom(room)) {
-            if (posX > size) {
+            if (posX >= size) {
                 posX = 0;
-                posY += spacingY;
+                posY -= spacingY;
             }
             int finalX = x + posX;
             int finalY = y + posY;
