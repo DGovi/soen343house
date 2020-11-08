@@ -976,7 +976,7 @@ public class DashboardController {
             return;
         }
 
-        room.toggleLightsON();
+        logText(sim.pw, printToConsole(room.toggleLightsON()));
         this.renderLayout(sim.getHouse());
     }
   
