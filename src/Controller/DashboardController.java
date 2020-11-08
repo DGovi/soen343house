@@ -1001,7 +1001,7 @@ public class DashboardController {
      * @param actionEvent event that triggers this method
      */
     public void invadeHome(ActionEvent actionEvent){
-        logText(sim.pw, printToConsole(sim.invadeSimHome()));
+        logText(sim.pw, printToConsole(sim.invadeSimHome(intruderCheck.isSelected())));
         updateDashboard();
     }
 
