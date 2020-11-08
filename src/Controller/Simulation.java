@@ -688,24 +688,13 @@ public class Simulation implements Subject{
                     }
                     w.setOpen(false);
                 }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> Conflict buttons fxml
                 r.setLightsOn(false);
             }
 
             for(Room r : awayLightsOn){
                 r.setLightsOn(true);
-<<<<<<< HEAD
             }
 
-=======
-=======
->>>>>>> Conflict buttons fxml
-            }
-
->>>>>>> Fix conflict
             isAway = true;
             message = "Away Mode has been set";
 
