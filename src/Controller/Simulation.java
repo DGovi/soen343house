@@ -36,6 +36,7 @@ public class Simulation implements Subject{
     private boolean running;
     private boolean LightAuto;
     private boolean isAway;
+    private int copDelay;
 
     File logFile = new File("logFile.txt");
     PrintWriter pw = new PrintWriter(new FileWriter(logFile, true));
@@ -63,6 +64,7 @@ public class Simulation implements Subject{
         this.running = true;
         this.LightAuto = true;
         this.isAway = false;
+        this.copDelay = 5;
     }
 
     public static Simulation createInstance(String date, Time time, float temperature, File houseInput, File usersFile) throws IOException, JSONException {
@@ -698,6 +700,26 @@ public class Simulation implements Subject{
             message = "no intruders found";
 
         return message;
+    }
+
+    /**
+     * Gets the delay in seconds between an intruder being detected in the house during
+     * Away mode, and the authorities being notified.
+     * @return the copDelay value
+     */
+    public int getCopDelay() {
+        return copDelay;
+    }
+
+    /**
+     * Sets the delay in seconds between an intruder being detected in the house during
+     * Away mode, and the authorities being notified.
+     * @param copDelay the new copDelay value
+     * @return a message indicating the new copDelay value
+     */
+    public String setCopDelay(int copDelay) {
+        this.copDelay = copDelay;
+        return "Delay till authorities notified set to " + copDelay + " seconds!";
     }
 
     /**

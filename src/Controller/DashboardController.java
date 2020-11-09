@@ -4,11 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 import java.time.LocalTime;
 
 import javafx.event.ActionEvent;
@@ -138,6 +134,10 @@ public class DashboardController {
     private CheckBox awayButton;
     @FXML
     private CheckBox intruderCheck;
+    @FXML
+    private TextField copDelayField;
+    @FXML
+    private Button copDelayButton;
 
 
     /**
@@ -1148,7 +1148,52 @@ public class DashboardController {
      */
     public void invadeHome(ActionEvent actionEvent){
         logText(sim.pw, printToConsole(sim.invadeSimHome(intruderCheck.isSelected())));
+
+        Timer timer = new Timer();
+        timer.schedule(new CopCaller(), sim.getCopDelay()*1000);
+
         updateDashboard();
+    }
+
+    /**
+     * Updates the copDelay attribute of the simulation.
+     */
+    @FXML
+    public void updateCopDelay(){
+        String copDelayString = copDelayField.getText();
+        if (copDelayString.isEmpty()) {
+            printToConsole("ERROR: You must enter a value for the new delay.");
+            return;
+        }
+
+        int copDelay;
+        try {
+            copDelay = Integer.valueOf(copDelayString);
+            if (copDelay < 0) {
+                printToConsole("ERROR: You must enter a valid and positive integer.");
+                return;
+            }
+            printToConsole(sim.setCopDelay(copDelay));
+        } catch (Exception e) {
+            printToConsole("ERROR: You must enter a valid integer.");
+        }
+    }
+
+    /**
+     * A Runnable nested class that prints a message to console
+     * indicating that the cops have been called.
+     * This functionality needs to be encapsulated in a runnable class
+     * as it will be created and passed to a Timer.
+     */
+    private class CopCaller extends TimerTask {
+
+        /**
+         * Prints a message indicating that the cops have been called.
+         */
+        @Override
+        public void run() {
+            printToConsole("INTRUDER ALERT! THE AUTHORITIES HAVE BEEN NOTIFIED!");
+        }
     }
 
 
