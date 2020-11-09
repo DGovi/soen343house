@@ -5,15 +5,27 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Time;
 import java.util.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Stack;
 import java.time.LocalTime;
 
 import javafx.event.ActionEvent;
 import View.CountriesWindow;
 import View.InputWindow;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import org.json.JSONException;
 
@@ -135,10 +147,16 @@ public class DashboardController {
     @FXML
     private CheckBox intruderCheck;
     @FXML
+    private TextField TimeframeFrom;
+    @FXML
+    private TextField TimeframeTo;
+
+    @FXML
     private TextField copDelayField;
     @FXML
     private Button copDelayButton;
-
+    @FXML
+    private VBox lightsLeftOnBox;
 
     /**
      * Changes the simulation temperature.
@@ -202,7 +220,19 @@ public class DashboardController {
         String locationName = currentUserLocationOptions.getValue();
         Room previousLocation = sim.getLoggedInUser().getLocation();
 
-        printToConsole(sim.setLoggedInUserLocation(locationName));
+        String message = sim.setLoggedInUserLocation(locationName);
+        printToConsole(message);
+
+        if(message.equals("Sorry the doors are locked")){
+            String name = previousLocation == null ? "Outside" : previousLocation.getName();
+            currentUserLocationOptions.setValue(name);
+            return;
+        }
+
+        if(previousLocation != null && previousLocation.getName().equals(locationName)){
+            return;
+        }
+
         if(sim.getLightAuto()){
             if(!locationName.equals("Outside")){
                 printToConsole("Automatically turning lights on.");
@@ -271,6 +301,28 @@ public class DashboardController {
     private void deleteUser() throws JSONException, IOException {
         printToConsole(sim.removeUser(deleteUserChoice.getValue()));
         updateDashboard();
+    }
+
+    /**
+     *
+     * Add checkboxes for the SHP page.
+     *
+     */
+    @FXML
+    private void updateSHP() {
+        lightsLeftOnBox.getChildren().clear();
+
+        for (Room r : sim.getHouse().getRooms()){
+            HBox h = new HBox();
+            h.setPadding(new Insets(10, 0, 0, 10));
+            CheckBox box = new CheckBox();
+            box.setSelected(sim.getRoomsWithAwayLights().contains(r));
+            box.setPadding(new Insets(0, 10, 0, 0));
+            box.setOnAction(actionEvent -> sim.toggleAwayLight(r.getName()));
+            h.getChildren().add(box);
+            h.getChildren().add(new Text(r.getName()));
+            lightsLeftOnBox.getChildren().add(h);
+        }
     }
 
     /**
@@ -505,11 +557,13 @@ public class DashboardController {
 
         // reset info of logged in user
         currentUser.setText(sim.getLoggedInUser().getName());
+
         if (sim.getLoggedInUser().getLocation() == null) {
             currentUserLocationOptions.valueProperty().set("Outside");
         } else {
             currentUserLocationOptions.valueProperty().set(sim.getLoggedInUser().getLocation().getName());
         }
+
         if (sim.getLoggedInUser().getType() == UserType.PARENT) {
             permissionsDeleteUser.setText("Delete user: Able");
             permissionsControlWindows.setText("Open/Close Windows: Able");
@@ -660,8 +714,10 @@ public class DashboardController {
         traversed.add(firstRoom.getName());
         coordinates.put(firstRoom, new javafx.util.Pair<>(startX, startY));
 
+        int frSize = firstRoom.getDoors().size() * ROOM_SIZE;
         drawRoom(firstRoom, startX, startY, false, null);
-        drawWindows(startX, startY, firstRoom.getDoors().size() * ROOM_SIZE, firstRoom.getWindows());
+        drawPeople(firstRoom, startX + 5, startY + frSize - PERSON_HEIGHT - 5);
+        drawWindows(startX, startY, frSize, firstRoom.getWindows());
 
         drawPeopleOutside();
 
@@ -853,39 +909,6 @@ public class DashboardController {
                 gc.strokeLine(x + 15, y + size, x + 30, y + size);
         }
 
-        if(room.getName().equals("Garage")){
-            boolean entranceOpen = false;
-            for (Door d : room.getDoors())
-                if (d.getTo().equals("Outside") && d.isOpen()) {
-                    entranceOpen = true;
-                    break;
-                }
-
-            if (entranceOpen)
-                gc.strokeLine(x, y + 20, x + 15, y + 40);
-            else
-                gc.strokeLine(x, y + 20, x, y + 40);
-        }
-
-        if(room.getName().equals("Backyard")){
-            boolean bottomDoor = false;
-            for (Door d : room.getDoors())
-                if (d.getTo().equals("Outside") && d.isOpen()) {
-                    bottomDoor = true;
-                    break;
-                }
-
-            if (bottomDoor)
-                gc.strokeLine(x + 15, y + size, x + 30, y + size - 15);
-            else
-                gc.strokeLine(x + 15, y + size, x + 30, y + size);
-        }
-
-
-
-
-
-
         // drawing room name
         gc.setLineWidth(1);
         gc.setStroke(Color.BLACK);
@@ -1055,6 +1078,33 @@ public class DashboardController {
      */
     @FXML
     public void updateTime() {
+        if(sim.getIsAway()) {
+            String f = TimeframeFrom.getText();
+            String t = TimeframeTo.getText();
+            if (!f.equals("From") && !t.equals("To")) {
+                DateFormat formatter = new SimpleDateFormat("HH:mm");
+                try {
+                    Time from =  new java.sql.Time(formatter.parse(f).getTime());
+                    Time to =  new java.sql.Time(formatter.parse(t).getTime());
+                    String[] s = sim.getTime().toString().split(":");
+                    Time now = new java.sql.Time(formatter.parse(s[0] + ":" + s[1]).getTime());
+                    if(now.after(to) || now.before(from)){
+                        updateDashboard();
+                        return;
+                    }
+                } catch (ParseException e) {
+                    updateDashboard();
+                    return;
+                }
+            }
+            for(Room r : sim.getHouse().getRooms()){
+                r.setLightsOn(false);
+            }
+            for(Room r : sim.getRoomsWithAwayLights()){
+                r.setLightsOn(true);
+            }
+        }
+        renderLayout(sim.getHouse());
         updateDashboard();
     }
 
@@ -1140,6 +1190,7 @@ public class DashboardController {
         logText(sim.pw, printToConsole(sim.setSimulationAway(awayButton.isSelected())));
         logText(sim.pw, printToConsole(sim.notifyMotionSensors()));
         updateDashboard();
+        this.renderLayout(sim.getHouse());
     }
 
     /**

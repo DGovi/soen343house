@@ -37,6 +37,7 @@ public class Simulation implements Subject{
     private boolean LightAuto;
     private boolean isAway;
     private int copDelay;
+    private final ArrayList<Room> awayLightsOn = new ArrayList<>();
 
     File logFile = new File("logFile.txt");
     PrintWriter pw = new PrintWriter(new FileWriter(logFile, true));
@@ -224,6 +225,20 @@ public class Simulation implements Subject{
     }
 
     /**
+     * Adds a room to leave light on in.
+     *
+     * @param room name of room to leave lights on in.
+     */
+    public void toggleAwayLight(String room) {
+        Room r = house.getRoomFromName(room);
+        if(awayLightsOn.contains(r)){
+            awayLightsOn.remove(r);
+        }else{
+            awayLightsOn.add(r);
+        }
+    }
+
+    /**
      * Gets the date of the simulation.
      *
      * @return date as a string
@@ -284,6 +299,11 @@ public class Simulation implements Subject{
         return temperature;
     }
 
+    /**
+     * Sets the temperature outside the home in the simulation.
+     * @param temperatureString temperature to set
+     * @return Message success or failure
+     */
     public String setTemperature(String temperatureString) {
         try {
             float newTemperature = Float.parseFloat(temperatureString);
@@ -329,6 +349,7 @@ public class Simulation implements Subject{
      */
     public String setLoggedInUserLocation(String location) throws JSONException, IOException {
         if (location == null) return "ERROR: Need to pick a location.";
+        if (isAway && !location.equals("Outside")) return "Sorry the doors are locked";
         if (location.equals("Outside")) {
             loggedInUser.setLocation(null);
             updateUsersJSON();
@@ -479,6 +500,16 @@ public class Simulation implements Subject{
         return users;
     }
 
+
+    /**
+     * Gets a list of all the simulation users.
+     *
+     * @return a list of users
+     */
+    public ArrayList<Room> getRoomsWithAwayLights() {
+        return awayLightsOn;
+    }
+
     /**
      * Gets the house object of a simulation.
      *
@@ -504,6 +535,15 @@ public class Simulation implements Subject{
      */
     public boolean getLightAuto() {
         return this.LightAuto;
+    }
+
+    /**
+     * Gets the current state of the away as boolean
+     *
+     * @return bool: true if away, false otherwise
+     */
+    public boolean getIsAway() {
+        return this.isAway;
     }
 
     /**
@@ -607,7 +647,9 @@ public class Simulation implements Subject{
         return users;
     }
 
-    // TODO:  Mahad Javadocs this
+    /**
+     *  Change the User JSON file
+     */
     private void updateUsersJSON() throws JSONException, IOException {
         JSONObject obj = new JSONObject();
         for (User u : this.users) {
@@ -659,21 +701,38 @@ public class Simulation implements Subject{
      */
     public String setSimulationAway(boolean checked){
         String message;
+
         if(checked){
+            for(User aUser: users)
+                aUser.setLocation(null);
+
+            boolean obstructed = false;
+            for(Room r : house.getRooms()){
+                for (Window w : r.getWindows()) {
+                    if(w.getObstructed()){
+                        obstructed = true;
+                    }
+                    w.setOpen(false);
+                }
+                r.setLightsOn(false);
+            }
+
+            for(Room r : awayLightsOn){
+                r.setLightsOn(true);
+            }
+
             isAway = true;
             message = "Away Mode has been set";
-            for(User aUser: users){
-                aUser.setLocation(null);
-            }
-        }
-        else {
+
+            if(obstructed)
+                message += "\nOne of the windows hasn't been closed because it's obstructed";
+
+        } else {
             isAway = false;
             message = "\nUser has returned home in " + house.getRooms().get(0).getName() +
                     ".\nAway Mode disabled." +
                     "\nAll sensors OFF";
             loggedInUser.setLocation(house.getRooms().get(0));
-
-
         }
         return message;
     }
@@ -688,7 +747,7 @@ public class Simulation implements Subject{
             message = "Intruders typically only intrude when there is no one in the house.";
         }
         else if(checked && isAway) {
-            Intruder i = new Intruder(house.getRooms().get(new Random().nextInt(5) + 1));
+            Intruder i = new Intruder(house.getRooms().get(new Random().nextInt(house.getRooms().size())));
             message = "There is an intruder in the house ";
             for (Room room : house.getRooms()) {
                 if (i.getRoom().equals(room))

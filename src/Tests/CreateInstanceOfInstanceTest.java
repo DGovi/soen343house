@@ -1,12 +1,13 @@
 package Tests;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalTime;
 
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import Controller.Simulation;
 
 /**
