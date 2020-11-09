@@ -12,10 +12,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BlockUnBlockWindowTest {
     private static final File HOUSE_FILE = new File("./houseinput.json");
+    private final File USER_FILE = new File("users.json");
 
     @Test
     void blockWindow() throws IOException, JSONException {
-        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE);
+        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE, USER_FILE);
         assertEquals(
                 false,
                 simulation.getHouse().getRooms().get(0).getWindows().get(0).getOpen(),
@@ -40,7 +41,7 @@ class BlockUnBlockWindowTest {
 
     @Test
     void unBlockWindow() throws IOException, JSONException {
-        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE);
+        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE, USER_FILE);
         assertEquals(
                 false,
                 simulation.getHouse().getRooms().get(0).getWindows().get(0).getOpen(),

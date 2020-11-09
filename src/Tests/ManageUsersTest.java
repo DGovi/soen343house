@@ -3,6 +3,7 @@ package Tests;
 import Controller.Simulation;
 import Model.User;
 import org.json.JSONException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -13,10 +14,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ManageUsersTest {
     private static final File HOUSE_FILE = new File("./houseinput.json");
+    private final File USER_FILE = new File("test.json");
 
     @Test
     void addUser() throws IOException, JSONException {
-        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE);
+        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE, USER_FILE);
         String username = "testboy";
         String password = "123456";
         String type = "Stranger";
@@ -27,7 +29,7 @@ class ManageUsersTest {
 
     @Test
     void removeUser() throws IOException, JSONException {
-        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE);
+        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE, USER_FILE);
         String username = "testboy";
         String password = "123456";
         String type = "Stranger";
@@ -41,27 +43,32 @@ class ManageUsersTest {
 
     @Test
     void setUserLocation() throws IOException, JSONException {
-        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE);
+        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE, USER_FILE);
         User testUser = simulation.getUsers().get(0);
         assertEquals("Successfully made requested changes to user.", simulation.editUser(testUser.getName() +"(" + testUser.getID() + ")", testUser.getPassword(),"", "", "Kitchen"));
     }
 
     @Test
     void setLoggedInUserLocation() throws IOException, JSONException {
-        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE);
+        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE, USER_FILE);
         assertEquals("Successfully changed logged in user's location.", simulation.setLoggedInUserLocation("Kitchen"));
     }
 
     @Test
     void loginUser() throws IOException, JSONException {
-        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE);
-        String username = "testboy";
+        Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE, USER_FILE);
+        String username = "testboy2";
         String password = "123456";
         String type = "Stranger";
         String location = "Garage";
 
         simulation.addUser(username, password, type, password);
         assertEquals("Successfully switched users.", simulation.login(username, password));
+    }
+
+    @AfterEach
+    void deleteUserFIle() {
+        USER_FILE.delete();
     }
 
 
