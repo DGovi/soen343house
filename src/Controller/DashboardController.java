@@ -4,11 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 import java.time.LocalTime;
 
 import javafx.event.ActionEvent;
@@ -1148,7 +1144,19 @@ public class DashboardController {
      */
     public void invadeHome(ActionEvent actionEvent){
         logText(sim.pw, printToConsole(sim.invadeSimHome(intruderCheck.isSelected())));
+
+        Timer timer = new Timer();
+        timer.schedule(new CopCaller(), 5*1000);
+
         updateDashboard();
+    }
+
+    private class CopCaller extends TimerTask {
+
+        @Override
+        public void run() {
+            printToConsole("INTRUDER ALERT! INTRUDER ALERT! WEEH WOOH!\nPLEASE VACATE THE PREMISES WITH YOUR HANDS ABOVE YOUR HEAD!\nTHE AUTHORITIES HAVE BEEN NOTIFIED!");
+        }
     }
 
 
