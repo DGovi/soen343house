@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Time;
+<<<<<<< HEAD
 import java.util.*;
+=======
+>>>>>>> e1fc2b3e67fec0bb4030c3c7a8a9668d8df0dd54
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -150,13 +153,19 @@ public class DashboardController {
     private TextField TimeframeFrom;
     @FXML
     private TextField TimeframeTo;
+<<<<<<< HEAD
 
 
     @FXML
     private TextField copDelayField;
     @FXML
     private Button copDelayButton;
+=======
+>>>>>>> e1fc2b3e67fec0bb4030c3c7a8a9668d8df0dd54
 
+
+    @FXML
+    private VBox lightsLeftOnBox;
 
     /**
      * Changes the simulation temperature.
