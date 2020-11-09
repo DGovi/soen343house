@@ -299,6 +299,11 @@ public class Simulation implements Subject{
         return temperature;
     }
 
+    /**
+     * Sets the temperature outside the home in the simulation.
+     * @param temperatureString temperature to set
+     * @return Message success or failure
+     */
     public String setTemperature(String temperatureString) {
         try {
             float newTemperature = Float.parseFloat(temperatureString);
@@ -642,7 +647,9 @@ public class Simulation implements Subject{
         return users;
     }
 
-    // TODO:  Mahad Javadocs this
+    /**
+     *  Change the User JSON file
+     */
     private void updateUsersJSON() throws JSONException, IOException {
         JSONObject obj = new JSONObject();
         for (User u : this.users) {
