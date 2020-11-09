@@ -22,6 +22,8 @@ import java.util.Random;
  * Stores many important simulation variables.
  */
 public class Simulation implements Subject{
+    private static Simulation simInstance;
+
     private String date;
     private Time time;
     private long lastRealTime;
@@ -48,7 +50,7 @@ public class Simulation implements Subject{
      * @throws JSONException
      * @throws IOException
      */
-    public Simulation(String date, Time time, float temperature, File houseInput, File usersFile) throws JSONException, IOException {
+    private Simulation(String date, Time time, float temperature, File houseInput, File usersFile) throws JSONException, IOException {
         this.house = new House(houseInput);
         this.date = date;
         this.time = time;
@@ -61,6 +63,23 @@ public class Simulation implements Subject{
         this.running = true;
         this.LightAuto = true;
         this.isAway = false;
+    }
+
+    public static Simulation createInstance(String date, Time time, float temperature, File houseInput, File usersFile) throws IOException, JSONException {
+        simInstance = new Simulation(date, time, temperature, houseInput, usersFile);
+        return simInstance;
+    }
+
+    public static Simulation getInstance() throws IOException, JSONException {
+        if (simInstance == null)
+            simInstance = new Simulation(
+                "",
+                java.sql.Time.valueOf(LocalTime.now()),
+                25,
+                null,
+                null);
+
+        return simInstance;
     }
 
     /**

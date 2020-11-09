@@ -587,7 +587,7 @@ public class DashboardController {
      */
     public void afterLoadInitialize(File file) throws JSONException, IOException {
         // Set simulation
-        sim = new Simulation(
+        sim = Simulation.createInstance(
                 "",
                 java.sql.Time.valueOf(LocalTime.now()),
                 25,

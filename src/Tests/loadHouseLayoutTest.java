@@ -22,7 +22,7 @@ class loadHouseLayoutTest {
 
     @Test
     void loadHouseLayout() throws IOException, JSONException {
-        Simulation simulation = new Simulation("", java.sql.Time.valueOf(LocalTime.now()), 25, TEST_HOUSE, USER_FILE);
+        Simulation simulation = Simulation.createInstance("", java.sql.Time.valueOf(LocalTime.now()), 25, TEST_HOUSE, USER_FILE);
         House loadedHouse = simulation.getHouse();
 
         ArrayList<Room> rooms =  new ArrayList<>();
