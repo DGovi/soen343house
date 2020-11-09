@@ -23,7 +23,7 @@ public class DashboardDriver extends Application {
     public void start(Stage window) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("Dashboard.fxml"));
         window.setTitle("Smart Home Simulator");
-        window.setScene(new Scene(root, 870, 720));
+        window.setScene(new Scene(root, 870, 850));
         window.show();
     }
 
