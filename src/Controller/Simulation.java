@@ -38,31 +38,6 @@ public class Simulation implements Subject{
     File logFile = new File("logFile.txt");
     PrintWriter pw = new PrintWriter(new FileWriter(logFile, true));
 
-
-    /**
-     * Creates a simulation object with date, time, temperature, houseinput as input.
-     *
-     * @param date        a date object
-     * @param time        a time object
-     * @param temperature temperature outside of the house
-     * @param houseInput  JSON file
-     * @throws JSONException if runtime exception occurs
-     * @throws IOException   if the file is not found
-     */
-    public Simulation(String date, Time time, float temperature, File houseInput) throws JSONException, IOException {
-        this.house = new House(houseInput);
-        this.date = date;
-        this.time = time;
-        this.lastRealTime = Time.valueOf(LocalTime.now()).getTime();
-        this.timeSpeed = 1;
-        this.temperature = temperature;
-        this.loggedInUser = new User(UserType.PARENT, house.getRooms().get(0), "Admin", "123456");
-        this.users = new ArrayList<>();
-        addUser(this.loggedInUser);
-        this.running = false;
-        this.isAway = false;
-    }
-
     /**
      * Constructor that includes the JSON file with user information in it
      * @param date current date
@@ -85,6 +60,7 @@ public class Simulation implements Subject{
         this.loggedInUser = users.get(users.size() - 1);
         this.running = true;
         this.LightAuto = true;
+        this.isAway = false;
     }
 
     /**
