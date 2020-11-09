@@ -66,19 +66,12 @@ public class Simulation implements Subject{
     }
 
     public static Simulation createInstance(String date, Time time, float temperature, File houseInput, File usersFile) throws IOException, JSONException {
-        simInstance = new Simulation(date, time, temperature, houseInput, usersFile);
+        if (simInstance == null)
+            simInstance = new Simulation(date, time, temperature, houseInput, usersFile);
         return simInstance;
     }
 
-    public static Simulation getInstance() throws IOException, JSONException {
-        if (simInstance == null)
-            simInstance = new Simulation(
-                "",
-                java.sql.Time.valueOf(LocalTime.now()),
-                25,
-                null,
-                null);
-
+    public static Simulation getInstance() {
         return simInstance;
     }
 
