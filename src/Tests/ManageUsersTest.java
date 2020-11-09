@@ -3,6 +3,7 @@ package Tests;
 import Controller.Simulation;
 import Model.User;
 import org.json.JSONException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -56,13 +57,18 @@ class ManageUsersTest {
     @Test
     void loginUser() throws IOException, JSONException {
         Simulation simulation = new Simulation(new String(), java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE, USER_FILE);
-        String username = "testboy";
+        String username = "testboy2";
         String password = "123456";
         String type = "Stranger";
         String location = "Garage";
 
         simulation.addUser(username, password, type, password);
         assertEquals("Successfully switched users.", simulation.login(username, password));
+    }
+
+    @AfterEach
+    void deleteUserFIle() {
+        USER_FILE.delete();
     }
 
 
