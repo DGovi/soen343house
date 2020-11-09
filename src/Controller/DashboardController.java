@@ -1155,6 +1155,9 @@ public class DashboardController {
         updateDashboard();
     }
 
+    /**
+     * Updates the copDelay attribute of the simulation.
+     */
     @FXML
     public void updateCopDelay(){
         String copDelayString = copDelayField.getText();
@@ -1176,8 +1179,17 @@ public class DashboardController {
         }
     }
 
+    /**
+     * A Runnable nested class that prints a message to console
+     * indicating that the cops have been called.
+     * This functionality needs to be encapsulated in a runnable class
+     * as it will be created and passed to a Timer.
+     */
     private class CopCaller extends TimerTask {
 
+        /**
+         * Prints a message indicating that the cops have been called.
+         */
         @Override
         public void run() {
             printToConsole("INTRUDER ALERT! THE AUTHORITIES HAVE BEEN NOTIFIED!");

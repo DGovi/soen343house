@@ -702,10 +702,21 @@ public class Simulation implements Subject{
         return message;
     }
 
+    /**
+     * Gets the delay in seconds between an intruder being detected in the house during
+     * Away mode, and the authorities being notified.
+     * @return the copDelay value
+     */
     public int getCopDelay() {
         return copDelay;
     }
 
+    /**
+     * Sets the delay in seconds between an intruder being detected in the house during
+     * Away mode, and the authorities being notified.
+     * @param copDelay the new copDelay value
+     * @return a message indicating the new copDelay value
+     */
     public String setCopDelay(int copDelay) {
         this.copDelay = copDelay;
         return "Delay till authorities notified set to " + copDelay + " seconds!";
