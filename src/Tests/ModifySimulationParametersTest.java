@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ModifySimulationParametersTest {
     private static final File HOUSE_FILE = new File("./houseinput.json");
-    private final File USER_FILE = null;
+    private final File USER_FILE = new File("users.json");
 
     @Test
     void setHouseLocation() throws IOException, JSONException {

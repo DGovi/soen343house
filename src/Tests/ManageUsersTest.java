@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ManageUsersTest {
     private static final File HOUSE_FILE = new File("./houseinput.json");
-    private final File USER_FILE = new File("users.json");
+    private final File USER_FILE = new File("test.json");
 
     @Test
     void addUser() throws IOException, JSONException {
