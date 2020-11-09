@@ -299,6 +299,11 @@ public class DashboardController {
         updateDashboard();
     }
 
+    /**
+     *
+     * Add checkboxes for the SHP page.
+     *
+     */
     @FXML
     private void updateSHP() {
         lightsLeftOnBox.getChildren().clear();
