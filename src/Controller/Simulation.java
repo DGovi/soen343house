@@ -495,6 +495,16 @@ public class Simulation implements Subject{
         return users;
     }
 
+
+    /**
+     * Gets a list of all the simulation users.
+     *
+     * @return a list of users
+     */
+    public ArrayList<Room> getRoomsWithAwayLights() {
+        return awayLightsOn;
+    }
+
     /**
      * Gets the house object of a simulation.
      *
@@ -520,6 +530,15 @@ public class Simulation implements Subject{
      */
     public boolean getLightAuto() {
         return this.LightAuto;
+    }
+
+    /**
+     * Gets the current state of the away as boolean
+     *
+     * @return bool: true if away, false otherwise
+     */
+    public boolean getIsAway() {
+        return this.isAway;
     }
 
     /**

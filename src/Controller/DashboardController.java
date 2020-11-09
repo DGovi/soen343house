@@ -5,6 +5,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Time;
 import java.util.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Stack;
 import java.time.LocalTime;
 
 import javafx.event.ActionEvent;
@@ -138,6 +146,12 @@ public class DashboardController {
     private CheckBox awayButton;
     @FXML
     private CheckBox intruderCheck;
+    @FXML
+    private TextField TimeframeFrom;
+    @FXML
+    private TextField TimeframeTo;
+
+
     @FXML
     private TextField copDelayField;
     @FXML
@@ -297,6 +311,7 @@ public class DashboardController {
             HBox h = new HBox();
             h.setPadding(new Insets(10, 0, 0, 10));
             CheckBox box = new CheckBox();
+            box.setSelected(sim.getRoomsWithAwayLights().contains(r));
             box.setPadding(new Insets(0, 10, 0, 0));
             box.setOnAction(actionEvent -> sim.toggleAwayLight(r.getName()));
             h.getChildren().add(box);
@@ -1058,6 +1073,33 @@ public class DashboardController {
      */
     @FXML
     public void updateTime() {
+        if(sim.getIsAway()) {
+            String f = TimeframeFrom.getText();
+            String t = TimeframeTo.getText();
+            if (!f.equals("From") && !t.equals("To")) {
+                DateFormat formatter = new SimpleDateFormat("HH:mm");
+                try {
+                    Time from =  new java.sql.Time(formatter.parse(f).getTime());
+                    Time to =  new java.sql.Time(formatter.parse(t).getTime());
+                    String[] s = sim.getTime().toString().split(":");
+                    Time now = new java.sql.Time(formatter.parse(s[0] + ":" + s[1]).getTime());
+                    if(now.after(to) || now.before(from)){
+                        updateDashboard();
+                        return;
+                    }
+                } catch (ParseException e) {
+                    updateDashboard();
+                    return;
+                }
+            }
+            for(Room r : sim.getHouse().getRooms()){
+                r.setLightsOn(false);
+            }
+            for(Room r : sim.getRoomsWithAwayLights()){
+                r.setLightsOn(true);
+            }
+        }
+        renderLayout(sim.getHouse());
         updateDashboard();
     }
 
