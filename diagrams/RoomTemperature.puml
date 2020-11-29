@@ -1,0 +1,11 @@
+@startuml
+[*] -> active
+active -> away_mode: Away Mode ON
+away_mode -> active[H]: Away Mode OFF
+state active {
+    zone_mode -> overridden_mode: room temperature set
+    overridden_mode -> zone_mode : room temperature unset
+    [*] -> zone_mode
+}
+
+@enduml
