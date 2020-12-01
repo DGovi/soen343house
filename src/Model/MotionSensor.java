@@ -11,26 +11,29 @@ public class MotionSensor implements Observer {
     private boolean isAway;
 
     private static int motionSensorIDcount = 0;
-    private int motionSensorID;
+    private final int motionSensorID;
 
     /**
      * motion sensors that have isAway as a parameter to have the state of the away button
+     *
      * @param isAway
      */
-    public MotionSensor(boolean isAway){
+    public MotionSensor(boolean isAway) {
         this.motionSensorID = motionSensorIDcount++;
     }
 
     /**
      * gets the unique ID of the motion sensor
+     *
      * @return int, the motion sensor id
      */
-    public int getMotionSensorID(){
+    public int getMotionSensorID() {
         return motionSensorID;
     }
 
     /**
      * updates the value of isAway
+     *
      * @param isAwayValue
      */
     public void update(boolean isAwayValue) {

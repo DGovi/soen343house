@@ -21,7 +21,7 @@ import java.util.Random;
  * The primary controller of the smart home simulation.
  * Stores many important simulation variables.
  */
-public class Simulation implements Subject{
+public class Simulation implements Subject {
     private static Simulation simInstance;
 
     private String date;
@@ -32,26 +32,29 @@ public class Simulation implements Subject{
     private User loggedInUser;
     private final ArrayList<User> users;
     private final House house;
-    private File usersFile;
+    private final File usersFile;
     private boolean running;
     private boolean LightAuto;
     private boolean isAway;
     private int copDelay;
     private final ArrayList<Room> awayLightsOn = new ArrayList<>();
 
-    private int[] summer;
-    private int[] winter;
+    private final int[] summer;
+    private final int[] winter;
+    private float summerAwayTemp;
+    private float winterAwayTemp;
 
     File logFile = new File("logFile.txt");
     PrintWriter pw = new PrintWriter(new FileWriter(logFile, true));
 
     /**
      * Constructor that includes the JSON file with user information in it
-     * @param date current date
-     * @param time current time
+     *
+     * @param date        current date
+     * @param time        current time
      * @param temperature current temperature
-     * @param houseInput house input JSON file
-     * @param usersFile users JSON file
+     * @param houseInput  house input JSON file
+     * @param usersFile   users JSON file
      * @throws JSONException
      * @throws IOException
      */
@@ -240,9 +243,9 @@ public class Simulation implements Subject{
      */
     public void toggleAwayLight(String room) {
         Room r = house.getRoomFromName(room);
-        if(awayLightsOn.contains(r)){
+        if (awayLightsOn.contains(r)) {
             awayLightsOn.remove(r);
-        }else{
+        } else {
             awayLightsOn.add(r);
         }
     }
@@ -273,7 +276,7 @@ public class Simulation implements Subject{
      */
     public Time getTime() {
         long rightNow = Time.valueOf(LocalTime.now()).getTime();
-        time.setTime(time.getTime() + (long)timeSpeed*(rightNow - lastRealTime));
+        time.setTime(time.getTime() + (long) timeSpeed * (rightNow - lastRealTime));
         lastRealTime = rightNow;
         return time;
     }
@@ -292,6 +295,7 @@ public class Simulation implements Subject{
 
     /**
      * Sets the time speed of the simulation
+     *
      * @param speed multiplier for time speed
      */
     public String setTimeSpeed(Float speed) {
@@ -310,6 +314,7 @@ public class Simulation implements Subject{
 
     /**
      * Sets the temperature outside the home in the simulation.
+     *
      * @param temperatureString temperature to set
      * @return Message success or failure
      */
@@ -325,6 +330,7 @@ public class Simulation implements Subject{
 
     /**
      * Get the array defining the summer interval
+     *
      * @return
      */
     public int[] getSummer() {
@@ -333,6 +339,7 @@ public class Simulation implements Subject{
 
     /**
      * Get the array defining the winter interval
+     *
      * @return
      */
     public int[] getWinter() {
@@ -341,6 +348,7 @@ public class Simulation implements Subject{
 
     /**
      * Set the interval of months for summer and winter seasons
+     *
      * @param summerStart
      * @param summerEnd
      * @param winterStart
@@ -353,6 +361,37 @@ public class Simulation implements Subject{
         this.winter[0] = winterStart;
         this.winter[1] = winterEnd;
         return "Successfully set season intervals.";
+    }
+
+    /**
+     * Gets the desired house temperature while away mode is active in summer
+     *
+     * @return float
+     */
+    public float getSummerAwayTemp() {
+        return summerAwayTemp;
+    }
+
+    /**
+     * Gets the desired house temperature while away mode is active in winter
+     *
+     * @return float
+     */
+    public float getWinterAwayTemp() {
+        return winterAwayTemp;
+    }
+
+    /**
+     * Sets the desired house temperature while away mode is active for both summer and winter
+     *
+     * @param summer desired temperature for away mode in summer as float
+     * @param winter desired temperature for away mode in winter as float
+     * @return String saying the operation was completed successfully
+     */
+    public String setSeasonalAwayTemperatures(float summer, float winter) {
+        this.summerAwayTemp = summer;
+        this.winterAwayTemp = winter;
+        return "Successfully changed the seasonal away mode temperatures.";
     }
 
     /**
@@ -445,11 +484,9 @@ public class Simulation implements Subject{
     public String editUser(String username, String currentPassword, String newPassword, String type, String location) throws JSONException, IOException {
         if (username == null) {
             return "ERROR: Did not choose a user to edit.";
-        }
-        else if (currentPassword.length() == 0) {
+        } else if (currentPassword.length() == 0) {
             return "ERROR: Need to enter the chosen user's password to make changes.";
-        }
-        else if (type == null &&
+        } else if (type == null &&
                 newPassword.length() == 0 &&
                 location == null) {
             return "ERROR: Need to give changes to make.";
@@ -609,19 +646,20 @@ public class Simulation implements Subject{
         this.running = true;
         return "Simulation ON";
     }
-    
+
     /**
      * Toggles the Auto Mode of the light
-     * 
+     *
      * @return console msg indicating Light Auto mode state.
      */
     public String toggleLight() {
-    	LightAuto = !LightAuto;
-    	return LightAuto ? "Light Auto Mode turned ON" : "Light Auto Mode turned OFF";
+        LightAuto = !LightAuto;
+        return LightAuto ? "Light Auto Mode turned ON" : "Light Auto Mode turned OFF";
     }
 
     /**
      * Function that loads the users from the previous session through the JSON file
+     *
      * @param srcFile JSON file containing the user information
      * @return arraylist of users from the JSON file
      * @throws org.json.JSONException
@@ -633,8 +671,7 @@ public class Simulation implements Subject{
         String wholeFile;
         if (srcFile.exists()) {
             wholeFile = new String(Files.readAllBytes(srcFile.toPath()));
-        }
-        else {
+        } else {
             wholeFile = "{\"Admin\":{\"password\":\"123456\",\"location\":null,\"type\":\"parent\"}}";
         }
 
@@ -689,7 +726,7 @@ public class Simulation implements Subject{
     }
 
     /**
-     *  Change the User JSON file
+     * Change the User JSON file
      */
     private void updateUsersJSON() throws JSONException, IOException {
         JSONObject obj = new JSONObject();
@@ -705,15 +742,16 @@ public class Simulation implements Subject{
 
     /**
      * Gets a list of all users in the current room.
+     *
      * @param room the room to search for users
      * @return an ArrayList of users
      */
     public ArrayList<User> getUsersInRoom(Room room) {
         ArrayList<User> people = new ArrayList<User>();
 
-        for (User user: this.getUsers()) {
-           if (user.getLocation() != null && user.getLocation().equals(room))
-               people.add(user);
+        for (User user : this.getUsers()) {
+            if (user.getLocation() != null && user.getLocation().equals(room))
+                people.add(user);
         }
 
         return people;
@@ -721,13 +759,14 @@ public class Simulation implements Subject{
 
     /**
      * observer pattern method to notify all observers
+     *
      * @return message of which motion sensor is active
      */
     public String notifyMotionSensors() {
         String message = "";
-        for (Room room : house.getRooms()){
+        for (Room room : house.getRooms()) {
             room.getRoomMotionSensor().update(isAway);
-            if(isAway)
+            if (isAway)
                 message += "MotionSensor in " + room.getName() + "(" +
                         room.getRoomMotionSensor().getMotionSensorID() + ")" + " is ON\n";
         }
@@ -737,20 +776,21 @@ public class Simulation implements Subject{
     /**
      * If the simulation is set on away mode, then it kicks all users of the house
      * else it sets sets the current user to the garage (initial Room).
+     *
      * @param checked boolean that shows if the Away mode box in SHP is checked
      * @return a string that describes what happened
      */
-    public String setSimulationAway(boolean checked){
+    public String setSimulationAway(boolean checked) {
         String message;
 
-        if(checked){
-            for(User aUser: users)
+        if (checked) {
+            for (User aUser : users)
                 aUser.setLocation(null);
 
             boolean obstructed = false;
-            for(Room r : house.getRooms()){
+            for (Room r : house.getRooms()) {
                 for (Window w : r.getWindows()) {
-                    if(w.getObstructed()){
+                    if (w.getObstructed()) {
                         obstructed = true;
                     }
                     w.setOpen(false);
@@ -758,14 +798,14 @@ public class Simulation implements Subject{
                 r.setLightsOn(false);
             }
 
-            for(Room r : awayLightsOn){
+            for (Room r : awayLightsOn) {
                 r.setLightsOn(true);
             }
 
             isAway = true;
             message = "Away Mode has been set";
 
-            if(obstructed)
+            if (obstructed)
                 message += "\nOne of the windows hasn't been closed because it's obstructed";
 
         } else {
@@ -780,14 +820,14 @@ public class Simulation implements Subject{
 
     /**
      * checks the state of the away mode and the intruder to make a decision
+     *
      * @return String describing what is the state of the home invasion
      */
     public String invadeSimHome(boolean checked) {
         String message;
-        if(checked && !isAway){
+        if (checked && !isAway) {
             message = "Intruders typically only intrude when there is no one in the house.";
-        }
-        else if(checked && isAway) {
+        } else if (checked && isAway) {
             Intruder i = new Intruder(house.getRooms().get(new Random().nextInt(house.getRooms().size())));
             message = "There is an intruder in the house ";
             for (Room room : house.getRooms()) {
@@ -795,8 +835,7 @@ public class Simulation implements Subject{
                     message += " detected by Motion sensor in " + room.getName() +
                             ", motion sensor " + room.getRoomMotionSensor().getMotionSensorID();
             }
-        }
-        else
+        } else
             message = "no intruders found";
 
         return message;
@@ -805,6 +844,7 @@ public class Simulation implements Subject{
     /**
      * Gets the delay in seconds between an intruder being detected in the house during
      * Away mode, and the authorities being notified.
+     *
      * @return the copDelay value
      */
     public int getCopDelay() {
@@ -814,6 +854,7 @@ public class Simulation implements Subject{
     /**
      * Sets the delay in seconds between an intruder being detected in the house during
      * Away mode, and the authorities being notified.
+     *
      * @param copDelay the new copDelay value
      * @return a message indicating the new copDelay value
      */
@@ -824,6 +865,7 @@ public class Simulation implements Subject{
 
     /**
      * Converts the Simulation into a String representation.
+     *
      * @return the String representation of the Simulation
      */
     @Override
@@ -831,7 +873,6 @@ public class Simulation implements Subject{
         return "Simulation [date=" + date + ", time=" + time + ", temperature=" + temperature + ", loggedInUser="
                 + loggedInUser + "]";
     }
-
 
 
 }

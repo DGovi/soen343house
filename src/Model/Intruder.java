@@ -6,17 +6,18 @@ package Model;
  * be detected by a motion sensor in a room.
  */
 public class Intruder {
-    private Room room;
+    private final Room room;
 
-    public Intruder(Room room){
+    public Intruder(Room room) {
         this.room = room;
     }
 
     /**
      * gets the room in the house that the intruder is in
+     *
      * @return room object
      */
-    public Room getRoom(){
+    public Room getRoom() {
         return room;
     }
 }
