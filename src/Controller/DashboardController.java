@@ -74,6 +74,14 @@ public class DashboardController {
     private Label permissionsControlWindows;
     @FXML
     private Label permissionsAwayMode;
+    @FXML
+    private Spinner<Integer> summerSpinner1;
+    @FXML
+    private Spinner<Integer> summerSpinner2;
+    @FXML
+    private Spinner<Integer> winterSpinner1;
+    @FXML
+    private Spinner<Integer> winterSpinner2;
 
     @FXML
     private AnchorPane tabsPane;
@@ -245,6 +253,21 @@ public class DashboardController {
 
         updateDashboard();
         this.renderLayout(sim.getHouse());
+    }
+
+    @FXML
+    private void setSeasons() {
+        if (sim.getLoggedInUser().getType() == UserType.PARENT) {
+            printToConsole(sim.setSeasons(
+                    summerSpinner1.getValue(),
+                    summerSpinner2.getValue(),
+                    winterSpinner1.getValue(),
+                    winterSpinner2.getValue()
+            ));
+        }
+        else {
+            printToConsole("ERROR: User must be a parent to change the season intervals.");
+        }
     }
 
     /**
@@ -649,6 +672,11 @@ public class DashboardController {
                 userInput
         );
         currentUser.setText(sim.getLoggedInUser().getName());
+
+        summerSpinner1.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, sim.getSummer()[0]));
+        summerSpinner2.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, sim.getSummer()[1]));
+        winterSpinner1.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, sim.getWinter()[0]));
+        winterSpinner2.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, sim.getWinter()[1]));
 
         // Set dropdown options for user type dropdowns
         createUserType.getItems().setAll("Parent", "Child", "Guest", "Stranger");
