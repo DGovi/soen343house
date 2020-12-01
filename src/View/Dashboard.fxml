@@ -117,6 +117,18 @@
                 <Label fx:id="permissionsControlWindows" text="Open/Close Windows:" />
                 <Label text="SHP:" />
                 <Label fx:id="permissionsAwayMode" text="Set Away Mode:" />
+                <Separator prefWidth="200.0">
+                  <VBox.margin>
+                    <Insets left="-5.0" right="-5.0" top="10.0" />
+                  </VBox.margin>
+                </Separator>
+                <Label text="Summer Months" />
+                <Spinner fx:id="summerSpinner1"/>
+                <Spinner fx:id="summerSpinner2"/>
+                <Label text="Winter Months" />
+                <Spinner fx:id="winterSpinner1"/>
+                <Spinner fx:id="winterSpinner2"/>
+                <Button onAction="#setSeasons" text="Set Seasons"/>
               </children>
             </VBox>
           </children>

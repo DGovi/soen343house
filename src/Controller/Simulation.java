@@ -14,6 +14,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -38,6 +39,9 @@ public class Simulation implements Subject{
     private boolean isAway;
     private int copDelay;
     private final ArrayList<Room> awayLightsOn = new ArrayList<>();
+
+    private int[] summer;
+    private int[] winter;
 
     File logFile = new File("logFile.txt");
     PrintWriter pw = new PrintWriter(new FileWriter(logFile, true));
@@ -66,6 +70,12 @@ public class Simulation implements Subject{
         this.LightAuto = true;
         this.isAway = false;
         this.copDelay = 5;
+        this.summer = new int[2];
+        this.summer[0] = 5;
+        this.summer[1] = 8;
+        this.winter = new int[2];
+        this.winter[0] = 10;
+        this.winter[1] = 2;
     }
 
     public static Simulation createInstance(String date, Time time, float temperature, File houseInput, File usersFile) throws IOException, JSONException {
@@ -312,6 +322,38 @@ public class Simulation implements Subject{
         } catch (Exception e) {
             return ("ERROR: Inputted temperature is not a valid float.");
         }
+    }
+
+    /**
+     * Get the array defining the summer interval
+     * @return
+     */
+    public int[] getSummer() {
+        return this.summer;
+    }
+
+    /**
+     * Get the array defining the winter interval
+     * @return
+     */
+    public int[] getWinter() {
+        return this.winter;
+    }
+
+    /**
+     * Set the interval of months for summer and winter seasons
+     * @param summerStart
+     * @param summerEnd
+     * @param winterStart
+     * @param winterEnd
+     * @return String saying the operation has been completed successfully.
+     */
+    public String setSeasons(int summerStart, int summerEnd, int winterStart, int winterEnd) {
+        this.summer[0] = summerStart;
+        this.summer[1] = summerEnd;
+        this.winter[0] = winterStart;
+        this.winter[1] = winterEnd;
+        return "Successfully set season intervals.";
     }
 
     /**
