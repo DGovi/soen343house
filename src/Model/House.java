@@ -19,6 +19,7 @@ public class House {
     /**
      * Creates a House object given a List of Rooms
      * and a locating String.
+     *
      * @param r a list of Rooms
      * @param l a String representing the country location of the house
      */
@@ -69,6 +70,7 @@ public class House {
     /**
      * Gets the Room object from a String
      * representing it's name.
+     *
      * @param name the name of the Room to find
      * @return the Room object if it exists, null otherwise
      */

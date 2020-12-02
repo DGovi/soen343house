@@ -166,6 +166,12 @@ public class DashboardController {
     @FXML
     private VBox lightsLeftOnBox;
 
+    //SHH
+    @FXML
+    private TextField summerAwayTemp;
+    @FXML
+    private TextField winterAwayTemp;
+
     /**
      * Changes the simulation temperature.
      */
@@ -231,22 +237,22 @@ public class DashboardController {
         String message = sim.setLoggedInUserLocation(locationName);
         printToConsole(message);
 
-        if(message.equals("Sorry the doors are locked")){
+        if (message.equals("Sorry the doors are locked")) {
             String name = previousLocation == null ? "Outside" : previousLocation.getName();
             currentUserLocationOptions.setValue(name);
             return;
         }
 
-        if(previousLocation != null && previousLocation.getName().equals(locationName)){
+        if (previousLocation != null && previousLocation.getName().equals(locationName)) {
             return;
         }
 
-        if(sim.getLightAuto()){
-            if(!locationName.equals("Outside")){
+        if (sim.getLightAuto()) {
+            if (!locationName.equals("Outside")) {
                 printToConsole("Automatically turning lights on.");
                 sim.getHouse().getRoomFromName(locationName).setLightsOn(true);
             }
-            if(previousLocation != null && sim.getUsersInRoom(previousLocation).isEmpty()){
+            if (previousLocation != null && sim.getUsersInRoom(previousLocation).isEmpty()) {
                 previousLocation.setLightsOn(false);
             }
         }
@@ -255,6 +261,9 @@ public class DashboardController {
         this.renderLayout(sim.getHouse());
     }
 
+    /**
+     * Reacts to the update season periods button.
+     */
     @FXML
     private void setSeasons() {
         if (sim.getLoggedInUser().getType() == UserType.PARENT) {
@@ -264,9 +273,27 @@ public class DashboardController {
                     winterSpinner1.getValue(),
                     winterSpinner2.getValue()
             ));
-        }
-        else {
+        } else {
             printToConsole("ERROR: User must be a parent to change the season intervals.");
+        }
+    }
+
+    /**
+     * Sets the away mode temperatures for summer and winter seasons.
+     */
+    @FXML
+    private void setSeasonalAwayTemperatures() {
+        if (summerAwayTemp.getText().length() == 0 || winterAwayTemp.getText().length() == 0) {
+            printToConsole("ERROR: Must provide input.");
+        } else {
+            try {
+                printToConsole(sim.setSeasonalAwayTemperatures(
+                        Float.parseFloat(summerAwayTemp.getText()),
+                        Float.parseFloat(winterAwayTemp.getText())
+                ));
+            } catch (Exception e) {
+                printToConsole("ERROR: Invalid input");
+            }
         }
     }
 
@@ -327,15 +354,13 @@ public class DashboardController {
     }
 
     /**
-     *
      * Add checkboxes for the SHP page.
-     *
      */
     @FXML
     private void updateSHP() {
         lightsLeftOnBox.getChildren().clear();
 
-        for (Room r : sim.getHouse().getRooms()){
+        for (Room r : sim.getHouse().getRooms()) {
             HBox h = new HBox();
             h.setPadding(new Insets(10, 0, 0, 10));
             CheckBox box = new CheckBox();
@@ -390,8 +415,8 @@ public class DashboardController {
      * Turns off all the lights in the house that don't have a person in it.
      */
     private void shcTurnOffAllLights() throws IOException, JSONException {
-        for(Room r : sim.getHouse().getRooms()){
-            if(sim.getUsersInRoom(r).isEmpty()){
+        for (Room r : sim.getHouse().getRooms()) {
+            if (sim.getUsersInRoom(r).isEmpty()) {
                 r.setLightsOn(false);
             }
         }
@@ -403,8 +428,8 @@ public class DashboardController {
      */
     @FXML
     private void shcLightAuto() throws IOException, JSONException {
-    	  logText(sim.pw, printToConsole(sim.toggleLight()));
-        if(sim.getLightAuto()) {
+        logText(sim.pw, printToConsole(sim.toggleLight()));
+        if (sim.getLightAuto()) {
             shcTurnOffAllLights();
         }
     }
@@ -508,7 +533,7 @@ public class DashboardController {
     public void updateSHCDoorButtons() {
         String chosenDoorName = shcDoorSelect.getValue();
         if (chosenDoorName == null)
-            return;;
+            return;
 
         int chosenDoorIndex = Integer.parseInt(chosenDoorName.substring(5)) - 1;
         Room room = sim.getHouse().getRoomFromName(shcRoomSelect.getValue());
@@ -558,10 +583,11 @@ public class DashboardController {
 
     /**
      * prints the output to a file
-     * @param pw printwriter object
+     *
+     * @param pw     printwriter object
      * @param output string output to be printed in the file
      */
-    public void logText(PrintWriter pw, String output){
+    public void logText(PrintWriter pw, String output) {
         pw.write(output + "\n");
         pw.flush();
     }
@@ -635,8 +661,8 @@ public class DashboardController {
         // whether simulation is running or not
         boolean running = sim.getRunning();
         //console.setVisible(running);
-        leftPaneControls.setDisable(! running);
-        tabsPane.setDisable(! running);
+        leftPaneControls.setDisable(!running);
+        tabsPane.setDisable(!running);
         if (running)
             simRunningLabel.setText("Simulation: ON");
         else
@@ -645,12 +671,10 @@ public class DashboardController {
     }
 
     /**
-     * Starts up the simulation.
-     *
-     * @throws JSONException if JSON file not found
+     * Starts up the simulation. Not used because file must first be loaded.
      */
     // Basically the constructor --> Sets variables
-    public void initialize() throws JSONException {
+    public void initialize() {
 
     }
 
@@ -677,6 +701,8 @@ public class DashboardController {
         summerSpinner2.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, sim.getSummer()[1]));
         winterSpinner1.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, sim.getWinter()[0]));
         winterSpinner2.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, sim.getWinter()[1]));
+        summerAwayTemp.setText(String.valueOf(sim.getSummerAwayTemp()));
+        winterAwayTemp.setText(String.valueOf(sim.getWinterAwayTemp()));
 
         // Set dropdown options for user type dropdowns
         createUserType.getItems().setAll("Parent", "Child", "Guest", "Stranger");
@@ -760,7 +786,7 @@ public class DashboardController {
                 if (traversed.contains(door))
                     continue;
 
-                if(door.equals("Outside"))
+                if (door.equals("Outside"))
                     continue;
 
                 Room room = doors.get(door);
@@ -775,14 +801,14 @@ public class DashboardController {
                 drawPeople(room, x + 5, y + size - PERSON_HEIGHT - 5);
 
                 boolean sideDoor = false;
-                for(int i = 0; i < doorsTop.size(); i++){
-                    if(doorsTop.get(i).getTo().equals(door) && i + 1 < doorsTop.size()){
+                for (int i = 0; i < doorsTop.size(); i++) {
+                    if (doorsTop.get(i).getTo().equals(door) && i + 1 < doorsTop.size()) {
                         Room n = doors.get(doorsTop.get(i + 1).getTo());
-                        for(Door d : room.getDoors()){
-                            if(d.getTo() == null || n == null)
+                        for (Door d : room.getDoors()) {
+                            if (d.getTo() == null || n == null)
                                 continue;
                             Room cr = doors.get(d.getTo());
-                            if(cr != null && cr.equals(n)){
+                            if (cr != null && cr.equals(n)) {
                                 sideDoor = true;
                                 break;
                             }
@@ -790,7 +816,7 @@ public class DashboardController {
                     }
                 }
 
-                this.drawRoom(room, x, y, (! doorObj.equals(doorsTop.get(doorsTop.size() - 1))) && doorsTop.size() > 1 && sideDoor, roomAbove);
+                this.drawRoom(room, x, y, (!doorObj.equals(doorsTop.get(doorsTop.size() - 1))) && doorsTop.size() > 1 && sideDoor, roomAbove);
 
                 if (doorObj.equals(doorsTop.get(doorsTop.size() - 1)))
                     this.drawWindows(x, y, size, room.getWindows());
@@ -807,10 +833,10 @@ public class DashboardController {
     /**
      * On a given house layout, draw the windows at specified location.
      *
-     * @param x            position on the x coordinate of window
-     * @param y            position of y coordinate of window
-     * @param size         length of a window
-     * @param windows      a list of windows to draw
+     * @param x       position on the x coordinate of window
+     * @param y       position of y coordinate of window
+     * @param size    length of a window
+     * @param windows a list of windows to draw
      */
     @FXML
     public void drawWindows(int x, int y, int size, ArrayList<Window> windows) {
@@ -909,7 +935,7 @@ public class DashboardController {
                 gc.strokeLine(x + size, y + 20, x + size, y + 40);
         }
 
-        if(room.getName().equals("Garage")){
+        if (room.getName().equals("Garage")) {
             boolean entranceOpen = false;
             for (Door d : room.getDoors())
                 if (d.getTo().equals("Outside") && d.isOpen()) {
@@ -923,7 +949,7 @@ public class DashboardController {
                 gc.strokeLine(x, y + 20, x, y + 40);
         }
 
-        if(room.getName().equals("Backyard")){
+        if (room.getName().equals("Backyard")) {
             boolean bottomDoor = false;
             for (Door d : room.getDoors())
                 if (d.getTo().equals("Outside") && d.isOpen()) {
@@ -946,19 +972,19 @@ public class DashboardController {
     /**
      * Draws the people who are currently outside the house
      */
-    public void drawPeopleOutside(){
+    public void drawPeopleOutside() {
         int baseLineX = 200;
         int outsideX = baseLineX;
         int outsideY = 15;
         int usersDrawn = 0;
-        for (User u : sim.getUsers()){
-            if(u.getLocation() == null) {
+        for (User u : sim.getUsers()) {
+            if (u.getLocation() == null) {
                 drawPerson(outsideX, outsideY);
                 usersDrawn++;
-                if(usersDrawn % 3 == 0) {
+                if (usersDrawn % 3 == 0) {
                     outsideX = baseLineX;
                     outsideY += PERSON_HEIGHT + 5;
-                }else{
+                } else {
                     outsideX += PERSON_WIDTH + 5;
                 }
             }
@@ -967,9 +993,10 @@ public class DashboardController {
 
     /**
      * Draws the people who are currently present in a given room
+     *
      * @param room the room in question
-     * @param x the x position of the room
-     * @param y the y position of the room
+     * @param x    the x position of the room
+     * @param y    the y position of the room
      */
     public void drawPeople(Room room, int x, int y) {
         final int spacingX = PERSON_WIDTH;
@@ -981,7 +1008,7 @@ public class DashboardController {
 
         // drawing people
         Image personImage = new Image("file:stick_person.png");
-        for (User user: sim.getUsersInRoom(room)) {
+        for (User user : sim.getUsersInRoom(room)) {
             if (posX >= size) {
                 posX = 0;
                 posY -= spacingY;
@@ -989,19 +1016,20 @@ public class DashboardController {
             int finalX = x + posX;
             int finalY = y + posY;
 
-            gc.drawImage(personImage, finalX , finalY, PERSON_HEIGHT, PERSON_WIDTH);
+            gc.drawImage(personImage, finalX, finalY, PERSON_HEIGHT, PERSON_WIDTH);
             posX += spacingX;
         }
     }
 
     /**
      * Draws one person
+     *
      * @param x the x position of where to draw
      * @param y the y position of where to draw
      */
     public void drawPerson(int x, int y) {
         Image personImage = new Image("file:stick_person.png");
-        gc.drawImage(personImage, x , y, PERSON_HEIGHT, PERSON_WIDTH);
+        gc.drawImage(personImage, x, y, PERSON_HEIGHT, PERSON_WIDTH);
     }
 
     /**
@@ -1015,7 +1043,6 @@ public class DashboardController {
         printToConsole(sim.setDate(datePicker.getValue().toString()));
         updateDashboard();
     }
-
 
 
     /**
@@ -1036,8 +1063,7 @@ public class DashboardController {
                 timeSecondInput.getText().length() == 0) {
             if (timeSpeedInput.getText().length() == 0) {
                 printToConsole("Require at least time speed setting.");
-            }
-            else {
+            } else {
                 speed = Float.parseFloat(timeSpeedInput.getText());
                 if (speed <= 0) {
                     printToConsole("Invalid time speed input.");
@@ -1056,8 +1082,7 @@ public class DashboardController {
                 printToConsole("Invalid time input.");
                 return;
             }
-        }
-        else {
+        } else {
             printToConsole("Invalid time input.");
             return;
         }
@@ -1068,8 +1093,7 @@ public class DashboardController {
                 printToConsole("Invalid time input.");
                 return;
             }
-        }
-        else {
+        } else {
             printToConsole("Invalid time input.");
             return;
         }
@@ -1079,8 +1103,7 @@ public class DashboardController {
                 printToConsole("Invalid time input.");
                 return;
             }
-        }
-        else {
+        } else {
             printToConsole("Invalid time input.");
             return;
         }
@@ -1090,8 +1113,7 @@ public class DashboardController {
                 printToConsole("Invalid time speed input.");
                 return;
             }
-        }
-        else {
+        } else {
             printToConsole("Invalid time speed input.");
             return;
         }
@@ -1106,17 +1128,17 @@ public class DashboardController {
      */
     @FXML
     public void updateTime() {
-        if(sim.getIsAway()) {
+        if (sim.getIsAway()) {
             String f = TimeframeFrom.getText();
             String t = TimeframeTo.getText();
             if (!f.equals("From") && !t.equals("To")) {
                 DateFormat formatter = new SimpleDateFormat("HH:mm");
                 try {
-                    Time from =  new java.sql.Time(formatter.parse(f).getTime());
-                    Time to =  new java.sql.Time(formatter.parse(t).getTime());
+                    Time from = new java.sql.Time(formatter.parse(f).getTime());
+                    Time to = new java.sql.Time(formatter.parse(t).getTime());
                     String[] s = sim.getTime().toString().split(":");
                     Time now = new java.sql.Time(formatter.parse(s[0] + ":" + s[1]).getTime());
-                    if(now.after(to) || now.before(from)){
+                    if (now.after(to) || now.before(from)) {
                         updateDashboard();
                         return;
                     }
@@ -1125,10 +1147,10 @@ public class DashboardController {
                     return;
                 }
             }
-            for(Room r : sim.getHouse().getRooms()){
+            for (Room r : sim.getHouse().getRooms()) {
                 r.setLightsOn(false);
             }
-            for(Room r : sim.getRoomsWithAwayLights()){
+            for (Room r : sim.getRoomsWithAwayLights()) {
                 r.setLightsOn(true);
             }
         }
@@ -1161,6 +1183,7 @@ public class DashboardController {
 
     /**
      * Opens or closes the door selected by the SHC module.
+     *
      * @throws IOException
      * @throws JSONException
      */
@@ -1178,7 +1201,7 @@ public class DashboardController {
 
         String chosenDoorName = shcDoorSelect.getValue();
         if (chosenDoorName == null)
-            return;;
+            return;
 
         int chosenDoorIndex = Integer.parseInt(chosenDoorName.substring(5)) - 1;
         Room room = sim.getHouse().getRoomFromName(shcRoomSelect.getValue());
@@ -1195,6 +1218,7 @@ public class DashboardController {
      * Toggles the lightsOn property of the room selected by the
      * SHC module, and updates the visualization to reflect this new
      * value.
+     *
      * @throws IOException
      * @throws JSONException
      */
@@ -1208,13 +1232,14 @@ public class DashboardController {
         logText(sim.pw, printToConsole(room.toggleLightsON()));
         this.renderLayout(sim.getHouse());
     }
-  
+
     /**
      * sets the isAway boolean to whatever it is on the
      * checkbox field in the SHP. It also notifies the observers.
+     *
      * @param actionEvent event that triggers this method
      */
-    public void setAwayMode(ActionEvent actionEvent){
+    public void setAwayMode(ActionEvent actionEvent) {
         logText(sim.pw, printToConsole(sim.setSimulationAway(awayButton.isSelected())));
         logText(sim.pw, printToConsole(sim.notifyMotionSensors()));
         updateDashboard();
@@ -1223,13 +1248,14 @@ public class DashboardController {
 
     /**
      * simulates an intruder invading a home
+     *
      * @param actionEvent event that triggers this method
      */
-    public void invadeHome(ActionEvent actionEvent){
+    public void invadeHome(ActionEvent actionEvent) {
         logText(sim.pw, printToConsole(sim.invadeSimHome(intruderCheck.isSelected())));
 
         Timer timer = new Timer();
-        timer.schedule(new CopCaller(), sim.getCopDelay()*1000);
+        timer.schedule(new CopCaller(), sim.getCopDelay() * 1000);
 
         updateDashboard();
     }
@@ -1238,7 +1264,7 @@ public class DashboardController {
      * Updates the copDelay attribute of the simulation.
      */
     @FXML
-    public void updateCopDelay(){
+    public void updateCopDelay() {
         String copDelayString = copDelayField.getText();
         if (copDelayString.isEmpty()) {
             printToConsole("ERROR: You must enter a value for the new delay.");

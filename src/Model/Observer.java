@@ -2,7 +2,8 @@ package Model;
 
 public interface Observer {
 
-    public void update(boolean isAway);
-    public int getMotionSensorID();
+    void update(boolean isAway);
+
+    int getMotionSensorID();
 
 }

@@ -107,11 +107,13 @@ public class Room {
         this.lights = lights;
     }
 
-    public MotionSensor getRoomMotionSensor(){
+    public MotionSensor getRoomMotionSensor() {
         return roomMotionSensor;
     }
+
     /**
      * Gets the boolean value of the lightsOn attribute
+     *
      * @return the value of the lightsOn attribute
      */
     public boolean isLightsOn() {
@@ -120,6 +122,7 @@ public class Room {
 
     /**
      * Sets the value of the lightsOn attribute.
+     *
      * @param lightsOn the new value to set
      */
     public void setLightsOn(boolean lightsOn) {
@@ -128,14 +131,15 @@ public class Room {
 
     /**
      * toggles the lightsOn attribute.
+     *
      * @return String identifying if the lights in the Room are now on or off
      */
     public String toggleLightsON() {
-       this.setLightsOn(! this.isLightsOn());
-       if (this.isLightsOn())
-           return "Lights turned ON!";
-       else
-           return "Lights turned OFF!";
+        this.setLightsOn(!this.isLightsOn());
+        if (this.isLightsOn())
+            return "Lights turned ON!";
+        else
+            return "Lights turned OFF!";
     }
 
     /**
@@ -159,7 +163,7 @@ public class Room {
                 JSONArray array = object.getJSONObject(key).getJSONArray("doorsTo");
                 ArrayList<Door> list = new ArrayList<Door>();
 
-                if(key.equals("Entrance") || key.equals("Garage"))
+                if (key.equals("Entrance") || key.equals("Garage"))
                     list.add(new Door(key, "Outside"));
 
                 for (int i = 0; i < array.length(); i++) {
@@ -168,7 +172,7 @@ public class Room {
                     list.add(doorToAdd);
                 }
 
-                if(key.equals("Backyard"))
+                if (key.equals("Backyard"))
                     list.add(new Door(key, "Outside"));
 
                 ArrayList<Window> windows = new ArrayList<Window>();

@@ -25,8 +25,8 @@ class loadHouseLayoutTest {
         Simulation simulation = Simulation.createInstance("", java.sql.Time.valueOf(LocalTime.now()), 25, TEST_HOUSE, USER_FILE);
         House loadedHouse = simulation.getHouse();
 
-        ArrayList<Room> rooms =  new ArrayList<>();
-        ArrayList<Window> windows =  new ArrayList<>();
+        ArrayList<Room> rooms = new ArrayList<>();
+        ArrayList<Window> windows = new ArrayList<>();
 
         ArrayList<Door> doorsGarage = new ArrayList<Door>();
         ArrayList<Door> doorsKitchen = new ArrayList<Door>();
@@ -39,9 +39,9 @@ class loadHouseLayoutTest {
         rooms.add(new Room("Garage", windows, 1, doorsGarage));
         rooms.add(new Room("Kitchen", new ArrayList<>(), 0, doorsKitchen));
 
-        House testHouse = new House(rooms,"Test location");
+        House testHouse = new House(rooms, "Test location");
 
-        for(int i = 0; i < loadedHouse.getRooms().size(); i++){
+        for (int i = 0; i < loadedHouse.getRooms().size(); i++) {
             Room rL = loadedHouse.getRooms().get(i);
             Room rT = testHouse.getRooms().get(i);
             System.out.println(rL.getName());
@@ -49,12 +49,11 @@ class loadHouseLayoutTest {
             assertEquals(rL.getName(), rT.getName());
             assertEquals(rL.getWindows().size(), rT.getWindows().size());
             assertEquals(rL.getLights(), rT.getLights());
-            for (int j = 0; j < rL.getDoors().size(); j++){
+            for (int j = 0; j < rL.getDoors().size(); j++) {
                 assertTrue(rT.getDoors().get(j).equals(rT.getDoors().get(j)));
             }
         }
     }
-
 
 
 }
