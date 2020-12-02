@@ -18,12 +18,10 @@ import java.time.LocalTime;
 import javafx.event.ActionEvent;
 import View.CountriesWindow;
 import View.InputWindow;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -171,6 +169,10 @@ public class DashboardController {
     private TextField summerAwayTemp;
     @FXML
     private TextField winterAwayTemp;
+    @FXML
+    private ComboBox<String> shhRoomSelect;
+    @FXML
+    private Spinner<Integer> shhZoneSelect;
 
     /**
      * Changes the simulation temperature.
@@ -548,6 +550,42 @@ public class DashboardController {
     }
 
     /**
+     * When the chosen room is changed, the zone is updated accordingly
+     */
+    @FXML
+    private void updateSHHZone() {
+        String chosenRoomName = shhRoomSelect.getValue();
+
+        if (chosenRoomName == null) return;
+
+        Room r = sim.getHouse().getRoomFromName(chosenRoomName);
+        int indexOfZone = Zone.indexOf(sim.getZones(), r);
+        if (indexOfZone == -1) {
+            printToConsole("ERROR: Could not find a zone with given room. This error means there is a bug.");
+            return;
+        }
+        printToConsole(String.valueOf(indexOfZone));
+        shhZoneSelect.getValueFactory().setValue(indexOfZone + 1);
+    }
+
+    /**
+     * Changes the zone of the chosen room on button press
+     */
+    @FXML
+    private void shhChangeRoomZone() {
+        String chosenRoomName = shhRoomSelect.getValue();
+        int chosenZone = shhZoneSelect.getValue();
+
+        if (chosenRoomName == null) return;
+
+        Room r = sim.getHouse().getRoomFromName(chosenRoomName);
+        int currentZone = Zone.indexOf(sim.getZones(), r);
+
+        printToConsole(sim.getZones().get(currentZone).removeRoom(r));
+        printToConsole(sim.getZones().get(chosenZone - 1).addRoom(r));
+    }
+
+    /**
      * Opens a file picker window that allows the user to choose a
      * house layout for the simulation to load.
      */
@@ -704,6 +742,11 @@ public class DashboardController {
         summerAwayTemp.setText(String.valueOf(sim.getSummerAwayTemp()));
         winterAwayTemp.setText(String.valueOf(sim.getWinterAwayTemp()));
 
+        // Number of zones is equal to number of rooms
+        int numberOfRooms = sim.getHouse().getRooms().size();
+        shhZoneSelect.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, numberOfRooms, 1));
+
+
         // Set dropdown options for user type dropdowns
         createUserType.getItems().setAll("Parent", "Child", "Guest", "Stranger");
         editUserType.getItems().setAll("Parent", "Child", "Guest", "Stranger");
@@ -716,6 +759,7 @@ public class DashboardController {
 
             // These don't need outside option
             shcRoomSelect.getItems().add(r.getName());
+            shhRoomSelect.getItems().add(r.getName());
         }
         createUserLocation.getItems().add("Outside");
         editUserLocation.getItems().add("Outside");

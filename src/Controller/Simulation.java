@@ -38,6 +38,7 @@ public class Simulation implements Subject {
     private boolean isAway;
     private int copDelay;
     private final ArrayList<Room> awayLightsOn = new ArrayList<>();
+    private ArrayList<Zone> zones;
 
     private final int[] summer;
     private final int[] winter;
@@ -72,12 +73,21 @@ public class Simulation implements Subject {
         this.LightAuto = true;
         this.isAway = false;
         this.copDelay = 5;
+
+        // Start with as many zones as there are rooms, each with its own room.
+        this.zones = new ArrayList<>();
+        for (Room r : this.house.getRooms()) {
+            this.zones.add(new Zone(r));
+        }
+
         this.summer = new int[2];
         this.summer[0] = 5;
         this.summer[1] = 8;
         this.winter = new int[2];
         this.winter[0] = 10;
         this.winter[1] = 2;
+        this.summerAwayTemp = 24;
+        this.winterAwayTemp = 24;
     }
 
     public static Simulation createInstance(String date, Time time, float temperature, File houseInput, File usersFile) throws IOException, JSONException {
@@ -361,6 +371,14 @@ public class Simulation implements Subject {
         this.winter[0] = winterStart;
         this.winter[1] = winterEnd;
         return "Successfully set season intervals.";
+    }
+
+    /**
+     * Gets the zones
+     * @return
+     */
+    public ArrayList<Zone> getZones() {
+        return this.zones;
     }
 
     /**
