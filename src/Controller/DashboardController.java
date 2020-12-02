@@ -743,7 +743,8 @@ public class DashboardController {
         winterAwayTemp.setText(String.valueOf(sim.getWinterAwayTemp()));
 
         // Number of zones is equal to number of rooms
-        shhZoneSelect.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, sim.getHouse().getRooms().size(), 1));
+        int numberOfRooms = sim.getHouse().getRooms().size();
+        shhZoneSelect.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, numberOfRooms, 1));
 
 
         // Set dropdown options for user type dropdowns
