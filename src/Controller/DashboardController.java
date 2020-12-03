@@ -185,6 +185,19 @@ public class DashboardController {
             sim.setTemperature(newTemperatureInt);
             updateDashboard();
             printToConsole("Setting simulation temperature to " + newTemperature + "!");
+
+            if(newTemperatureInt < 0)
+                printToConsole("ALERT: Temperatures below 0 will cause damage to pipes");
+            else if (newTemperatureInt >= 0 && newTemperatureInt < 10)
+                printToConsole("ALERT: temperature is close to 0 degrees.");
+            else if(newTemperatureInt >= 30 && newTemperatureInt < 60)
+                printToConsole("ALERT: temperature is getting high. please consider using AC cooling. ");
+            else if(newTemperatureInt >= 60 )
+                printToConsole("ALERT: temperature is dangerously high. KEEP WINDOWS CLOSED AND AC ON");
+
+            else
+                printToConsole("Temperature OK, no immediate danger");
+
         } catch (Exception e) {
             printToConsole("ERROR: Inputted temperature is not a valid float.");
         }
