@@ -1297,6 +1297,7 @@ public class DashboardController {
      * @param actionEvent event that triggers this method
      */
     public void setAwayMode(ActionEvent actionEvent) {
+        setAwaySimTemp();
         logText(sim.pw, printToConsole(sim.setSimulationAway(awayButton.isSelected())));
         logText(sim.pw, printToConsole(sim.notifyMotionSensors()));
         updateDashboard();
@@ -1358,5 +1359,31 @@ public class DashboardController {
         }
     }
 
+    /**
+     * sets the temperature of the house to a certain temperature when on away mode depending on the month
+     */
+    @FXML
+    public void setAwaySimTemp(){
+        int monthNum = Integer.parseInt(sim.getDate().substring(5,7));
+
+        if(!awayButton.isSelected()){
+            logText(sim.pw, "Away mode temperature OFF. Settings will go back to normal");
+        }
+        else{
+            if(sim.isSummer(monthNum)) {
+                sim.setTemperature(summerAwayTemp.getText());
+                logText(sim.pw, printToConsole("Away mode temperature set to " + summerAwayTemp.getText()) + " for summer weather");
+            }
+            else if(sim.isWinter(monthNum)){
+                sim.setTemperature(summerAwayTemp.getText());
+                logText(sim.pw, printToConsole("Away mode temperature set to " + winterAwayTemp.getText()) + " for Winter Weather");
+            }
+            else{
+                logText(sim.pw, printToConsole("No away mode set for current season"));
+            }
+        }
+
+
+    }
 
 }
