@@ -170,9 +170,15 @@ public class DashboardController {
     @FXML
     private TextField winterAwayTemp;
     @FXML
-    private ComboBox<String> shhRoomSelect;
+    private ComboBox<String> shhRoomSelectZone;
     @FXML
     private Spinner<Integer> shhZoneSelect;
+    @FXML
+    private TextField shhRoomMorningTemperature;
+    @FXML
+    private TextField shhRoomDayTemperature;
+    @FXML
+    private TextField shhRoomNightTemperature;
 
     /**
      * Changes the simulation temperature.
@@ -287,16 +293,17 @@ public class DashboardController {
     private void setSeasonalAwayTemperatures() {
         if (summerAwayTemp.getText().length() == 0 || winterAwayTemp.getText().length() == 0) {
             printToConsole("ERROR: Must provide input.");
-        } else {
-            try {
-                printToConsole(sim.setSeasonalAwayTemperatures(
-                        Float.parseFloat(summerAwayTemp.getText()),
-                        Float.parseFloat(winterAwayTemp.getText())
-                ));
-            } catch (Exception e) {
-                printToConsole("ERROR: Invalid input");
-            }
+            return;
         }
+        try {
+            printToConsole(sim.setSeasonalAwayTemperatures(
+                    Float.parseFloat(summerAwayTemp.getText()),
+                    Float.parseFloat(winterAwayTemp.getText())
+            ));
+        } catch (Exception e) {
+            printToConsole("ERROR: Invalid input");
+        }
+
     }
 
     /**
@@ -554,7 +561,7 @@ public class DashboardController {
      */
     @FXML
     private void updateSHHZone() {
-        String chosenRoomName = shhRoomSelect.getValue();
+        String chosenRoomName = shhRoomSelectZone.getValue();
 
         if (chosenRoomName == null) return;
 
@@ -564,25 +571,45 @@ public class DashboardController {
             printToConsole("ERROR: Could not find a zone with given room. This error means there is a bug.");
             return;
         }
-        printToConsole(String.valueOf(indexOfZone));
         shhZoneSelect.getValueFactory().setValue(indexOfZone + 1);
+        shhRoomMorningTemperature.setText(String.valueOf(sim.getZones().get(indexOfZone).getTemperatures()[0]));
+        shhRoomDayTemperature.setText(String.valueOf(sim.getZones().get(indexOfZone).getTemperatures()[1]));
+        shhRoomNightTemperature.setText(String.valueOf(sim.getZones().get(indexOfZone).getTemperatures()[2]));
     }
 
     /**
-     * Changes the zone of the chosen room on button press
+     * Changes the zone of the chosen room and temperatures of both zone and room on button press
      */
     @FXML
-    private void shhChangeRoomZone() {
-        String chosenRoomName = shhRoomSelect.getValue();
-        int chosenZone = shhZoneSelect.getValue();
+    private void shhChangeRoomZoneAndTemperatures() {
+        if (shhRoomMorningTemperature.getText().length() == 0 ||
+                shhRoomDayTemperature.getText().length() == 0 ||
+                shhRoomNightTemperature.getText().length() == 0
+        ) {
+            printToConsole("ERROR: Must provide a temperature input for all time periods.");
+            return;
+        }
+        try {
+            String chosenRoomName = shhRoomSelectZone.getValue();
+            int chosenZone = shhZoneSelect.getValue() - 1;
+            float morning = Float.parseFloat(shhRoomMorningTemperature.getText());
+            float day = Float.parseFloat(shhRoomDayTemperature.getText());
+            float night = Float.parseFloat(shhRoomNightTemperature.getText());
 
-        if (chosenRoomName == null) return;
+            if (chosenRoomName == null) return;
 
-        Room r = sim.getHouse().getRoomFromName(chosenRoomName);
-        int currentZone = Zone.indexOf(sim.getZones(), r);
+            Room r = sim.getHouse().getRoomFromName(chosenRoomName);
+            int currentZone = Zone.indexOf(sim.getZones(), r);
 
-        printToConsole(sim.getZones().get(currentZone).removeRoom(r));
-        printToConsole(sim.getZones().get(chosenZone - 1).addRoom(r));
+            printToConsole(sim.getZones().get(currentZone).removeRoom(r));
+            printToConsole(sim.getZones().get(chosenZone).addRoom(r));
+            printToConsole(sim.getZones().get(chosenZone).setTemperatures(morning, day, night));
+            printToConsole(r.setTemperatures(morning, day, night));
+
+        }
+        catch (Exception e) {
+            printToConsole("ERROR: Invalid input.");
+        }
     }
 
     /**
@@ -759,7 +786,7 @@ public class DashboardController {
 
             // These don't need outside option
             shcRoomSelect.getItems().add(r.getName());
-            shhRoomSelect.getItems().add(r.getName());
+            shhRoomSelectZone.getItems().add(r.getName());
         }
         createUserLocation.getItems().add("Outside");
         editUserLocation.getItems().add("Outside");

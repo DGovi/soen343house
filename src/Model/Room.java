@@ -2,10 +2,8 @@ package Model;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.*;
-import java.io.InputStream;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,6 +22,7 @@ public class Room {
     protected ArrayList<Door> doors;
     private boolean lightsOn;
     protected MotionSensor roomMotionSensor;
+    protected float[] temperatures;
 
     /**
      * Creates a room object with a name, windows,
@@ -41,6 +40,8 @@ public class Room {
         this.doors = doors;
         this.lightsOn = true;
         roomMotionSensor = new MotionSensor(false);
+        this.temperatures = new float[3];
+        this.temperatures[0] = this.temperatures[1] = this.temperatures[2] = 24;
     }
 
 
@@ -140,6 +141,29 @@ public class Room {
             return "Lights turned ON!";
         else
             return "Lights turned OFF!";
+    }
+
+    /**
+     * Allows to get the desired temperature of the room
+     * @return float temperature of the room
+     */
+    public float[] getTemperatures() {
+        return temperatures;
+    }
+
+    /**
+     * Allows to set the desired temperature of the room
+     * @param morning desired temperature of the room in the morning
+     * @param day desired temperature of the room during the day
+     * @param night desired temperature of the room at night
+     * @return message stating success
+     */
+    public String setTemperatures(float morning, float day, float night) {
+        this.temperatures[0] = morning;
+        this.temperatures[1] = day;
+        this.temperatures[2] = night;
+
+        return "Successfully set the periodic temperatures of the selected room.";
     }
 
     /**
