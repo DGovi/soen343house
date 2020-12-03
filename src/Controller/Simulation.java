@@ -374,6 +374,54 @@ public class Simulation implements Subject {
     }
 
     /**
+     * Takes in a month and returns whether the month is in the summer or not
+     *
+     * @param month int (1-12) that represents the month input
+     * @return true if the month is in summer, false otherwise
+     */
+    public boolean isSummer(int month) {
+        if (month > 12 || month < 1) {
+            return false;
+        }
+        if (this.summer[0] > this.summer[1]) {
+            if (month >= this.summer[0] || month <= this.summer[1]) {
+                return true;
+            }
+            return false;
+        }
+        else {
+            if (month >= this.summer[0] && month <= this.summer[1]) {
+                return true;
+            }
+            return false;
+        }
+    }
+
+    /**
+     * Takes in a month and returns whether the month is in the winter or not
+     *
+     * @param month int (1-12) that represents the month input
+     * @return true if the month is in summer, false otherwise
+     */
+    public boolean isWinter(int month) {
+        if (month > 12 || month < 1) {
+            return false;
+        }
+        if (this.winter[0] > this.winter[1]) {
+            if (month >= this.winter[0] || month <= this.winter[1]) {
+                return true;
+            }
+            else return false;
+        }
+        else {
+            if (month >= this.winter[0] && month <= this.winter[1]) {
+                return true;
+            }
+            else return false;
+        }
+    }
+
+    /**
      * Gets the zones
      * @return
      */
