@@ -1362,7 +1362,6 @@ public class DashboardController {
     /**
      * sets the temperature of the house to a certain temperature when on away mode depending on the month
      */
-    @FXML
     public void setAwaySimTemp(){
         int monthNum = Integer.parseInt(sim.getDate().substring(5,7));
 
@@ -1379,7 +1378,7 @@ public class DashboardController {
                 logText(sim.pw, printToConsole("Away mode temperature set to " + winterAwayTemp.getText()) + " for Winter Weather");
             }
             else{
-                logText(sim.pw, printToConsole("No away mode set for current season"));
+                logText(sim.pw, printToConsole("Current season is not summer or winter."));
             }
         }
 
