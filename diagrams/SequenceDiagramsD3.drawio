@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-12-03T22:15:58.432Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.1 Safari/605.1.15" etag="7nWow9qD2NV9Vy_R2aeq" version="13.10.6" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2020-12-04T04:14:11.434Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.1 Safari/605.1.15" etag="WacD7ZhCuPUEmC7LhffJ" version="13.10.6" type="github" pages="4">
   <diagram id="kgpKYQtTHZ0yAKxKKP6v" name="SetTempForZone/Room">
     <mxGraphModel dx="388" dy="538" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -124,6 +124,61 @@
             <mxPoint x="320" y="330" as="sourcePoint" />
             <mxPoint x="240" y="330" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="w-tRJo2W-2mMPzgcjWOK" name="SetDefaultTemp">
+    <mxGraphModel dx="466" dy="645" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="Ng2WjSJcqN4tj9qCuIeY-0" />
+        <mxCell id="Ng2WjSJcqN4tj9qCuIeY-1" parent="Ng2WjSJcqN4tj9qCuIeY-0" />
+        <mxCell id="Ng2WjSJcqN4tj9qCuIeY-2" value=":User" style="shape=umlLifeline;participant=umlActor;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;spacingTop=36;outlineConnect=0;shadow=0;fillColor=#FFFFFF;" vertex="1" parent="Ng2WjSJcqN4tj9qCuIeY-1">
+          <mxGeometry x="130" y="180" width="20" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="Ng2WjSJcqN4tj9qCuIeY-4" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;shadow=0;fillColor=#FFFFFF;" vertex="1" parent="Ng2WjSJcqN4tj9qCuIeY-2">
+          <mxGeometry x="5" y="70" width="10" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Ng2WjSJcqN4tj9qCuIeY-3" value=":SHH" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;shadow=0;fillColor=#FFFFFF;" vertex="1" parent="Ng2WjSJcqN4tj9qCuIeY-1">
+          <mxGeometry x="280" y="180" width="100" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="Ng2WjSJcqN4tj9qCuIeY-5" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;shadow=0;fillColor=#FFFFFF;" vertex="1" parent="Ng2WjSJcqN4tj9qCuIeY-3">
+          <mxGeometry x="45" y="70" width="10" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Ng2WjSJcqN4tj9qCuIeY-6" value="TempForSummerAndWinter" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="Ng2WjSJcqN4tj9qCuIeY-1" target="Ng2WjSJcqN4tj9qCuIeY-3">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="140" y="250" as="sourcePoint" />
+            <mxPoint x="220" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ng2WjSJcqN4tj9qCuIeY-8" value="updateRecordOfTemp" style="edgeStyle=orthogonalEdgeStyle;html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;entryX=1;entryY=0;" edge="1" parent="Ng2WjSJcqN4tj9qCuIeY-1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="330" y="270" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="355" y="270" />
+            </Array>
+            <mxPoint x="335" y="290" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ng2WjSJcqN4tj9qCuIeY-9" value="SuccessMessage" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;exitX=0.2;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="Ng2WjSJcqN4tj9qCuIeY-1" source="Ng2WjSJcqN4tj9qCuIeY-5" target="Ng2WjSJcqN4tj9qCuIeY-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="270" y="329.5" as="sourcePoint" />
+            <mxPoint x="190" y="329.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="8MvD7-P4snf87cYQ7J5n" name="Page-4">
+    <mxGraphModel dx="1186" dy="645" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="nOwNBk0ENd_ktqmfTxCf-0" />
+        <mxCell id="nOwNBk0ENd_ktqmfTxCf-1" parent="nOwNBk0ENd_ktqmfTxCf-0" />
+        <mxCell id="nOwNBk0ENd_ktqmfTxCf-2" value=":User" style="shape=umlLifeline;participant=umlActor;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;spacingTop=36;outlineConnect=0;shadow=0;fillColor=#FFFFFF;" vertex="1" parent="nOwNBk0ENd_ktqmfTxCf-1">
+          <mxGeometry x="150" y="150" width="20" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="nOwNBk0ENd_ktqmfTxCf-3" value=":SHH" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;shadow=0;fillColor=#FFFFFF;" vertex="1" parent="nOwNBk0ENd_ktqmfTxCf-1">
+          <mxGeometry x="290" y="150" width="100" height="300" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
