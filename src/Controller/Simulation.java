@@ -23,7 +23,6 @@ import java.util.Random;
  */
 public class Simulation implements Subject {
     private static Simulation simInstance;
-
     private String date;
     private Time time;
     private long lastRealTime;
@@ -39,11 +38,11 @@ public class Simulation implements Subject {
     private int copDelay;
     private final ArrayList<Room> awayLightsOn = new ArrayList<>();
     private ArrayList<Zone> zones;
-
     private final int[] summer;
     private final int[] winter;
     private float summerAwayTemp;
     private float winterAwayTemp;
+    private SHHMonitor monitor;
 
     File logFile = new File("logFile.txt");
     PrintWriter pw = new PrintWriter(new FileWriter(logFile, true));
@@ -88,6 +87,10 @@ public class Simulation implements Subject {
         this.winter[1] = 2;
         this.summerAwayTemp = 24;
         this.winterAwayTemp = 24;
+
+        // start SHHMonitor
+        this.monitor = new SHHMonitor();
+        this.monitor.start();
     }
 
     public static Simulation createInstance(String date, Time time, float temperature, File houseInput, File usersFile) throws IOException, JSONException {
