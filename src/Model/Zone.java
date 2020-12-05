@@ -6,6 +6,7 @@ import java.util.ArrayList;
  */
 public class Zone {
     private ArrayList<Room> rooms;
+    private float[] temperatures;
 
     /**
      * Constructor with list of rooms in the zone
@@ -13,6 +14,10 @@ public class Zone {
      */
     public Zone(ArrayList<Room> rooms) {
         this.rooms = rooms;
+        this.temperatures = new float[3];
+        this.temperatures[0] = 24;
+        this.temperatures[1] = 24;
+        this.temperatures[2] = 24;
     }
 
     /**
@@ -22,6 +27,7 @@ public class Zone {
     public Zone(Room room) {
         this.rooms = new ArrayList<>();
         this.rooms.add(room);
+        this.temperatures = room.getTemperatures();
     }
 
     /**
@@ -67,5 +73,28 @@ public class Zone {
             return "Successfully added room to zone.";
         }
         return "Room is already in this zone. (Room should have been removed from zone and added back...)";
+    }
+
+    /**
+     * Get desired temperatures of zone
+     * @return float array with temperatures
+     */
+    public float[] getTemperatures() {
+        return temperatures;
+    }
+
+    /**
+     * Set desired period temperatures of zone
+     * @param morning float desired temperature in the morning
+     * @param day float desired temperature during the day
+     * @param night float desired tmperature at night
+     * @return message stating success
+     */
+    public String setTemperatures(float morning, float day, float night) {
+        this.temperatures[0] = morning;
+        this.temperatures[1] = day;
+        this.temperatures[2] = night;
+
+        return "Successfully set the period temperatures of the selected zone.";
     }
 }
