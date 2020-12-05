@@ -27,4 +27,9 @@ public class DashboardDriver extends Application {
         window.show();
     }
 
+    @Override
+    public void stop(){
+        System.exit(0);
+    }
+
 }
