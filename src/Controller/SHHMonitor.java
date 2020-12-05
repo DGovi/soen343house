@@ -5,12 +5,24 @@ public class SHHMonitor extends Thread{
 
     public void run() {
         while (true) {
-            System.out.println("fizz pop bang");
+            // perform monitoring
+            checkIfShouldOpenWindow();
+            checkIfTempBelowZero();
+
+            // sleep
             try {
                 Thread.sleep(SLEEP_TIME);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void checkIfShouldOpenWindow() {
+
+    }
+
+    private void checkIfTempBelowZero() {
+
     }
 }
