@@ -25,7 +25,7 @@ public class Room {
     private boolean lightsOn;
     protected MotionSensor roomMotionSensor;
     protected float[] temperatures;
-    private float realTemperature;
+    private float actualTemperature;
     private boolean hvacON;
 
     private static final long morningDayBound = new Time(6, 0, 0).getTime();
@@ -49,7 +49,7 @@ public class Room {
         this.roomMotionSensor = new MotionSensor(false);
         this.temperatures = new float[3];
         this.temperatures[0] = this.temperatures[1] = this.temperatures[2] = temperature; // morning - day - night
-        this.realTemperature = temperature;
+        this.actualTemperature = temperature;
         this.hvacON = false;
     }
 
@@ -225,14 +225,34 @@ public class Room {
         return rooms;
     }
 
-    public float getRealTemperature() {
-        return realTemperature;
+    /**
+     * Gets the actual temperature of the Room.
+     * This value signifies the real temperature of the Room at the current moment
+     * not the desired one.
+     *
+     * @return the actual temperature of the Room
+     */
+    public float getActualTemperature() {
+        return actualTemperature;
     }
 
-    public void setRealTemperature(float realTemperature) {
-        this.realTemperature = realTemperature;
+    /**
+     * Sets the actual temperature of the Room.
+     *
+     * @param actualTemperature  the new actual temperature of the room
+     */
+    public void setActualTemperature(float actualTemperature) {
+        this.actualTemperature = actualTemperature;
     }
 
+    /**
+     * Calculates and returns the desired temperature of the room.
+     * This is the temperature that the HVAC system will gradually and continuously
+     * shift the room temperature towards.
+     *
+     * @param currentTime the current time of the simulation
+     * @return the desired temperature in degrees celcius
+     */
     public float calculateDesiredTemperature(Time currentTime) {
         long time = currentTime.getTime();
         if (time < Room.morningDayBound)
@@ -243,10 +263,20 @@ public class Room {
             return this.getTemperatures()[2]; // nighttime
     }
 
+    /**
+     * Gets the ON/OFF status of the HVAC system in the given room.
+     *
+     * @return true if the HVAC is ON, false otherwise
+     */
     public boolean isHvacON() {
         return hvacON;
     }
 
+    /**
+     * Sets the ON/OFF status of the HVAC system in the given room.
+     *
+     * @param hvacON the new HVAC ON/OFF status
+     */
     public void setHvacON(boolean hvacON) {
         this.hvacON = hvacON;
     }

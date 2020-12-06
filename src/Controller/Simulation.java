@@ -938,6 +938,11 @@ public class Simulation implements Subject {
                 + loggedInUser + "]";
     }
 
+    /**
+     * Gets the time speed of the simulation.
+     *
+     * @return the time speed of the simulation
+     */
     public float getTimeSpeed() {
         return timeSpeed;
     }
@@ -952,30 +957,65 @@ public class Simulation implements Subject {
         return "Set time speed to " + speed.toString() + ".";
     }
 
+    /**
+     * Gets the running status of the simulation.
+     *
+     * @return true if Simulation is running, false otherwise
+     */
     public boolean isRunning() {
         return running;
     }
 
+    /**
+     * Gets the isLightAuto attribute of the simulation.
+     *
+     * @return true if auto light mode is on, false otherwise
+     */
     public boolean isLightAuto() {
         return LightAuto;
     }
 
+    /**
+     * Sets the isLightAuto attribute of the simulation.
+     *
+     * @param lightAuto the new auto light mode value
+     */
     public void setLightAuto(boolean lightAuto) {
         LightAuto = lightAuto;
     }
 
+    /**
+     * Gets the Away Mode status of the Simulation.
+     *
+     * @return true if Away Mode is active, false otherwise
+     */
     public boolean isAway() {
         return isAway;
     }
 
+    /**
+     * Sets the Away Mode status of the Simulation.
+     *
+     * @param away the new Away Mode value
+     */
     public void setAway(boolean away) {
         isAway = away;
     }
 
+    /**
+     * Sets the temperature for summer, when away mode is active.
+     *
+     * @param summerAwayTemp the new temperature for summer during away mode
+     */
     public void setSummerAwayTemp(float summerAwayTemp) {
         this.summerAwayTemp = summerAwayTemp;
     }
 
+    /**
+     * Sets the temperature for winter, when away mode is active.
+     *
+     * @param winterAwayTemp the new temperature for winter during away mode
+     */
     public void setWinterAwayTemp(float winterAwayTemp) {
         this.winterAwayTemp = winterAwayTemp;
     }

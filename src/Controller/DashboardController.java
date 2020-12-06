@@ -1084,7 +1084,7 @@ public class DashboardController {
         gc.fillText(room.getName(), x + 5, y + 17);
 
         // drawing room temperature
-        gc.fillText(String.format("%.2f", room.getRealTemperature()), x + 5, y + 50);
+        gc.fillText(String.format("%.2f", room.getActualTemperature()), x + 5, y + 50);
 
         // drawing HVAC icon
         if (room.isHvacON()) {

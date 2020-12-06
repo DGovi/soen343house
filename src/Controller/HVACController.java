@@ -1,8 +1,12 @@
 package Controller;
 
 import Model.Room;
-import View.DashboardDriver;
 
+/**
+ * A thread to continuously handle the logic of the smart home HCC
+ * HVAC heating and cooling rooms.  As well as the decay of room
+ * temperature towards the outside temperature when the HVAC is off in a room.
+ */
 public class HVACController extends  Thread{
     private Simulation masterSim;
     private final float HVAC_POWER = (float) 0.1;
@@ -10,11 +14,22 @@ public class HVACController extends  Thread{
     private final float TEMP_MATCH_LEEWAY = (float) 0.05;
     private final float HVAC_START_LEEWAY= (float) 0.25;
 
+    /**
+     * Constructor of the DashboardController class.
+     *
+     * @param masterSim the Simulation object that the HVAC is attached to
+     */
     public HVACController(Simulation masterSim){
         super();
         this.masterSim = masterSim;
     }
 
+    /**
+     * Method that is run when the thread is started.
+     * Performs the logic to increase/decrease room temperatures
+     * based on their desired temperatures, the simulation speed, and the
+     * power of the HVAC system.
+     */
     public void run() {
         while (true) {
             // perform HVAC logic
@@ -23,7 +38,7 @@ public class HVACController extends  Thread{
                 float HVACStep = HVAC_POWER * speed;
                 float decayStep = DECAY_POWER * speed;
 
-                float currentTemperature = room.getRealTemperature();
+                float currentTemperature = room.getActualTemperature();
                 float desiredTemperature = room.calculateDesiredTemperature(masterSim.getTime());
                 float outsideTemperature = masterSim.getTemperature();
 
@@ -35,18 +50,18 @@ public class HVACController extends  Thread{
                        room.setHvacON(false);
 
                     if (desiredTemperature < currentTemperature)
-                        room.setRealTemperature(currentTemperature - HVACStep);
+                        room.setActualTemperature(currentTemperature - HVACStep);
                     else
-                        room.setRealTemperature(currentTemperature + HVACStep);
+                        room.setActualTemperature(currentTemperature + HVACStep);
                 } else {
                     if (desiredTempDiff > HVAC_START_LEEWAY)
                         room.setHvacON(true);
 
                     if (outsideTempDiff > TEMP_MATCH_LEEWAY) {
                        if (outsideTemperature < currentTemperature)
-                           room.setRealTemperature(currentTemperature - decayStep);
+                           room.setActualTemperature(currentTemperature - decayStep);
                        else
-                           room.setRealTemperature(currentTemperature + decayStep);
+                           room.setActualTemperature(currentTemperature + decayStep);
                     }
                 }
             }
