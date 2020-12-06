@@ -14,7 +14,6 @@ import javafx.stage.Stage;
  */
 public class DashboardDriver extends Application {
     Stage window;
-    public static DashboardController controllerInstance;
 
     public static void main(String[] args) {
         launch(args);
@@ -25,7 +24,6 @@ public class DashboardDriver extends Application {
     public void start(Stage window) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
         Parent root = loader.load();
-        this.controllerInstance = loader.getController();
         window.setTitle("Smart Home Simulator");
         window.setScene(new Scene(root, 870, 850));
         window.show();

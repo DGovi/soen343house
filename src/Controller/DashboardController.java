@@ -190,8 +190,12 @@ public class DashboardController {
                         new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent event) {
-                                if (sim != null)
+                                if (sim != null) {
+                                    // update dashboard
                                     updateDashboard();
+                                    // redraw house
+                                    renderLayout(sim.getHouse());
+                                }
                             }
                         }));
         refreshDashboard.setCycleCount(Timeline.INDEFINITE);
@@ -1073,7 +1077,7 @@ public class DashboardController {
         gc.fillText(room.getName(), x + 5, y + 17);
 
         // drawing room temperature
-        gc.fillText(String.valueOf(room.getRealTemperature()), x + 5, y + 50);
+        gc.fillText(String.format("%.2f", room.getRealTemperature()), x + 5, y + 50);
 
     }
 

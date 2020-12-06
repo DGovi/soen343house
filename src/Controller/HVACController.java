@@ -48,11 +48,6 @@ public class HVACController extends  Thread{
                 }
             }
 
-            // TODO: DELETE ME
-            // update smart home visualization
-//            if (DashboardDriver.controllerInstance != null)
-//                DashboardDriver.controllerInstance.updateDashboard();
-
             // sleep
             try {
                 Thread.sleep(1000);
