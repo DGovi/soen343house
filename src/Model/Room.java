@@ -258,7 +258,7 @@ public class Room {
      */
     public float calculateDesiredTemperature(Simulation parentSim, Time currentTime) {
         if (parentSim.getIsAway()) {
-            if (parentSim.isWinter(Date.valueOf(parentSim.getDate()).getMonth())) { // winter
+            if (parentSim.getSimulationTimes().isWinter(Date.valueOf(parentSim.getSimulationTimes().getDate()).getMonth())) { // winter
                 return parentSim.getWinterAwayTemp();
             } else { // summer
                 return parentSim.getSummerAwayTemp();
