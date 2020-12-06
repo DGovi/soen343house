@@ -2,6 +2,11 @@ package Controller;
 
 public class SHHMonitor extends Thread{
     private final int SLEEP_TIME = 1000; //ms
+    private Simulation master_sim;
+
+    public SHHMonitor(Simulation master_sim) {
+        this.master_sim = master_sim;
+    }
 
     public void run() {
         while (true) {

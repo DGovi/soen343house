@@ -89,7 +89,7 @@ public class Simulation implements Subject {
         this.winterAwayTemp = 24;
 
         // start SHHMonitor
-        this.monitor = new SHHMonitor();
+        this.monitor = new SHHMonitor(this);
         this.monitor.start();
     }
 
