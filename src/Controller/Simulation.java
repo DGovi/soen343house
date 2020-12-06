@@ -310,15 +310,6 @@ public class Simulation implements Subject {
         return "Time set to: " + time + ".";
     }
 
-    /**
-     * Sets the time speed of the simulation
-     *
-     * @param speed multiplier for time speed
-     */
-    public String setTimeSpeed(Float speed) {
-        timeSpeed = speed;
-        return "Set time speed to " + speed.toString() + ".";
-    }
 
     /**
      * Gets the temperature outside the home in the simulation.
@@ -947,5 +938,45 @@ public class Simulation implements Subject {
                 + loggedInUser + "]";
     }
 
+    public float getTimeSpeed() {
+        return timeSpeed;
+    }
 
+    /**
+     * Sets the time speed of the simulation
+     *
+     * @param speed multiplier for time speed
+     */
+    public String setTimeSpeed(Float speed) {
+        timeSpeed = speed;
+        return "Set time speed to " + speed.toString() + ".";
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public boolean isLightAuto() {
+        return LightAuto;
+    }
+
+    public void setLightAuto(boolean lightAuto) {
+        LightAuto = lightAuto;
+    }
+
+    public boolean isAway() {
+        return isAway;
+    }
+
+    public void setAway(boolean away) {
+        isAway = away;
+    }
+
+    public void setSummerAwayTemp(float summerAwayTemp) {
+        this.summerAwayTemp = summerAwayTemp;
+    }
+
+    public void setWinterAwayTemp(float winterAwayTemp) {
+        this.winterAwayTemp = winterAwayTemp;
+    }
 }

@@ -19,6 +19,10 @@ public class HVACController extends  Thread{
         while (true) {
             // perform HVAC logic
             for (Room room : masterSim.getHouse().getRooms()) {
+                float speed = masterSim.getTimeSpeed();
+                float HVACStep = HVAC_POWER * speed;
+                float decayStep = DECAY_POWER * speed;
+
                 float currentTemperature = room.getRealTemperature();
                 float desiredTemperature = room.calculateDesiredTemperature(masterSim.getTime());
                 float outsideTemperature = masterSim.getTemperature();
@@ -31,18 +35,18 @@ public class HVACController extends  Thread{
                        room.setHvacON(false);
 
                     if (desiredTemperature < currentTemperature)
-                        room.setRealTemperature(currentTemperature - HVAC_POWER);
+                        room.setRealTemperature(currentTemperature - HVACStep);
                     else
-                        room.setRealTemperature(currentTemperature + HVAC_POWER);
+                        room.setRealTemperature(currentTemperature + HVACStep);
                 } else {
                     if (desiredTempDiff > HVAC_START_LEEWAY)
                         room.setHvacON(true);
 
                     if (outsideTempDiff > TEMP_MATCH_LEEWAY) {
                        if (outsideTemperature < currentTemperature)
-                           room.setRealTemperature(currentTemperature - DECAY_POWER);
+                           room.setRealTemperature(currentTemperature - decayStep);
                        else
-                           room.setRealTemperature(currentTemperature + DECAY_POWER);
+                           room.setRealTemperature(currentTemperature + decayStep);
                     }
                 }
             }
