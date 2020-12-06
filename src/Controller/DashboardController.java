@@ -1079,6 +1079,11 @@ public class DashboardController {
         // drawing room temperature
         gc.fillText(String.format("%.2f", room.getRealTemperature()), x + 5, y + 50);
 
+        // drawing HVAC icon
+        if (room.isHvacON()) {
+            Image hvacImage = new Image("file:HVAC.jpg");
+            gc.drawImage(hvacImage, x+5, y+60, 20, 20);
+        }
     }
 
     /**
