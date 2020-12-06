@@ -1,4 +1,5 @@
 package Tests;
+import Model.Room;
 import com.sun.tools.internal.xjc.model.Model;
 import org.junit.jupiter.api.Test;
 
@@ -24,6 +25,8 @@ class RoomZoneTempTest {
     @Test
     void testZoneTemp() throws IOException, JSONException{
         Simulation testSim = Simulation.createInstance("", java.sql.Time.valueOf(LocalTime.now()), 25, HOUSE_FILE, USER_FILE);
-        assertEquals(testSim.getHouse().getRooms().get(0).getTemperatures(),testSim.getHouse().getRooms().get(1).getTemperatures());
+        float[] temps = testSim.getHouse().getRooms().get(0).getTemperatures();
+        assertEquals(testSim.getHouse().getRooms().get(0).getTemperatures(), temps);
+
     }
 }
