@@ -184,6 +184,8 @@ public class DashboardController {
     private TextField shhRoomDayTemperature;
     @FXML
     private TextField shhRoomNightTemperature;
+    @FXML
+    private Label permissionsHeater;
 
     private final double  REFRESH_DELAY = 100; // ms
 
@@ -730,18 +732,23 @@ public class DashboardController {
             permissionsDeleteUser.setText("Delete user: Able");
             permissionsControlWindows.setText("Open/Close Windows: Able");
             permissionsAwayMode.setText("Set Away Mode: Able");
+            permissionsHeater.setText("Heater: Able");
         } else if (sim.getLoggedInUser().getType() == UserType.CHILD) {
             permissionsDeleteUser.setText("Delete user: Not Able");
             permissionsControlWindows.setText("Open/Close Windows: Only when in room");
             permissionsAwayMode.setText("Set Away Mode: Able");
+            permissionsHeater.setText("Heater: Not Able");
         } else if (sim.getLoggedInUser().getType() == UserType.GUEST) {
             permissionsDeleteUser.setText("Delete user: Not Able");
             permissionsControlWindows.setText("Open/Close Windows: Only when in room");
             permissionsAwayMode.setText("Set Away Mode: Not Able");
+            permissionsHeater.setText("Heater: Able");
         } else if (sim.getLoggedInUser().getType() == UserType.STRANGER) {
             permissionsDeleteUser.setText("Delete user: Not Able");
             permissionsControlWindows.setText("Open/Close Windows: Not Able");
             permissionsAwayMode.setText("Set Away Mode: Not Able");
+            permissionsHeater.setText("Heater: Not Able");
+
         }
 
         // reset list of users

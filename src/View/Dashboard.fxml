@@ -125,6 +125,8 @@
                 <Label fx:id="permissionsControlWindows" text="Open/Close Windows:"/>
                 <Label text="SHP:"/>
                 <Label fx:id="permissionsAwayMode" text="Set Away Mode:"/>
+                <Label text="SHH:"/>
+                <Label fx:id="permissionsHeater" text="Heater:"/>
                 <Separator prefWidth="200.0">
                   <VBox.margin>
                     <Insets left="-5.0" right="-5.0" top="10.0"/>
