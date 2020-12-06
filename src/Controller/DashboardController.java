@@ -185,9 +185,16 @@ public class DashboardController {
     @FXML
     private TextField shhRoomNightTemperature;
 
+    private final double  REFRESH_DELAY = 250; // ms
+
+    /**
+     * Constructor of the DashboardController class.
+     * Essentially creates a constant event that continuously updates the
+     * dashboard and visualization every REFRESH_DELAY milliseconds
+     */
     public DashboardController() {
         Timeline refreshDashboard = new Timeline(
-                new KeyFrame(Duration.seconds(1),
+                new KeyFrame(Duration.millis(REFRESH_DELAY),
                         new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent event) {
