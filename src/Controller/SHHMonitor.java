@@ -1,12 +1,14 @@
 package Controller;
 
+import Model.Room;
+
 public class SHHMonitor extends Thread{
     private final int SLEEP_TIME = 1000; //ms
-    private Simulation master_sim;
+    private Simulation masterSim;
 
-    public SHHMonitor(Simulation master_sim) {
+    public SHHMonitor(Simulation masterSim) {
         super();
-        this.master_sim = master_sim;
+        this.masterSim = masterSim;
     }
 
     public void run() {
@@ -25,7 +27,9 @@ public class SHHMonitor extends Thread{
     }
 
     private void checkIfShouldOpenWindow() {
-
+        for (Room room : masterSim.getHouse().getRooms()) {
+            System.out.println(room.calculateDesiredTemperature(masterSim.getTime()));
+        }
     }
 
     private void checkIfTempBelowZero() {

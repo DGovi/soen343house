@@ -3,6 +3,7 @@ package Model;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.sql.Time;
 import java.util.*;
 
 import org.json.JSONArray;
@@ -25,6 +26,9 @@ public class Room {
     protected float[] temperatures;
     private float real_temperature;
 
+    private static final long morningDayBound = new Time(6, 0, 0).getTime();
+    private static final long dayNightBound = new Time(18, 0, 0).getTime();
+
     /**
      * Creates a room object with a name, windows,
      * lights, and doors.
@@ -42,7 +46,7 @@ public class Room {
         this.lightsOn = true;
         this.roomMotionSensor = new MotionSensor(false);
         this.temperatures = new float[3];
-        this.temperatures[0] = this.temperatures[1] = this.temperatures[2] = 24;
+        this.temperatures[0] = this.temperatures[1] = this.temperatures[2] = 24; // morning - day - night
         this.real_temperature = temperature;
     }
 
@@ -224,5 +228,15 @@ public class Room {
 
     public void setReal_temperature(float real_temperature) {
         this.real_temperature = real_temperature;
+    }
+
+    public float calculateDesiredTemperature(Time currentTime) {
+        long time = currentTime.getTime();
+        if (time < Room.morningDayBound)
+            return this.getTemperatures()[0]; // morning
+        else if (time < Room.morningDayBound)
+            return this.getTemperatures()[1]; // daytime
+        else
+            return this.getTemperatures()[2]; // nighttime
     }
 }

@@ -1,16 +1,20 @@
 package Controller;
 
-public class HVAC extends  Thread{
-    private Simulation master_sim;
+import Model.Room;
 
-    public HVAC(Simulation master_sim){
+import java.sql.Time;
+
+public class HVAC extends  Thread{
+    private Simulation masterSim;
+
+    public HVAC(Simulation masterSim){
         super();
-        this.master_sim = master_sim;
+        this.masterSim = masterSim;
     }
 
     public void run() {
         while (true) {
-            System.out.println("hello world");
+            //System.out.println("hello world");
 
             // sleep
             try {
@@ -20,5 +24,6 @@ public class HVAC extends  Thread{
             }
         }
     }
+
 
 }
