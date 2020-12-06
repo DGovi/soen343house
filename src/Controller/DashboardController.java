@@ -3,6 +3,7 @@ package Controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.sql.Time;
 import java.util.*;
 import java.text.DateFormat;
@@ -791,7 +792,7 @@ public class DashboardController {
     public void afterLoadInitialize(File file) throws JSONException, IOException {
         // Set simulation
         sim = Simulation.createInstance(
-                "",
+                new Date(2020,12,6).toString(),
                 java.sql.Time.valueOf(LocalTime.now()),
                 25,
                 file,
