@@ -222,22 +222,21 @@ public class DashboardController {
             float newTemperatureInt = Float.parseFloat(newTemperature);
             sim.setTemperature(newTemperatureInt);
             updateDashboard();
-            printToConsole("Setting simulation temperature to " + newTemperature + "!");
-
+            logText(sim.pw,printToConsole("Setting simulation temperature to " + newTemperature + "!"));
             if(newTemperatureInt < 0)
-                printToConsole("ALERT: Temperatures below 0 will cause damage to pipes");
+                logText(sim.pw, printToConsole("ALERT: Temperatures below 0 will cause damage to pipes"));
             else if (newTemperatureInt >= 0 && newTemperatureInt < 10)
-                printToConsole("ALERT: temperature is close to 0 degrees.");
+                logText(sim.pw, printToConsole("ALERT: temperature is close to 0 degrees."));
             else if(newTemperatureInt >= 30 && newTemperatureInt < 60)
-                printToConsole("ALERT: temperature is getting high. please consider using AC cooling. ");
+                logText(sim.pw, printToConsole("ALERT: temperature is getting high. please consider using AC cooling. "));
             else if(newTemperatureInt >= 60 )
-                printToConsole("ALERT: temperature is dangerously high. KEEP WINDOWS CLOSED AND AC ON");
+                logText(sim.pw, printToConsole("ALERT: temperature is dangerously high. KEEP WINDOWS CLOSED AND AC ON"));
 
             else
-                printToConsole("Temperature OK, no immediate danger");
+                logText(sim.pw, printToConsole("Temperature OK, no immediate danger"));
 
         } catch (Exception e) {
-            printToConsole("ERROR: Inputted temperature is not a valid float.");
+            logText(sim.pw, printToConsole("ERROR: Inputted temperature is not a valid float."));
         }
     }
 
@@ -248,13 +247,13 @@ public class DashboardController {
     private void addUser() {
         UserType type = null;
         if (createUserName.getText().length() == 0) {
-            printToConsole("ERROR: Name field must not be empty.");
+            logText(sim.pw, printToConsole("ERROR: Name field must not be empty."));
             return;
         } else if (createUserType.getValue() == null) {
-            printToConsole("ERROR: Type field must not be empty.");
+            logText(sim.pw, printToConsole("ERROR: Type field must not be empty."));
             return;
         } else if (createUserPassword.getText() == null) {
-            printToConsole("ERROR: Password cannot be null.");
+            logText(sim.pw, printToConsole("ERROR: Password cannot be null."));
         } else if (createUserType.getValue().equals("Parent")) {
             type = UserType.PARENT;
         } else if (createUserType.getValue().equals("Child")) {
@@ -264,7 +263,7 @@ public class DashboardController {
         } else if (createUserType.getValue().equals("Stranger")) {
             type = UserType.STRANGER;
         } else {
-            printToConsole("ERROR: Unhandled add user case. You did something weird.");
+            logText(sim.pw, printToConsole("ERROR: Unhandled add user case. You did something weird."));
             return;
         }
     }
@@ -275,7 +274,7 @@ public class DashboardController {
     @FXML
     private void changeHouseLocation() {
         String newCountry = CountriesWindow.display("Choose Country", "Choose Country");
-        printToConsole(sim.setHouseLocation(newCountry));
+        logText(sim.pw, printToConsole(sim.setHouseLocation(newCountry)));
         updateDashboard();
     }
 
@@ -288,7 +287,7 @@ public class DashboardController {
         Room previousLocation = sim.getLoggedInUser().getLocation();
 
         String message = sim.setLoggedInUserLocation(locationName);
-        printToConsole(message);
+        logText(sim.pw, printToConsole(message));
 
         if (message.equals("Sorry the doors are locked")) {
             String name = previousLocation == null ? "Outside" : previousLocation.getName();
@@ -302,7 +301,7 @@ public class DashboardController {
 
         if (sim.getLightAuto()) {
             if (!locationName.equals("Outside")) {
-                printToConsole("Automatically turning lights on.");
+                logText(sim.pw, printToConsole("Automatically turning lights on."));
                 sim.getHouse().getRoomFromName(locationName).setLightsOn(true);
             }
             if (previousLocation != null && sim.getUsersInRoom(previousLocation).isEmpty()) {
@@ -320,12 +319,12 @@ public class DashboardController {
     @FXML
     private void setSeasons() {
         if (sim.getLoggedInUser().getType() == UserType.PARENT) {
-            printToConsole(sim.setSeasons(
+            logText(sim.pw, printToConsole(sim.setSeasons(
                     summerSpinner1.getValue(),
                     summerSpinner2.getValue(),
                     winterSpinner1.getValue(),
                     winterSpinner2.getValue()
-            ));
+            )));
         } else {
             printToConsole("ERROR: User must be a parent to change the season intervals.");
         }
@@ -337,16 +336,16 @@ public class DashboardController {
     @FXML
     private void setSeasonalAwayTemperatures() {
         if (summerAwayTemp.getText().length() == 0 || winterAwayTemp.getText().length() == 0) {
-            printToConsole("ERROR: Must provide input.");
+            logText(sim.pw, printToConsole("ERROR: Must provide input."));
             return;
         }
         try {
-            printToConsole(sim.setSeasonalAwayTemperatures(
+            logText(sim.pw, printToConsole(sim.setSeasonalAwayTemperatures(
                     Float.parseFloat(summerAwayTemp.getText()),
                     Float.parseFloat(winterAwayTemp.getText())
-            ));
+            )));
         } catch (Exception e) {
-            printToConsole("ERROR: Invalid input");
+            logText(sim.pw, printToConsole("ERROR: Invalid input"));
         }
 
     }
@@ -356,7 +355,7 @@ public class DashboardController {
      */
     @FXML
     private void login() {
-        printToConsole(sim.login(loginName.getText(), loginPassword.getText()));
+        logText(sim.pw, printToConsole(sim.login(loginName.getText(), loginPassword.getText())));
         updateDashboard();
     }
 
@@ -365,12 +364,14 @@ public class DashboardController {
      */
     @FXML
     private void createUser() throws JSONException, IOException {
-        printToConsole(
-                sim.addUser(
-                        createUserName.getText(),
-                        createUserPassword.getText(),
-                        createUserType.getValue(),
-                        createUserLocation.getValue()
+        logText(sim.pw,
+                printToConsole(
+                    sim.addUser(
+                            createUserName.getText(),
+                            createUserPassword.getText(),
+                            createUserType.getValue(),
+                            createUserLocation.getValue()
+                    )
                 )
         );
 
@@ -384,14 +385,16 @@ public class DashboardController {
     @FXML
     private void editUser() throws JSONException, IOException {
         String choice = editUserChoice.getValue();
-        printToConsole(
-                sim.editUser(
-                        editUserChoice.getValue(),
-                        editUserCurrentPassword.getText(),
-                        editUserNewPassword.getText(),
-                        editUserType.getValue(),
-                        editUserLocation.getValue()
-                )
+        logText(sim.pw,
+            printToConsole(
+                    sim.editUser(
+                            editUserChoice.getValue(),
+                            editUserCurrentPassword.getText(),
+                            editUserNewPassword.getText(),
+                            editUserType.getValue(),
+                            editUserLocation.getValue()
+                    )
+            )
         );
         updateDashboard();
         this.renderLayout(sim.getHouse());
@@ -403,7 +406,7 @@ public class DashboardController {
      */
     @FXML
     private void deleteUser() throws JSONException, IOException {
-        printToConsole(sim.removeUser(deleteUserChoice.getValue()));
+        logText(sim.pw, printToConsole(sim.removeUser(deleteUserChoice.getValue())));
         updateDashboard();
     }
 
@@ -1392,7 +1395,7 @@ public class DashboardController {
     public void updateCopDelay() {
         String copDelayString = copDelayField.getText();
         if (copDelayString.isEmpty()) {
-            printToConsole("ERROR: You must enter a value for the new delay.");
+            logText(sim.pw, printToConsole("ERROR: You must enter a value for the new delay."));
             return;
         }
 
@@ -1400,12 +1403,12 @@ public class DashboardController {
         try {
             copDelay = Integer.valueOf(copDelayString);
             if (copDelay < 0) {
-                printToConsole("ERROR: You must enter a valid and positive integer.");
+                logText(sim.pw, printToConsole("ERROR: You must enter a valid and positive integer."));
                 return;
             }
-            printToConsole(sim.setCopDelay(copDelay));
+            logText(sim.pw, printToConsole(sim.setCopDelay(copDelay)));
         } catch (Exception e) {
-            printToConsole("ERROR: You must enter a valid integer.");
+            logText(sim.pw, printToConsole("ERROR: You must enter a valid integer."));
         }
     }
 
@@ -1422,7 +1425,7 @@ public class DashboardController {
          */
         @Override
         public void run() {
-            printToConsole("INTRUDER ALERT! THE AUTHORITIES HAVE BEEN NOTIFIED!");
+            logText(sim.pw, printToConsole("INTRUDER ALERT! THE AUTHORITIES HAVE BEEN NOTIFIED!"));
         }
     }
 
