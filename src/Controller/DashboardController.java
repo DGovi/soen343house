@@ -319,7 +319,7 @@ public class DashboardController {
     @FXML
     private void setSeasons() {
         if (sim.getLoggedInUser().getType() == UserType.PARENT) {
-            logText(sim.pw, printToConsole(sim.setSeasons(
+            logText(sim.pw, printToConsole(sim.getSimulationTimes().setSeasons(
                     summerSpinner1.getValue(),
                     summerSpinner2.getValue(),
                     winterSpinner1.getValue(),
@@ -753,8 +753,8 @@ public class DashboardController {
         }
 
         // updating date and time
-        dateLabel.setText("Date is: " + sim.getDate());
-        timeLabel.setText(sim.getTime().toString());
+        dateLabel.setText("Date is: " + sim.getSimulationTimes().getDate());
+        timeLabel.setText(sim.getSimulationTimes().getTime().toString());
         timeHourInput.setText("");
         timeMinuteInput.setText("");
         timeSecondInput.setText("");
@@ -809,10 +809,10 @@ public class DashboardController {
         );
         currentUser.setText(sim.getLoggedInUser().getName());
 
-        summerSpinner1.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, sim.getSummer()[0]));
-        summerSpinner2.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, sim.getSummer()[1]));
-        winterSpinner1.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, sim.getWinter()[0]));
-        winterSpinner2.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, sim.getWinter()[1]));
+        summerSpinner1.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, sim.getSimulationTimes().getSummer()[0]));
+        summerSpinner2.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, sim.getSimulationTimes().getSummer()[1]));
+        winterSpinner1.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, sim.getSimulationTimes().getWinter()[0]));
+        winterSpinner2.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, sim.getSimulationTimes().getWinter()[1]));
         summerAwayTemp.setText(String.valueOf(sim.getSummerAwayTemp()));
         winterAwayTemp.setText(String.valueOf(sim.getWinterAwayTemp()));
 
@@ -1167,7 +1167,7 @@ public class DashboardController {
      */
     //shows entered date in label box
     public void displayDate(javafx.event.ActionEvent actionEvent) {
-        printToConsole(sim.setDate(datePicker.getValue().toString()));
+        printToConsole(sim.getSimulationTimes().setDate(datePicker.getValue().toString()));
         updateDashboard();
     }
 
@@ -1196,7 +1196,7 @@ public class DashboardController {
                     printToConsole("Invalid time speed input.");
                     return;
                 }
-                sim.setTimeSpeed(speed);
+                sim.getSimulationTimes().setTimeSpeed(speed);
                 printToConsole("Set time speed.");
             }
             return;
@@ -1245,8 +1245,8 @@ public class DashboardController {
             return;
         }
         Time t = new Time(hour, minute, second);
-        printToConsole(sim.setTimeSpeed(speed));
-        printToConsole(sim.setTime(t));
+        printToConsole(sim.getSimulationTimes().setTimeSpeed(speed));
+        printToConsole(sim.getSimulationTimes().setTime(t));
         updateDashboard();
     }
 
@@ -1263,7 +1263,7 @@ public class DashboardController {
                 try {
                     Time from = new java.sql.Time(formatter.parse(f).getTime());
                     Time to = new java.sql.Time(formatter.parse(t).getTime());
-                    String[] s = sim.getTime().toString().split(":");
+                    String[] s = sim.getSimulationTimes().getTime().toString().split(":");
                     Time now = new java.sql.Time(formatter.parse(s[0] + ":" + s[1]).getTime());
                     if (now.after(to) || now.before(from)) {
                         updateDashboard();
@@ -1433,17 +1433,17 @@ public class DashboardController {
      * sets the temperature of the house to a certain temperature when on away mode depending on the month
      */
     public void setAwaySimTemp(){
-        int monthNum = Integer.parseInt(sim.getDate().substring(5,7));
+        int monthNum = Integer.parseInt(sim.getSimulationTimes().getDate().substring(5,7));
 
         if(!awayButton.isSelected()){
             logText(sim.pw, "Away mode temperature OFF. Settings will go back to normal");
         }
         else{
-            if(sim.isSummer(monthNum)) {
+            if(sim.getSimulationTimes().isSummer(monthNum)) {
                 sim.setTemperature(summerAwayTemp.getText());
                 logText(sim.pw, printToConsole("Away mode temperature set to " + summerAwayTemp.getText()) + " for summer weather");
             }
-            else if(sim.isWinter(monthNum)){
+            else if(sim.getSimulationTimes().isWinter(monthNum)){
                 sim.setTemperature(summerAwayTemp.getText());
                 logText(sim.pw, printToConsole("Away mode temperature set to " + winterAwayTemp.getText()) + " for Winter Weather");
             }
