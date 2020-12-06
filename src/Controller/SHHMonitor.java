@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.Room;
+import View.DashboardDriver;
 
 public class SHHMonitor extends Thread{
     private final int SLEEP_TIME = 1000; //ms
@@ -14,8 +15,8 @@ public class SHHMonitor extends Thread{
     public void run() {
         while (true) {
             // perform monitoring
-            checkIfShouldOpenWindow();
             checkIfTempBelowZero();
+            checkIfShouldOpenWindow();
 
             // sleep
             try {
@@ -30,6 +31,11 @@ public class SHHMonitor extends Thread{
     }
 
     private void checkIfTempBelowZero() {
+        for (Room room : masterSim.getHouse().getRooms()) {
+            if (room.getRealTemperature() < 0) {
+                DashboardDriver.controllerInstance.printToConsole("ALERT: The " + room.getName() + " is at a temperature below 0!  The pipes may burst!");
+            }
+        }
 
     }
 }

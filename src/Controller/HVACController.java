@@ -17,6 +17,7 @@ public class HVACController extends  Thread{
 
     public void run() {
         while (true) {
+            // perform HVAC logic
             for (Room room : masterSim.getHouse().getRooms()) {
                 float currentTemperature = room.getRealTemperature();
                 float desiredTemperature = room.calculateDesiredTemperature(masterSim.getTime());

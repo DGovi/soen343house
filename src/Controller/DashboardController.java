@@ -678,7 +678,7 @@ public class DashboardController {
      *
      * @param output prints on the console of the simulation the output
      */
-    private String printToConsole(String output) {
+    public String printToConsole(String output) {
         console.appendText(output + "\n");
         return output;
     }
