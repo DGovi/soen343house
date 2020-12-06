@@ -175,6 +175,8 @@ public class DashboardController {
     @FXML
     private TextField winterAwayTemp;
     @FXML
+    private ComboBox<String> shhRoomSelectTemp;
+    @FXML
     private ComboBox<String> shhRoomSelectZone;
     @FXML
     private Spinner<Integer> shhZoneSelect;
@@ -186,6 +188,8 @@ public class DashboardController {
     private TextField shhRoomNightTemperature;
     @FXML
     private Label permissionsHeater;
+    @FXML
+    private TextField shhOverrideTemperature;
 
     private final double  REFRESH_DELAY = 100; // ms
 
@@ -606,6 +610,12 @@ public class DashboardController {
             shcDoorOpenState.setText("Door Closed");
     }
 
+
+    @FXML
+    private void updateSHHTemp() {
+
+    }
+
     /**
      * When the chosen room is changed, the zone is updated accordingly
      */
@@ -841,6 +851,7 @@ public class DashboardController {
             // These don't need outside option
             shcRoomSelect.getItems().add(r.getName());
             shhRoomSelectZone.getItems().add(r.getName());
+            shhRoomSelectTemp.getItems().add(r.getName());
         }
         createUserLocation.getItems().add("Outside");
         editUserLocation.getItems().add("Outside");

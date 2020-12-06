@@ -437,6 +437,17 @@
                             <Tab text="SHH">
                               <content>
                                 <VBox prefHeight="81.0" prefWidth="275.0">
+                                  <Label text="Set room to override:"/>
+                                  <ComboBox fx:id="shhRoomSelectTemp" />
+                                  <Label text="Specify override temperature"/>
+                                  <Label text="(leave blank for no override):" />
+                                  <TextField fx:id="shhOverrideTemperature"/>
+                                  <Button onAction="#updateSHHTemp" text="Override"/>
+                                  <Separator prefWidth="200.0">
+                                    <VBox.margin>
+                                      <Insets left="-5.0" right="-5.0" top="10.0"/>
+                                    </VBox.margin>
+                                  </Separator>
                                   <Label text="Configure Zones:"/>
                                   <ComboBox fx:id="shhRoomSelectZone" onAction="#updateSHHZone"/>
                                   <Spinner fx:id="shhZoneSelect"/>
