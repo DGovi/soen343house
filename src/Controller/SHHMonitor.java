@@ -49,13 +49,8 @@ public class SHHMonitor extends Thread{
                     logText(masterSim.pw, DashboardDriver.controllerInstance.printToConsole("ALERT: The " + room.getName() + " is at a temperature below 0!  The pipes may burst!"));
                 } else {
                     // try to open windows
-<<<<<<< HEAD
                     if ((!masterSim.getSimulationTimes().isSummer(Date.valueOf(masterSim.getSimulationTimes().getDate()).getMonth())) || masterSim.getIsAway())
                         continue;
-=======
-                    if (! masterSim.getSimulationTimes().isSummer(Date.valueOf(masterSim.getSimulationTimes().getDate()).getMonth()) || masterSim.getIsAway())
-                        return;
->>>>>>> e12b785b10c30d4c1fe70a853312c0402d115d58
 
                     if (room.getActualTemperature() > masterSim.getTemperature()) {
                         for (Window window: room.getWindows()) {
