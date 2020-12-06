@@ -11,7 +11,6 @@ import java.sql.Date;
  * room and perform automatic SHH actions if deemed necessary.
  */
 public class SHHMonitor extends Thread{
-    private final int SLEEP_TIME = 1000; //ms
     private Simulation masterSim;
 
     /**
@@ -56,7 +55,8 @@ public class SHHMonitor extends Thread{
 
             // sleep
             try {
-                Thread.sleep(SLEEP_TIME);
+                long sleepTime = (long) (1000 * (1/ masterSim.getTimeSpeed()));
+                Thread.sleep(sleepTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

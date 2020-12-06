@@ -68,7 +68,8 @@ public class HVACController extends  Thread{
 
             // sleep
             try {
-                Thread.sleep(1000);
+                long sleepTime = (long) (1000 * (1/ masterSim.getTimeSpeed()));
+                Thread.sleep(sleepTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
