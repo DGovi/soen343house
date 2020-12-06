@@ -185,7 +185,7 @@ public class DashboardController {
     @FXML
     private TextField shhRoomNightTemperature;
 
-    private final double  REFRESH_DELAY = 250; // ms
+    private final double  REFRESH_DELAY = 100; // ms
 
     /**
      * Constructor of the DashboardController class.

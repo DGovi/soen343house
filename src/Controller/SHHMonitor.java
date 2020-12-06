@@ -50,7 +50,7 @@ public class SHHMonitor extends Thread{
                 } else {
                     // try to open windows
                     if (! masterSim.isSummer(Date.valueOf(masterSim.getDate()).getMonth()) || masterSim.getIsAway())
-                        return;
+                        continue;
 
                     if (room.getActualTemperature() < masterSim.getTemperature()) {
                         for (Window window: room.getWindows()) {
