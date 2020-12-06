@@ -40,6 +40,7 @@ public class Room {
      * @param windows an arraylist of windows
      * @param lights  number of windows
      * @param doors   on ArrayList of Door objects
+     * @param temperature the starting temperature of this room
      */
     public Room(String name, ArrayList<Window> windows, int lights, ArrayList<Door> doors, float temperature) {
         this.name = name;

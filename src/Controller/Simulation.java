@@ -97,12 +97,28 @@ public class Simulation implements Subject {
         this.hvacController.start();;
     }
 
+    /**
+     * Creates the one instance of the Simulation class that exists for the program.
+     *
+     * @param date        current date
+     * @param time        current time
+     * @param houseInput  house input JSON file
+     * @param usersFile   users JSON file
+     * @return the newly created Simulation object
+     * @throws IOException
+     * @throws JSONException
+     */
     public static Simulation createInstance(String date, Time time, File houseInput, File usersFile) throws IOException, JSONException {
         if (simInstance == null)
             simInstance = new Simulation(date, time, houseInput, usersFile);
         return simInstance;
     }
 
+    /**
+     * Gets the one Simulation object that exists.
+     *
+     * @return the Simulation object
+     */
     public static Simulation getInstance() {
         return simInstance;
     }
