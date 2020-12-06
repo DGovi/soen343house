@@ -799,7 +799,7 @@ public class DashboardController {
     public void afterLoadInitialize(File file) throws JSONException, IOException {
         // Set simulation
         sim = Simulation.createInstance(
-                new Date(2020,12,6).toString(),
+                new Date(120,11,6).toString(),
                 java.sql.Time.valueOf(LocalTime.now()),
                 file,
                 userInput
