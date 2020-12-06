@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.Room;
+import View.DashboardDriver;
 
 public class HVACController extends  Thread{
     private Simulation masterSim;
@@ -46,6 +47,11 @@ public class HVACController extends  Thread{
                     }
                 }
             }
+
+            // TODO: DELETE ME
+            // update smart home visualization
+//            if (DashboardDriver.controllerInstance != null)
+//                DashboardDriver.controllerInstance.updateDashboard();
 
             // sleep
             try {

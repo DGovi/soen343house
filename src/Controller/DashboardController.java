@@ -15,9 +15,12 @@ import java.util.Set;
 import java.util.Stack;
 import java.time.LocalTime;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import View.CountriesWindow;
 import View.InputWindow;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
@@ -25,6 +28,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 import org.json.JSONException;
 
 import Model.*;
@@ -179,6 +183,22 @@ public class DashboardController {
     private TextField shhRoomDayTemperature;
     @FXML
     private TextField shhRoomNightTemperature;
+
+    public DashboardController() {
+        Timeline refreshDashboard = new Timeline(
+                new KeyFrame(Duration.seconds(1),
+                        new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                if (sim != null)
+                                    updateDashboard();
+                            }
+                        }));
+        refreshDashboard.setCycleCount(Timeline.INDEFINITE);
+        refreshDashboard.play();
+    }
+
+
 
     /**
      * Changes the simulation temperature.
@@ -1051,6 +1071,10 @@ public class DashboardController {
         gc.setLineWidth(1);
         gc.setStroke(Color.BLACK);
         gc.fillText(room.getName(), x + 5, y + 17);
+
+        // drawing room temperature
+        gc.fillText(String.valueOf(room.getRealTemperature()), x + 5, y + 50);
+
     }
 
     /**
