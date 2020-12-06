@@ -23,10 +23,6 @@ import java.util.Random;
 public class Simulation implements Subject {
     private static Simulation simInstance;
     public static final float DEFAULT_TEMPERATURE = 25.0F;
-    private String date;
-    private Time time;
-    private long lastRealTime;
-    private float timeSpeed;
     private float temperature;
     private User loggedInUser;
     private final ArrayList<User> users;
@@ -37,13 +33,14 @@ public class Simulation implements Subject {
     private boolean isAway;
     private int copDelay;
     private final ArrayList<Room> awayLightsOn = new ArrayList<>();
-    private ArrayList<Zone> zones;
-    private final int[] summer;
-    private final int[] winter;
+    private final ArrayList<Zone> zones;
+
     private float summerAwayTemp;
     private float winterAwayTemp;
     private SHHMonitor monitor;
     private HVACController hvacController;
+
+    private final SimulationTime simulationTimes;
 
     File logFile = new File("logFile.txt");
     PrintWriter pw = new PrintWriter(new FileWriter(logFile, true));
@@ -61,10 +58,8 @@ public class Simulation implements Subject {
     private Simulation(String date, Time time, File houseInput, File usersFile) throws JSONException, IOException {
         this.house = new House(houseInput);
         this.temperature = DEFAULT_TEMPERATURE;
-        this.date = date;
-        this.time = time;
-        this.lastRealTime = Time.valueOf(LocalTime.now()).getTime();
-        this.timeSpeed = 1;
+        this.simulationTimes = new SimulationTime(date, time);
+
         this.usersFile = usersFile;
         this.users = usersFromJSON(usersFile);
         this.loggedInUser = users.get(users.size() - 1);
@@ -79,12 +74,6 @@ public class Simulation implements Subject {
             this.zones.add(new Zone(r));
         }
 
-        this.summer = new int[2];
-        this.summer[0] = 5;
-        this.summer[1] = 8;
-        this.winter = new int[2];
-        this.winter[0] = 10;
-        this.winter[1] = 2;
         this.summerAwayTemp = 24;
         this.winterAwayTemp = 24;
 
@@ -121,6 +110,10 @@ public class Simulation implements Subject {
      */
     public static Simulation getInstance() {
         return simInstance;
+    }
+
+    public SimulationTime getSimulationTimes() {
+        return this.simulationTimes;
     }
 
     /**
@@ -284,50 +277,6 @@ public class Simulation implements Subject {
     }
 
     /**
-     * Gets the date of the simulation.
-     *
-     * @return date as a string
-     */
-    public String getDate() {
-        return date;
-    }
-
-    /**
-     * Sets the date of the simulation.
-     *
-     * @param date the date of the simulation as a string
-     */
-    public String setDate(String date) {
-        this.date = date;
-        return "Date set to: " + date + ".";
-    }
-
-    /**
-     * Gets the time of the simulation. Need to update the time first according to timeSpeed and elapsed time.
-     *
-     * @return Time object
-     */
-    public Time getTime() {
-        long rightNow = Time.valueOf(LocalTime.now()).getTime();
-        time.setTime(time.getTime() + (long) timeSpeed * (rightNow - lastRealTime));
-        lastRealTime = rightNow;
-        return time;
-    }
-
-    /**
-     * Sets the time of the simulation using time object.
-     *
-     * @param time new time to be set
-     * @return a string: "time updated"
-     */
-    public String setTime(Time time) {
-        lastRealTime = Time.valueOf(LocalTime.now()).getTime();
-        this.time = time;
-        return "Time set to: " + time + ".";
-    }
-
-
-    /**
      * Gets the temperature outside the home in the simulation.
      *
      * @return the temperature outside of the house
@@ -349,89 +298,6 @@ public class Simulation implements Subject {
             return ("Setting simulation temperature to " + temperatureString + "!");
         } catch (Exception e) {
             return ("ERROR: Inputted temperature is not a valid float.");
-        }
-    }
-
-    /**
-     * Get the array defining the summer interval
-     *
-     * @return
-     */
-    public int[] getSummer() {
-        return this.summer;
-    }
-
-    /**
-     * Get the array defining the winter interval
-     *
-     * @return
-     */
-    public int[] getWinter() {
-        return this.winter;
-    }
-
-    /**
-     * Set the interval of months for summer and winter seasons
-     *
-     * @param summerStart
-     * @param summerEnd
-     * @param winterStart
-     * @param winterEnd
-     * @return String saying the operation has been completed successfully.
-     */
-    public String setSeasons(int summerStart, int summerEnd, int winterStart, int winterEnd) {
-        this.summer[0] = summerStart;
-        this.summer[1] = summerEnd;
-        this.winter[0] = winterStart;
-        this.winter[1] = winterEnd;
-        return "Successfully set season intervals.";
-    }
-
-    /**
-     * Takes in a month and returns whether the month is in the summer or not
-     *
-     * @param month int (1-12) that represents the month input
-     * @return true if the month is in summer, false otherwise
-     */
-    public boolean isSummer(int month) {
-        if (month > 12 || month < 1) {
-            return false;
-        }
-        if (this.summer[0] > this.summer[1]) {
-            if (month >= this.summer[0] || month <= this.summer[1]) {
-                return true;
-            }
-            return false;
-        }
-        else {
-            if (month >= this.summer[0] && month <= this.summer[1]) {
-                return true;
-            }
-            return false;
-        }
-    }
-
-    /**
-     * Takes in a month and returns whether the month is in the winter or not
-     *
-     * @param month int (1-12) that represents the month input
-     * @return true if the month is in summer, false otherwise
-     */
-    public boolean isWinter(int month) {
-        if (month > 12 || month < 1) {
-            return false;
-        }
-        if (this.winter[0] > this.winter[1]) {
-            if (month >= this.winter[0] || month <= this.winter[1]) {
-                return true;
-            }
-            else return false;
-        }
-        else {
-            if (month >= this.winter[0] && month <= this.winter[1]) {
-                return true;
-            }
-            else return false;
         }
     }
 
@@ -950,27 +816,8 @@ public class Simulation implements Subject {
      */
     @Override
     public String toString() {
-        return "Simulation [date=" + date + ", time=" + time + ", temperature=" + temperature + ", loggedInUser="
+        return "Simulation [date=" + this.simulationTimes.getDate() + ", time=" + this.simulationTimes.getTime() + ", temperature=" + temperature + ", loggedInUser="
                 + loggedInUser + "]";
-    }
-
-    /**
-     * Gets the time speed of the simulation.
-     *
-     * @return the time speed of the simulation
-     */
-    public float getTimeSpeed() {
-        return timeSpeed;
-    }
-
-    /**
-     * Sets the time speed of the simulation
-     *
-     * @param speed multiplier for time speed
-     */
-    public String setTimeSpeed(Float speed) {
-        timeSpeed = speed;
-        return "Set time speed to " + speed.toString() + ".";
     }
 
     /**
