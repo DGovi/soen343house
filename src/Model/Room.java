@@ -23,6 +23,7 @@ public class Room {
     private boolean lightsOn;
     protected MotionSensor roomMotionSensor;
     protected float[] temperatures;
+    private float real_temperature;
 
     /**
      * Creates a room object with a name, windows,
@@ -33,15 +34,16 @@ public class Room {
      * @param lights  number of windows
      * @param doors   on ArrayList of Door objects
      */
-    public Room(String name, ArrayList<Window> windows, int lights, ArrayList<Door> doors) {
+    public Room(String name, ArrayList<Window> windows, int lights, ArrayList<Door> doors, float temperature) {
         this.name = name;
         this.windows = windows;
         this.lights = lights;
         this.doors = doors;
         this.lightsOn = true;
-        roomMotionSensor = new MotionSensor(false);
+        this.roomMotionSensor = new MotionSensor(false);
         this.temperatures = new float[3];
         this.temperatures[0] = this.temperatures[1] = this.temperatures[2] = 24;
+        this.real_temperature = temperature;
     }
 
 
@@ -174,7 +176,7 @@ public class Room {
      * @throws org.json.JSONException if there is a runtime error
      * @throws IOException            if there is a loading error
      */
-    public static ArrayList<Room> roomFromJSON(File srcJSONPath) throws org.json.JSONException, IOException {
+    public static ArrayList<Room> roomFromJSON(File srcJSONPath, float temperature) throws org.json.JSONException, IOException {
         String marshalled = new String(Files.readAllBytes(srcJSONPath.toPath()));
         JSONTokener tokener = new JSONTokener(marshalled);
         JSONObject object = new JSONObject(tokener);
@@ -207,7 +209,8 @@ public class Room {
                                 key,
                                 windows,
                                 object.getJSONObject(key).getInt("lights"),
-                                list
+                                list,
+                                temperature
                         )
                 );
             }
@@ -215,4 +218,11 @@ public class Room {
         return rooms;
     }
 
+    public float getReal_temperature() {
+        return real_temperature;
+    }
+
+    public void setReal_temperature(float real_temperature) {
+        this.real_temperature = real_temperature;
+    }
 }

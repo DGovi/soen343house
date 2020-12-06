@@ -36,8 +36,8 @@ class loadHouseLayoutTest {
         doorsKitchen.add(new Door("Kitchen", "Garage"));
 
         windows.add(new Window());
-        rooms.add(new Room("Garage", windows, 1, doorsGarage));
-        rooms.add(new Room("Kitchen", new ArrayList<>(), 0, doorsKitchen));
+        rooms.add(new Room("Garage", windows, 1, doorsGarage, simulation.getTemperature()));
+        rooms.add(new Room("Kitchen", new ArrayList<>(), 0, doorsKitchen, simulation.getTemperature()));
 
         House testHouse = new House(rooms, "Test location");
 

@@ -44,8 +44,8 @@ public class House {
      * @param srcJSON the file in which the house layout is contained
      * @throws JSONException if the file is not found or is incorrect
      */
-    public House(File srcJSON) throws JSONException, IOException {
-        this.rooms = Room.roomFromJSON(srcJSON);
+    public House(File srcJSON, float temperature) throws JSONException, IOException {
+        this.rooms = Room.roomFromJSON(srcJSON, temperature);
         this.location = DEFAULT_LOCATION;
     }
 

@@ -60,7 +60,7 @@ public class Simulation implements Subject {
      * @throws IOException
      */
     private Simulation(String date, Time time, float temperature, File houseInput, File usersFile) throws JSONException, IOException {
-        this.house = new House(houseInput);
+        this.house = new House(houseInput, temperature);
         this.date = date;
         this.time = time;
         this.lastRealTime = Time.valueOf(LocalTime.now()).getTime();
