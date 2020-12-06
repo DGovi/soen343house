@@ -26,24 +26,22 @@ public class HVACController extends  Thread{
                 float outsideTempDiff = Math.abs(currentTemperature - outsideTemperature);
 
                 if (room.isHvacON()) {
-                    if (desiredTempDiff < TEMP_MATCH_LEEWAY) {
+                    if (desiredTempDiff < TEMP_MATCH_LEEWAY)
                        room.setHvacON(false);
-                    } else {
-                        if (desiredTemperature < currentTemperature) {
-                            room.setRealTemperature(currentTemperature - HVAC_POWER);
-                        } else {
-                            room.setRealTemperature(currentTemperature + HVAC_POWER);
-                        }
-                    }
+
+                    if (desiredTemperature < currentTemperature)
+                        room.setRealTemperature(currentTemperature - HVAC_POWER);
+                    else
+                        room.setRealTemperature(currentTemperature + HVAC_POWER);
                 } else {
-                    if (desiredTempDiff > HVAC_START_LEEWAY) {
+                    if (desiredTempDiff > HVAC_START_LEEWAY)
                         room.setHvacON(true);
-                    } else if (outsideTempDiff > TEMP_MATCH_LEEWAY) {
-                       if (outsideTemperature < currentTemperature)  {
+
+                    if (outsideTempDiff > TEMP_MATCH_LEEWAY) {
+                       if (outsideTemperature < currentTemperature)
                            room.setRealTemperature(currentTemperature - DECAY_POWER);
-                       } else {
+                       else
                            room.setRealTemperature(currentTemperature + DECAY_POWER);
-                       }
                     }
                 }
             }
