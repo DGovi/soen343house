@@ -22,7 +22,7 @@ class loadHouseLayoutTest {
 
     @Test
     void loadHouseLayout() throws IOException, JSONException {
-        Simulation simulation = Simulation.createInstance("", java.sql.Time.valueOf(LocalTime.now()), 25, TEST_HOUSE, USER_FILE);
+        Simulation simulation = Simulation.createInstance("", java.sql.Time.valueOf(LocalTime.now()),  TEST_HOUSE, USER_FILE);
         House loadedHouse = simulation.getHouse();
 
         ArrayList<Room> rooms = new ArrayList<>();
@@ -36,8 +36,8 @@ class loadHouseLayoutTest {
         doorsKitchen.add(new Door("Kitchen", "Garage"));
 
         windows.add(new Window());
-        rooms.add(new Room("Garage", windows, 1, doorsGarage));
-        rooms.add(new Room("Kitchen", new ArrayList<>(), 0, doorsKitchen));
+        rooms.add(new Room("Garage", windows, 1, doorsGarage, simulation.getTemperature()));
+        rooms.add(new Room("Kitchen", new ArrayList<>(), 0, doorsKitchen, simulation.getTemperature()));
 
         House testHouse = new House(rooms, "Test location");
 

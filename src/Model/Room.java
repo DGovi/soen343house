@@ -3,8 +3,11 @@ package Model;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.sql.Date;
+import java.sql.Time;
 import java.util.*;
 
+import Controller.Simulation;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -23,6 +26,11 @@ public class Room {
     private boolean lightsOn;
     protected MotionSensor roomMotionSensor;
     protected float[] temperatures;
+    private float actualTemperature;
+    private boolean hvacON;
+
+    private static final long morningDayBound = new Time(6, 0, 0).getTime();
+    private static final long dayNightBound = new Time(18, 0, 0).getTime();
 
     /**
      * Creates a room object with a name, windows,
@@ -33,15 +41,17 @@ public class Room {
      * @param lights  number of windows
      * @param doors   on ArrayList of Door objects
      */
-    public Room(String name, ArrayList<Window> windows, int lights, ArrayList<Door> doors) {
+    public Room(String name, ArrayList<Window> windows, int lights, ArrayList<Door> doors, float temperature) {
         this.name = name;
         this.windows = windows;
         this.lights = lights;
         this.doors = doors;
         this.lightsOn = true;
-        roomMotionSensor = new MotionSensor(false);
+        this.roomMotionSensor = new MotionSensor(false);
         this.temperatures = new float[3];
-        this.temperatures[0] = this.temperatures[1] = this.temperatures[2] = 24;
+        this.temperatures[0] = this.temperatures[1] = this.temperatures[2] = temperature; // morning - day - night
+        this.actualTemperature = temperature;
+        this.hvacON = false;
     }
 
 
@@ -207,7 +217,8 @@ public class Room {
                                 key,
                                 windows,
                                 object.getJSONObject(key).getInt("lights"),
-                                list
+                                list,
+                                Simulation.DEFAULT_TEMPERATURE
                         )
                 );
             }
@@ -215,4 +226,69 @@ public class Room {
         return rooms;
     }
 
+    /**
+     * Gets the actual temperature of the Room.
+     * This value signifies the real temperature of the Room at the current moment
+     * not the desired one.
+     *
+     * @return the actual temperature of the Room
+     */
+    public float getActualTemperature() {
+        return actualTemperature;
+    }
+
+    /**
+     * Sets the actual temperature of the Room.
+     *
+     * @param actualTemperature  the new actual temperature of the room
+     */
+    public void setActualTemperature(float actualTemperature) {
+        this.actualTemperature = actualTemperature;
+    }
+
+    /**
+     * Calculates and returns the desired temperature of the room.
+     * This is the temperature that the HVAC system will gradually and continuously
+     * shift the room temperature towards.
+     *
+     * @param currentTime the current time of the simulation
+     * @param parentSim the Simulation object the room is a member of
+     * @return the desired temperature in degrees celsius
+     */
+    public float calculateDesiredTemperature(Simulation parentSim, Time currentTime) {
+        if (parentSim.getIsAway()) {
+            if (parentSim.isWinter(Date.valueOf(parentSim.getDate()).getMonth())) { // winter
+                return parentSim.getWinterAwayTemp();
+            } else { // summer
+                return parentSim.getSummerAwayTemp();
+            }
+        } else {
+            long time = currentTime.getTime();
+            if (time < Room.morningDayBound)
+                return this.getTemperatures()[0]; // morning
+            else if (time < Room.morningDayBound)
+                return this.getTemperatures()[1]; // daytime
+            else
+                return this.getTemperatures()[2]; // nighttime
+        }
+
+    }
+
+    /**
+     * Gets the ON/OFF status of the HVAC system in the given room.
+     *
+     * @return true if the HVAC is ON, false otherwise
+     */
+    public boolean isHvacON() {
+        return hvacON;
+    }
+
+    /**
+     * Sets the ON/OFF status of the HVAC system in the given room.
+     *
+     * @param hvacON the new HVAC ON/OFF status
+     */
+    public void setHvacON(boolean hvacON) {
+        this.hvacON = hvacON;
+    }
 }

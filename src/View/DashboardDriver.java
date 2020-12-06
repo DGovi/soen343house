@@ -1,6 +1,7 @@
 package View;
 // for Dashboard
 
+import Controller.DashboardController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,6 +14,7 @@ import javafx.stage.Stage;
  */
 public class DashboardDriver extends Application {
     Stage window;
+    public static DashboardController controllerInstance;
 
     public static void main(String[] args) {
         launch(args);
@@ -21,10 +23,17 @@ public class DashboardDriver extends Application {
     //launch(args) calls this method to launch the dashboard
     @Override
     public void start(Stage window) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("Dashboard.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
+        Parent root = loader.load();
+        this.controllerInstance = loader.getController();
         window.setTitle("Smart Home Simulator");
         window.setScene(new Scene(root, 870, 850));
         window.show();
+    }
+
+    @Override
+    public void stop(){
+        System.exit(0);
     }
 
 }

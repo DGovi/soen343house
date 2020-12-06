@@ -9,7 +9,6 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.sql.Time;
-import java.time.Instant;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.io.File;
@@ -23,7 +22,7 @@ import java.util.Random;
  */
 public class Simulation implements Subject {
     private static Simulation simInstance;
-
+    public static final float DEFAULT_TEMPERATURE = 25.0F;
     private String date;
     private Time time;
     private long lastRealTime;
@@ -39,11 +38,12 @@ public class Simulation implements Subject {
     private int copDelay;
     private final ArrayList<Room> awayLightsOn = new ArrayList<>();
     private ArrayList<Zone> zones;
-
     private final int[] summer;
     private final int[] winter;
     private float summerAwayTemp;
     private float winterAwayTemp;
+    private SHHMonitor monitor;
+    private HVACController hvacController;
 
     File logFile = new File("logFile.txt");
     PrintWriter pw = new PrintWriter(new FileWriter(logFile, true));
@@ -53,19 +53,18 @@ public class Simulation implements Subject {
      *
      * @param date        current date
      * @param time        current time
-     * @param temperature current temperature
      * @param houseInput  house input JSON file
      * @param usersFile   users JSON file
      * @throws JSONException
      * @throws IOException
      */
-    private Simulation(String date, Time time, float temperature, File houseInput, File usersFile) throws JSONException, IOException {
+    private Simulation(String date, Time time, File houseInput, File usersFile) throws JSONException, IOException {
         this.house = new House(houseInput);
+        this.temperature = DEFAULT_TEMPERATURE;
         this.date = date;
         this.time = time;
         this.lastRealTime = Time.valueOf(LocalTime.now()).getTime();
         this.timeSpeed = 1;
-        this.temperature = temperature;
         this.usersFile = usersFile;
         this.users = usersFromJSON(usersFile);
         this.loggedInUser = users.get(users.size() - 1);
@@ -88,11 +87,19 @@ public class Simulation implements Subject {
         this.winter[1] = 2;
         this.summerAwayTemp = 24;
         this.winterAwayTemp = 24;
+
+        // start SHHMonitor
+        this.monitor = new SHHMonitor(this);
+        this.monitor.start();
+
+        // start HVAC
+        this.hvacController = new HVACController(this);
+        this.hvacController.start();;
     }
 
-    public static Simulation createInstance(String date, Time time, float temperature, File houseInput, File usersFile) throws IOException, JSONException {
+    public static Simulation createInstance(String date, Time time, File houseInput, File usersFile) throws IOException, JSONException {
         if (simInstance == null)
-            simInstance = new Simulation(date, time, temperature, houseInput, usersFile);
+            simInstance = new Simulation(date, time, houseInput, usersFile);
         return simInstance;
     }
 
@@ -303,15 +310,6 @@ public class Simulation implements Subject {
         return "Time set to: " + time + ".";
     }
 
-    /**
-     * Sets the time speed of the simulation
-     *
-     * @param speed multiplier for time speed
-     */
-    public String setTimeSpeed(Float speed) {
-        timeSpeed = speed;
-        return "Set time speed to " + speed.toString() + ".";
-    }
 
     /**
      * Gets the temperature outside the home in the simulation.
@@ -940,5 +938,85 @@ public class Simulation implements Subject {
                 + loggedInUser + "]";
     }
 
+    /**
+     * Gets the time speed of the simulation.
+     *
+     * @return the time speed of the simulation
+     */
+    public float getTimeSpeed() {
+        return timeSpeed;
+    }
 
+    /**
+     * Sets the time speed of the simulation
+     *
+     * @param speed multiplier for time speed
+     */
+    public String setTimeSpeed(Float speed) {
+        timeSpeed = speed;
+        return "Set time speed to " + speed.toString() + ".";
+    }
+
+    /**
+     * Gets the running status of the simulation.
+     *
+     * @return true if Simulation is running, false otherwise
+     */
+    public boolean isRunning() {
+        return running;
+    }
+
+    /**
+     * Gets the isLightAuto attribute of the simulation.
+     *
+     * @return true if auto light mode is on, false otherwise
+     */
+    public boolean isLightAuto() {
+        return LightAuto;
+    }
+
+    /**
+     * Sets the isLightAuto attribute of the simulation.
+     *
+     * @param lightAuto the new auto light mode value
+     */
+    public void setLightAuto(boolean lightAuto) {
+        LightAuto = lightAuto;
+    }
+
+    /**
+     * Gets the Away Mode status of the Simulation.
+     *
+     * @return true if Away Mode is active, false otherwise
+     */
+    public boolean isAway() {
+        return isAway;
+    }
+
+    /**
+     * Sets the Away Mode status of the Simulation.
+     *
+     * @param away the new Away Mode value
+     */
+    public void setAway(boolean away) {
+        isAway = away;
+    }
+
+    /**
+     * Sets the temperature for summer, when away mode is active.
+     *
+     * @param summerAwayTemp the new temperature for summer during away mode
+     */
+    public void setSummerAwayTemp(float summerAwayTemp) {
+        this.summerAwayTemp = summerAwayTemp;
+    }
+
+    /**
+     * Sets the temperature for winter, when away mode is active.
+     *
+     * @param winterAwayTemp the new temperature for winter during away mode
+     */
+    public void setWinterAwayTemp(float winterAwayTemp) {
+        this.winterAwayTemp = winterAwayTemp;
+    }
 }

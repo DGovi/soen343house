@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * The house has an array of rooms, and a location.
  */
 public class House {
-    private final String DEFAULT_LOCATION = "Canada";
+    private static final String DEFAULT_LOCATION = "Canada";
 
     private final ArrayList<Room> rooms;
     private String location;

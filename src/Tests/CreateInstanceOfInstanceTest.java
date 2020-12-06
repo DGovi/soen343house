@@ -25,8 +25,8 @@ class CreateInstanceOfInstanceTest {
 
     @Test
     void testCreateInstance() throws IOException, JSONException {
-        Simulation test = Simulation.createInstance("", java.sql.Time.valueOf(LocalTime.now()), 25, TEST_HOUSE, USER_FILE);
+        Simulation test = Simulation.createInstance("", java.sql.Time.valueOf(LocalTime.now()),  TEST_HOUSE, USER_FILE);
 
-        assertEquals(Simulation.createInstance("", java.sql.Time.valueOf(LocalTime.now()), 25, TEST_HOUSE, USER_FILE), test);
+        assertEquals(Simulation.createInstance("", java.sql.Time.valueOf(LocalTime.now()),  TEST_HOUSE, USER_FILE), test);
     }
 }

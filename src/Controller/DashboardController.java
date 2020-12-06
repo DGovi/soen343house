@@ -3,6 +3,7 @@ package Controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.sql.Time;
 import java.util.*;
 import java.text.DateFormat;
@@ -15,9 +16,12 @@ import java.util.Set;
 import java.util.Stack;
 import java.time.LocalTime;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import View.CountriesWindow;
 import View.InputWindow;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
@@ -25,6 +29,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 import org.json.JSONException;
 
 import Model.*;
@@ -179,6 +184,33 @@ public class DashboardController {
     private TextField shhRoomDayTemperature;
     @FXML
     private TextField shhRoomNightTemperature;
+
+    private final double  REFRESH_DELAY = 250; // ms
+
+    /**
+     * Constructor of the DashboardController class.
+     * Essentially creates a constant event that continuously updates the
+     * dashboard and visualization every REFRESH_DELAY milliseconds
+     */
+    public DashboardController() {
+        Timeline refreshDashboard = new Timeline(
+                new KeyFrame(Duration.millis(REFRESH_DELAY),
+                        new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                if (sim != null) {
+                                    // update dashboard
+                                    updateDashboard();
+                                    // redraw house
+                                    renderLayout(sim.getHouse());
+                                }
+                            }
+                        }));
+        refreshDashboard.setCycleCount(Timeline.INDEFINITE);
+        refreshDashboard.play();
+    }
+
+
 
     /**
      * Changes the simulation temperature.
@@ -654,7 +686,7 @@ public class DashboardController {
      *
      * @param output prints on the console of the simulation the output
      */
-    private String printToConsole(String output) {
+    public String printToConsole(String output) {
         console.appendText(output + "\n");
         return output;
     }
@@ -767,9 +799,8 @@ public class DashboardController {
     public void afterLoadInitialize(File file) throws JSONException, IOException {
         // Set simulation
         sim = Simulation.createInstance(
-                "",
+                new Date(2020,12,6).toString(),
                 java.sql.Time.valueOf(LocalTime.now()),
-                25,
                 file,
                 userInput
         );
@@ -1051,6 +1082,15 @@ public class DashboardController {
         gc.setLineWidth(1);
         gc.setStroke(Color.BLACK);
         gc.fillText(room.getName(), x + 5, y + 17);
+
+        // drawing room temperature
+        gc.fillText(String.format("%.2f", room.getActualTemperature()), x + 5, y + 50);
+
+        // drawing HVAC icon
+        if (room.isHvacON()) {
+            Image hvacImage = new Image("file:HVAC.jpg");
+            gc.drawImage(hvacImage, x+5, y+60, 20, 20);
+        }
     }
 
     /**
