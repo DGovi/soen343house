@@ -359,6 +359,7 @@ public class DashboardController {
     private void login() {
         logText(sim.pw, printToConsole(sim.login(loginName.getText(), loginPassword.getText())));
         updateDashboard();
+        resetSHSTextFields();
     }
 
     /**
@@ -379,6 +380,7 @@ public class DashboardController {
 
         // Update other dropdownlist
         updateDashboard();
+        resetSHSTextFields();
     }
 
     /**
@@ -399,6 +401,7 @@ public class DashboardController {
             )
         );
         updateDashboard();
+        resetSHSTextFields();
         this.renderLayout(sim.getHouse());
     }
 
@@ -410,6 +413,7 @@ public class DashboardController {
     private void deleteUser() throws JSONException, IOException {
         logText(sim.pw, printToConsole(sim.removeUser(deleteUserChoice.getValue())));
         updateDashboard();
+        resetSHSTextFields();
     }
 
     /**
@@ -751,13 +755,7 @@ public class DashboardController {
 
         }
 
-        // reset list of users
-        editUserChoice.getItems().clear();
-        deleteUserChoice.getItems().clear();
-        for (User u : sim.getUsers()) {
-            editUserChoice.getItems().add(u.getName() + " (" + u.getID() + ")");
-            deleteUserChoice.getItems().add(u.getName() + " (" + u.getID() + ")");
-        }
+
 
         // updating date and time
         dateLabel.setText("Date is: " + sim.getSimulationTimes().getDate());
@@ -766,16 +764,6 @@ public class DashboardController {
         timeMinuteInput.setText("");
         timeSecondInput.setText("");
         // Do not reset time speed setting so user knows current time speed at all times
-
-        // Reset field content
-        loginName.setText("");
-        loginPassword.setText("");
-        createUserName.setText("");
-        createUserPassword.setText("");
-        createUserType.valueProperty().set(null);
-        createUserLocation.valueProperty().set(null);
-        editUserCurrentPassword.setText("");
-        editUserNewPassword.setText("");
 
         // updating simToggleButton and UI control disable status based on
         // whether simulation is running or not
@@ -788,6 +776,30 @@ public class DashboardController {
         else
             simRunningLabel.setText("Simulation: OFF");
 
+    }
+
+    /**
+     * resets all text fields in the SHS tab
+     * this occurs when there is interaction with user objects
+     */
+    public void resetSHSTextFields() {
+        // reset list of users
+        editUserChoice.getItems().clear();
+        deleteUserChoice.getItems().clear();
+        for (User u : sim.getUsers()) {
+            editUserChoice.getItems().add(u.getName() + " (" + u.getID() + ")");
+            deleteUserChoice.getItems().add(u.getName() + " (" + u.getID() + ")");
+        }
+
+        // Reset field content
+        loginName.setText("");
+        loginPassword.setText("");
+        createUserName.setText("");
+        createUserPassword.setText("");
+        createUserType.valueProperty().set(null);
+        createUserLocation.valueProperty().set(null);
+        editUserCurrentPassword.setText("");
+        editUserNewPassword.setText("");
     }
 
     /**
