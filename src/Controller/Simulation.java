@@ -43,6 +43,7 @@ public class Simulation implements Subject {
     private float summerAwayTemp;
     private float winterAwayTemp;
     private SHHMonitor monitor;
+    private HVAC hvac;
 
     File logFile = new File("logFile.txt");
     PrintWriter pw = new PrintWriter(new FileWriter(logFile, true));
@@ -91,6 +92,10 @@ public class Simulation implements Subject {
         // start SHHMonitor
         this.monitor = new SHHMonitor(this);
         this.monitor.start();
+
+        // start HVAC
+        this.hvac = new HVAC(this);
+        this.hvac.start();;
     }
 
     public static Simulation createInstance(String date, Time time, float temperature, File houseInput, File usersFile) throws IOException, JSONException {

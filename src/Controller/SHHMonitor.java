@@ -5,6 +5,7 @@ public class SHHMonitor extends Thread{
     private Simulation master_sim;
 
     public SHHMonitor(Simulation master_sim) {
+        super();
         this.master_sim = master_sim;
     }
 
