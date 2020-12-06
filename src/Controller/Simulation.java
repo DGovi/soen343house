@@ -394,6 +394,7 @@ public class Simulation implements Subject {
      * @return true if the month is in summer, false otherwise
      */
     public boolean isSummer(int month) {
+        month+=1;
         if (month > 12 || month < 1) {
             return false;
         }
@@ -418,6 +419,7 @@ public class Simulation implements Subject {
      * @return true if the month is in summer, false otherwise
      */
     public boolean isWinter(int month) {
+        month+=1;
         if (month > 12 || month < 1) {
             return false;
         }
