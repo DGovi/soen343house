@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.sql.Time;
 import java.util.*;
 
+import Controller.Simulation;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -182,7 +183,7 @@ public class Room {
      * @throws org.json.JSONException if there is a runtime error
      * @throws IOException            if there is a loading error
      */
-    public static ArrayList<Room> roomFromJSON(File srcJSONPath, float temperature) throws org.json.JSONException, IOException {
+    public static ArrayList<Room> roomFromJSON(File srcJSONPath) throws org.json.JSONException, IOException {
         String marshalled = new String(Files.readAllBytes(srcJSONPath.toPath()));
         JSONTokener tokener = new JSONTokener(marshalled);
         JSONObject object = new JSONObject(tokener);
@@ -216,7 +217,7 @@ public class Room {
                                 windows,
                                 object.getJSONObject(key).getInt("lights"),
                                 list,
-                                temperature
+                                Simulation.DEFAULT_TEMPERATURE
                         )
                 );
             }

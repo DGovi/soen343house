@@ -22,6 +22,7 @@ import java.util.Random;
  */
 public class Simulation implements Subject {
     private static Simulation simInstance;
+    public static final float DEFAULT_TEMPERATURE = 25.0F;
     private String date;
     private Time time;
     private long lastRealTime;
@@ -52,19 +53,18 @@ public class Simulation implements Subject {
      *
      * @param date        current date
      * @param time        current time
-     * @param temperature current temperature
      * @param houseInput  house input JSON file
      * @param usersFile   users JSON file
      * @throws JSONException
      * @throws IOException
      */
-    private Simulation(String date, Time time, float temperature, File houseInput, File usersFile) throws JSONException, IOException {
-        this.house = new House(houseInput, temperature);
+    private Simulation(String date, Time time, File houseInput, File usersFile) throws JSONException, IOException {
+        this.house = new House(houseInput);
+        this.temperature = DEFAULT_TEMPERATURE;
         this.date = date;
         this.time = time;
         this.lastRealTime = Time.valueOf(LocalTime.now()).getTime();
         this.timeSpeed = 1;
-        this.temperature = temperature;
         this.usersFile = usersFile;
         this.users = usersFromJSON(usersFile);
         this.loggedInUser = users.get(users.size() - 1);
@@ -97,9 +97,9 @@ public class Simulation implements Subject {
         this.hvacController.start();;
     }
 
-    public static Simulation createInstance(String date, Time time, float temperature, File houseInput, File usersFile) throws IOException, JSONException {
+    public static Simulation createInstance(String date, Time time, File houseInput, File usersFile) throws IOException, JSONException {
         if (simInstance == null)
-            simInstance = new Simulation(date, time, temperature, houseInput, usersFile);
+            simInstance = new Simulation(date, time, houseInput, usersFile);
         return simInstance;
     }
 

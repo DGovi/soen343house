@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * The house has an array of rooms, and a location.
  */
 public class House {
-    private final String DEFAULT_LOCATION = "Canada";
+    private static final String DEFAULT_LOCATION = "Canada";
 
     private final ArrayList<Room> rooms;
     private String location;
@@ -44,8 +44,8 @@ public class House {
      * @param srcJSON the file in which the house layout is contained
      * @throws JSONException if the file is not found or is incorrect
      */
-    public House(File srcJSON, float temperature) throws JSONException, IOException {
-        this.rooms = Room.roomFromJSON(srcJSON, temperature);
+    public House(File srcJSON) throws JSONException, IOException {
+        this.rooms = Room.roomFromJSON(srcJSON);
         this.location = DEFAULT_LOCATION;
     }
 

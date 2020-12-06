@@ -794,7 +794,6 @@ public class DashboardController {
         sim = Simulation.createInstance(
                 new Date(2020,12,6).toString(),
                 java.sql.Time.valueOf(LocalTime.now()),
-                25,
                 file,
                 userInput
         );
