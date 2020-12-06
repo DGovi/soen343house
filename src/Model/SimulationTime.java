@@ -67,10 +67,20 @@ public class SimulationTime {
         return "Set time speed to " + speed.toString() + ".";
     }
 
+    /**
+     * Sets the time speed of the simulation
+     *
+     * @return last time time was checked
+     */
     public long getLastRealTime() {
         return lastRealTime;
     }
 
+    /**
+     * Sets the time speed of the simulation
+     *
+     * @param lastRealTime the new real time to set
+     */
     public void setLastRealTime(long lastRealTime) {
         this.lastRealTime = lastRealTime;
     }
@@ -82,7 +92,7 @@ public class SimulationTime {
     /**
      * Get the array defining the summer interval
      *
-     * @return
+     * @return get the summer months
      */
     public int[] getSummer() {
         return this.summer;
@@ -91,7 +101,7 @@ public class SimulationTime {
     /**
      * Get the array defining the winter interval
      *
-     * @return
+     * @return get the winter months
      */
     public int[] getWinter() {
         return this.winter;
@@ -100,10 +110,10 @@ public class SimulationTime {
     /**
      * Set the interval of months for summer and winter seasons
      *
-     * @param summerStart
-     * @param summerEnd
-     * @param winterStart
-     * @param winterEnd
+     * @param summerStart summer start month
+     * @param summerEnd summer end month
+     * @param winterStart winter start month
+     * @param winterEnd winter end month
      * @return String saying the operation has been completed successfully.
      */
     public String setSeasons(int summerStart, int summerEnd, int winterStart, int winterEnd) {
