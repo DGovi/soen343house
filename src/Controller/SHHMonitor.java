@@ -27,9 +27,6 @@ public class SHHMonitor extends Thread{
     }
 
     private void checkIfShouldOpenWindow() {
-        for (Room room : masterSim.getHouse().getRooms()) {
-            System.out.println(room.calculateDesiredTemperature(masterSim.getTime()));
-        }
     }
 
     private void checkIfTempBelowZero() {

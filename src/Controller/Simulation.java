@@ -9,7 +9,6 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.sql.Time;
-import java.time.Instant;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.io.File;
@@ -43,7 +42,7 @@ public class Simulation implements Subject {
     private float summerAwayTemp;
     private float winterAwayTemp;
     private SHHMonitor monitor;
-    private HVAC hvac;
+    private HVACController hvacController;
 
     File logFile = new File("logFile.txt");
     PrintWriter pw = new PrintWriter(new FileWriter(logFile, true));
@@ -94,8 +93,8 @@ public class Simulation implements Subject {
         this.monitor.start();
 
         // start HVAC
-        this.hvac = new HVAC(this);
-        this.hvac.start();;
+        this.hvacController = new HVACController(this);
+        this.hvacController.start();;
     }
 
     public static Simulation createInstance(String date, Time time, float temperature, File houseInput, File usersFile) throws IOException, JSONException {

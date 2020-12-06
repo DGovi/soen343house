@@ -24,7 +24,8 @@ public class Room {
     private boolean lightsOn;
     protected MotionSensor roomMotionSensor;
     protected float[] temperatures;
-    private float real_temperature;
+    private float realTemperature;
+    private boolean hvacON;
 
     private static final long morningDayBound = new Time(6, 0, 0).getTime();
     private static final long dayNightBound = new Time(18, 0, 0).getTime();
@@ -46,8 +47,9 @@ public class Room {
         this.lightsOn = true;
         this.roomMotionSensor = new MotionSensor(false);
         this.temperatures = new float[3];
-        this.temperatures[0] = this.temperatures[1] = this.temperatures[2] = 24; // morning - day - night
-        this.real_temperature = temperature;
+        this.temperatures[0] = this.temperatures[1] = this.temperatures[2] = temperature; // morning - day - night
+        this.realTemperature = temperature;
+        this.hvacON = false;
     }
 
 
@@ -222,12 +224,12 @@ public class Room {
         return rooms;
     }
 
-    public float getReal_temperature() {
-        return real_temperature;
+    public float getRealTemperature() {
+        return realTemperature;
     }
 
-    public void setReal_temperature(float real_temperature) {
-        this.real_temperature = real_temperature;
+    public void setRealTemperature(float realTemperature) {
+        this.realTemperature = realTemperature;
     }
 
     public float calculateDesiredTemperature(Time currentTime) {
@@ -238,5 +240,13 @@ public class Room {
             return this.getTemperatures()[1]; // daytime
         else
             return this.getTemperatures()[2]; // nighttime
+    }
+
+    public boolean isHvacON() {
+        return hvacON;
+    }
+
+    public void setHvacON(boolean hvacON) {
+        this.hvacON = hvacON;
     }
 }
