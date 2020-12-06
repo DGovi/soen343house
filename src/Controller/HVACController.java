@@ -39,7 +39,7 @@ public class HVACController extends  Thread{
                 float decayStep = DECAY_POWER * speed;
 
                 float currentTemperature = room.getActualTemperature();
-                float desiredTemperature = room.calculateDesiredTemperature(masterSim.getTime());
+                float desiredTemperature = room.calculateDesiredTemperature(masterSim, masterSim.getTime());
                 float outsideTemperature = masterSim.getTemperature();
 
                 float desiredTempDiff = Math.abs(currentTemperature - desiredTemperature);

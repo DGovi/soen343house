@@ -3,6 +3,7 @@ package Model;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.sql.Date;
 import java.sql.Time;
 import java.util.*;
 
@@ -251,16 +252,26 @@ public class Room {
      * shift the room temperature towards.
      *
      * @param currentTime the current time of the simulation
-     * @return the desired temperature in degrees celcius
+     * @param parentSim the Simulation object the room is a member of
+     * @return the desired temperature in degrees celsius
      */
-    public float calculateDesiredTemperature(Time currentTime) {
-        long time = currentTime.getTime();
-        if (time < Room.morningDayBound)
-            return this.getTemperatures()[0]; // morning
-        else if (time < Room.morningDayBound)
-            return this.getTemperatures()[1]; // daytime
-        else
-            return this.getTemperatures()[2]; // nighttime
+    public float calculateDesiredTemperature(Simulation parentSim, Time currentTime) {
+        if (parentSim.getIsAway()) {
+            if (parentSim.isWinter(Date.valueOf(parentSim.getDate()).getMonth())) { // winter
+                return parentSim.getWinterAwayTemp();
+            } else { // summer
+                return parentSim.getSummerAwayTemp();
+            }
+        } else {
+            long time = currentTime.getTime();
+            if (time < Room.morningDayBound)
+                return this.getTemperatures()[0]; // morning
+            else if (time < Room.morningDayBound)
+                return this.getTemperatures()[1]; // daytime
+            else
+                return this.getTemperatures()[2]; // nighttime
+        }
+
     }
 
     /**
