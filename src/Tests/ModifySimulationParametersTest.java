@@ -43,7 +43,7 @@ class ModifySimulationParametersTest {
     void setTime() throws IOException, JSONException {
         Simulation simulation = Simulation.createInstance("", java.sql.Time.valueOf(LocalTime.now()), HOUSE_FILE, USER_FILE);
         Time time = java.sql.Time.valueOf(LocalTime.now());
-        assertEquals("Time set to: " + time + ".", simulation.setTime(time));
+        assertEquals("Time set to: " + time + ".", simulation.getSimulationTimes().setTime(time));
     }
 
 
@@ -51,6 +51,6 @@ class ModifySimulationParametersTest {
     void setDate() throws IOException, JSONException {
         Simulation simulation = Simulation.createInstance("", java.sql.Time.valueOf(LocalTime.now()), HOUSE_FILE, USER_FILE);
         String date = "friday";
-        assertEquals("Date set to: " + date + ".", simulation.setDate(date));
+        assertEquals("Date set to: " + date + ".", simulation.getSimulationTimes().setDate(date));
     }
 }
