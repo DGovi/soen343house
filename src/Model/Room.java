@@ -261,13 +261,15 @@ public class Room {
      * @return the desired temperature in degrees celsius
      */
     public float calculateDesiredTemperature(Simulation parentSim, Time currentTime) {
-        if (parentSim.getIsAway()) {
+        if (this.overrideMode) { // 1. override temperature
+            return this.overrideTemperature;
+        } if (parentSim.getIsAway()) { // 2. seasonal away temperature
             if (parentSim.getSimulationTimes().isWinter(Date.valueOf(parentSim.getSimulationTimes().getDate()).getMonth())) { // winter
                 return parentSim.getWinterAwayTemp();
             } else { // summer
                 return parentSim.getSummerAwayTemp();
             }
-        } else {
+        } else { // 3. zone temperature
             long time = currentTime.getTime();
             if (time < Room.morningDayBound)
                 return this.getTemperatures()[0]; // morning
