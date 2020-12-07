@@ -85,6 +85,11 @@ public class SimulationTime {
         this.lastRealTime = lastRealTime;
     }
 
+    /**
+     * Sets the time speed of the simulation
+     *
+     * @return get the current time speed as float
+     */
     public float getTimeSpeed() {
         return timeSpeed;
     }
@@ -174,6 +179,12 @@ public class SimulationTime {
         }
     }
 
+    /**
+     * Takes in a month and returns whether the month is in the winter or not
+     *
+     * @param date String representing the date
+     * @param time Time representing the time
+     */
     public SimulationTime(String date, Time time) {
         this.date = date;
         this.time = time;
