@@ -613,7 +613,21 @@ public class DashboardController {
 
     @FXML
     private void updateSHHTemp() {
-
+        String chosenRoomName = shhRoomSelectZone.getValue();
+        if (chosenRoomName == null) return;
+        Room room = sim.getHouse().getRoomFromName(chosenRoomName);
+        try {
+            String tempText = shhOverrideTemperature.getText();
+            if (tempText == null) {
+                room.setOverrideMode(false);
+                return;
+            }
+            float newTemperature = Float.parseFloat(tempText);
+            room.setOverrideTemperature(newTemperature);
+            room.setOverrideMode(true);
+        } catch (Exception e) {
+            printToConsole("ERROR: Please enter a valid number for the override temperature!");
+        }
     }
 
     /**
@@ -622,7 +636,6 @@ public class DashboardController {
     @FXML
     private void updateSHHZone() {
         String chosenRoomName = shhRoomSelectZone.getValue();
-
         if (chosenRoomName == null) return;
 
         Room r = sim.getHouse().getRoomFromName(chosenRoomName);
