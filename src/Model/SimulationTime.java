@@ -58,7 +58,7 @@ public class SimulationTime {
     }
 
     /**
-     * Sets the time speed of the simulation
+     * Sets the time speed of the simulation using float
      *
      * @param speed multiplier for time speed
      */
@@ -68,7 +68,7 @@ public class SimulationTime {
     }
 
     /**
-     * Sets the time speed of the simulation
+     * Gets the last real time of the simulation
      *
      * @return last time time was checked
      */
@@ -77,7 +77,7 @@ public class SimulationTime {
     }
 
     /**
-     * Sets the time speed of the simulation
+     * Sets the last real time of the simulation
      *
      * @param lastRealTime the new real time to set
      */
@@ -86,7 +86,7 @@ public class SimulationTime {
     }
 
     /**
-     * Sets the time speed of the simulation
+     * Gets the time speed of the simulation
      *
      * @return get the current time speed as float
      */
@@ -180,7 +180,7 @@ public class SimulationTime {
     }
 
     /**
-     * Takes in a month and returns whether the month is in the winter or not
+     * SimulationTime constructor
      *
      * @param date String representing the date
      * @param time Time representing the time
