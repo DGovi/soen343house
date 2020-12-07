@@ -611,6 +611,9 @@ public class DashboardController {
     }
 
 
+    /**
+     * Updates the override temperature of a given room.
+     */
     @FXML
     private void updateSHHTemp() {
         String chosenRoomName = shhRoomSelectTemp.getValue();
