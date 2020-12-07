@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.Stack;
 import java.time.LocalTime;
 
+import Exceptions.BadInputException;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -619,7 +620,12 @@ public class DashboardController {
      * Updates the override temperature of a given room.
      */
     @FXML
-    private void updateSHHTemp() {
+    private void updateSHHTemp() throws BadInputException {
+        if (sim.getLoggedInUser().getType().equals(UserType.CHILD))  {
+            printToConsole("PERMISSION DENIED: You are a child and daddy said not to touch the thermostat or he will spank you");
+            return;
+        }
+
         String chosenRoomName = shhRoomSelectTemp.getValue();
         if (chosenRoomName == null) {
             printToConsole("ERROR: Please select room to override temperature of!");
@@ -639,6 +645,7 @@ public class DashboardController {
             printToConsole("Successfully set override temperature of the " + chosenRoomName + "!");
         } catch (Exception e) {
             printToConsole("ERROR: Please enter a valid number for the override temperature!");
+            throw new BadInputException("override temperature");
         }
     }
 
