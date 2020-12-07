@@ -28,6 +28,8 @@ public class Room {
     protected float[] temperatures;
     private float actualTemperature;
     private boolean hvacON;
+    private float overrideTemperature;
+    private boolean overrideMode;
 
     private static final long morningDayBound = new Time(6, 0, 0).getTime();
     private static final long dayNightBound = new Time(18, 0, 0).getTime();
@@ -53,6 +55,8 @@ public class Room {
         this.temperatures[0] = this.temperatures[1] = this.temperatures[2] = temperature; // morning - day - night
         this.actualTemperature = temperature;
         this.hvacON = false;
+        this.overrideTemperature = 0.0f;
+        this.overrideMode = false;
     }
 
 
@@ -257,13 +261,15 @@ public class Room {
      * @return the desired temperature in degrees celsius
      */
     public float calculateDesiredTemperature(Simulation parentSim, Time currentTime) {
-        if (parentSim.getIsAway()) {
+        if (this.overrideMode) { // 1. override temperature
+            return this.overrideTemperature;
+        } if (parentSim.getIsAway()) { // 2. seasonal away temperature
             if (parentSim.getSimulationTimes().isWinter(Date.valueOf(parentSim.getSimulationTimes().getDate()).getMonth())) { // winter
                 return parentSim.getWinterAwayTemp();
             } else { // summer
                 return parentSim.getSummerAwayTemp();
             }
-        } else {
+        } else { // 3. zone temperature
             long time = currentTime.getTime();
             if (time < Room.morningDayBound)
                 return this.getTemperatures()[0]; // morning
@@ -291,5 +297,41 @@ public class Room {
      */
     public void setHvacON(boolean hvacON) {
         this.hvacON = hvacON;
+    }
+
+    /**
+     * Gets the override temperature of this Room.
+     *
+     * @return the override temperature
+     */
+    public float getOverrideTemperature() {
+        return overrideTemperature;
+    }
+
+    /**
+     * Sets the override temperature of this Room.
+     *
+     * @return the new override temperature
+     */
+    public void setOverrideTemperature(float overrideTemperature) {
+        this.overrideTemperature = overrideTemperature;
+    }
+
+    /**
+     * Gets the is override mode active state of the Room.
+     *
+     * @return true if override mode is active, false otherwise
+     */
+    public boolean isOverrideMode() {
+        return overrideMode;
+    }
+
+    /**
+     * Sets the is override mode active state of the Room.
+     *
+     * @param overrideMode
+     */
+    public void setOverrideMode(boolean overrideMode) {
+        this.overrideMode = overrideMode;
     }
 }

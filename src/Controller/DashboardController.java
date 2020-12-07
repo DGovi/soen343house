@@ -175,6 +175,8 @@ public class DashboardController {
     @FXML
     private TextField winterAwayTemp;
     @FXML
+    private ComboBox<String> shhRoomSelectTemp;
+    @FXML
     private ComboBox<String> shhRoomSelectZone;
     @FXML
     private Spinner<Integer> shhZoneSelect;
@@ -186,6 +188,8 @@ public class DashboardController {
     private TextField shhRoomNightTemperature;
     @FXML
     private Label permissionsHeater;
+    @FXML
+    private TextField shhOverrideTemperature;
 
     private final double  REFRESH_DELAY = 100; // ms
 
@@ -610,13 +614,40 @@ public class DashboardController {
             shcDoorOpenState.setText("Door Closed");
     }
 
+
+    /**
+     * Updates the override temperature of a given room.
+     */
+    @FXML
+    private void updateSHHTemp() {
+        String chosenRoomName = shhRoomSelectTemp.getValue();
+        if (chosenRoomName == null) {
+            printToConsole("ERROR: Please select room to override temperature of!");
+            return;
+        }
+        Room room = sim.getHouse().getRoomFromName(chosenRoomName);
+        try {
+            String tempText = shhOverrideTemperature.getText();
+            if (tempText.equals("")) {
+                room.setOverrideMode(false);
+                printToConsole("Successfully removed override temperature for the " + chosenRoomName + "!");
+                return;
+            }
+            float newTemperature = Float.parseFloat(tempText);
+            room.setOverrideTemperature(newTemperature);
+            room.setOverrideMode(true);
+            printToConsole("Successfully set override temperature of the " + chosenRoomName + "!");
+        } catch (Exception e) {
+            printToConsole("ERROR: Please enter a valid number for the override temperature!");
+        }
+    }
+
     /**
      * When the chosen room is changed, the zone is updated accordingly
      */
     @FXML
     private void updateSHHZone() {
         String chosenRoomName = shhRoomSelectZone.getValue();
-
         if (chosenRoomName == null) return;
 
         Room r = sim.getHouse().getRoomFromName(chosenRoomName);
@@ -853,6 +884,7 @@ public class DashboardController {
             // These don't need outside option
             shcRoomSelect.getItems().add(r.getName());
             shhRoomSelectZone.getItems().add(r.getName());
+            shhRoomSelectTemp.getItems().add(r.getName());
         }
         createUserLocation.getItems().add("Outside");
         editUserLocation.getItems().add("Outside");
