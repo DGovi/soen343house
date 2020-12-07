@@ -621,6 +621,11 @@ public class DashboardController {
      */
     @FXML
     private void updateSHHTemp() throws BadInputException {
+        if (sim.getLoggedInUser().getType().equals(UserType.CHILD))  {
+            printToConsole("PERMISSION DENIED: You are a child and daddy said not to touch the thermostat or he will spank you");
+            return;
+        }
+
         String chosenRoomName = shhRoomSelectTemp.getValue();
         if (chosenRoomName == null) {
             printToConsole("ERROR: Please select room to override temperature of!");
